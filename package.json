@@ -1,7 +1,22 @@
 {
   "name": "@mdperez86/react-components",
   "version": "0.0.1",
-  "description": "",
+  "description": "A react components library",
+  "keywords": [
+    "react",
+    "components"
+  ],
+  "author": {
+    "name": "Maikel Perez",
+    "email": "mdperez86@gmail.com",
+    "url": "https://github.com/mdperez86"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mdperez86/react-components.git"
+  },
+  "type": "module",
   "main": "dist/cjs/index.js",
   "files": [
     "dist"
@@ -10,13 +25,6 @@
   "scripts": {
     "rollup": "rollup -c --bundleConfigAsCjs"
   },
-  "author": "@mdperez86",
-  "license": "MIT",
-  "type": "module",
-  "keywords": [
-    "react",
-    "components"
-  ],
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
