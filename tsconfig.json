@@ -7,7 +7,7 @@
     "strict": true,
     "skipLibCheck": true,
     "rootDir": ".",
-    "jsx": "react",
+    "jsx": "react-jsx",
     "declaration": true,
     "declarationDir": "types",
     "sourceMap": true,
@@ -15,5 +15,7 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true
-  }
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["**/*.stories.ts"]
 }
