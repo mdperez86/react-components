@@ -21,7 +21,7 @@
   "files": [
     "dist"
   ],
-  "types": "dist/cjs/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "rollup": "rm -rf dist && rollup -c --bundleConfigAsCjs",
     "storybook": "storybook dev -p 6006",
