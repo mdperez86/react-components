@@ -42,6 +42,7 @@
     "@storybook/react-vite": "^7.6.6",
     "@storybook/test": "^7.6.6",
     "autoprefixer": "^10.4.16",
+    "classnames": "^2.5.1",
     "postcss": "^8.4.32",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

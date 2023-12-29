@@ -17,5 +17,5 @@
     "emitDeclarationOnly": true
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["**/*.stories.ts"]
+  "exclude": ["./src/stories/**/*", "**/*.stories.ts", "**/*.stories.tsx"]
 }
