@@ -16,6 +16,10 @@
     "allowSyntheticDefaultImports": true,
     "emitDeclarationOnly": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["./src/stories/**/*", "**/*.stories.ts", "**/*.stories.tsx"]
+  "include": ["./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": [
+    "./src/stories/**/*",
+    "./src/**/*.stories.ts",
+    "./src/**/*.stories.tsx"
+  ]
 }
