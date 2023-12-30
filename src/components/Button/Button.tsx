@@ -34,7 +34,7 @@ export const Button = forwardRef(function ForwardedButton(
           "focus:ring-primary-100": !destructive,
           "focus:ring-error-100": destructive,
 
-          "text-white border": hierarchy == "primary",
+          "text-white border shadow-sm": hierarchy == "primary",
           "border-primary-600 bg-primary-600":
             hierarchy == "primary" && !destructive,
           "border-error-600 bg-error-600":
@@ -48,9 +48,10 @@ export const Button = forwardRef(function ForwardedButton(
           "aria-disabled:border-error-200 aria-disabled:bg-error-200":
             hierarchy == "primary" && destructive,
 
-          "text-primary-700 border border-primary-50 bg-primary-50":
+          "border shadow-sm": hierarchy == "secondary",
+          "text-primary-700 border-primary-50 bg-primary-50":
             hierarchy == "secondary" && !destructive,
-          "text-error-700 border border-error-50 bg-error-50":
+          "text-error-700 border-error-50 bg-error-50":
             hierarchy == "secondary" && destructive,
           "hover:border-primary-100 hover:bg-primary-100":
             hierarchy == "secondary" && !destructive,
