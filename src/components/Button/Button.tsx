@@ -38,7 +38,8 @@ export const Button = forwardRef(function ForwardedButton(
           "h-14 px-7 text-lg": size == "2xl" && icon != "only",
           "h-14": size == "2xl" && icon == "only",
 
-          "focus:ring-primary-100": !destructive,
+          "focus:ring-primary-100": hierarchy != "secondary" && !destructive,
+          "focus:ring-gray-100": hierarchy == "secondary" && !destructive,
           "focus:ring-error-100": destructive,
 
           "text-white border shadow-sm": hierarchy == "primary",
@@ -55,18 +56,18 @@ export const Button = forwardRef(function ForwardedButton(
           "aria-disabled:border-error-200 aria-disabled:bg-error-200":
             hierarchy == "primary" && destructive,
 
-          "border shadow-sm": hierarchy == "secondary",
-          "text-primary-700 border-primary-50 bg-primary-50":
+          "border shadow-sm bg-white": hierarchy == "secondary",
+          "text-gray-700 border-gray-300":
             hierarchy == "secondary" && !destructive,
-          "text-error-700 border-error-50 bg-error-50":
+          "text-error-700 border-error-300":
             hierarchy == "secondary" && destructive,
-          "hover:border-primary-100 hover:bg-primary-100":
+          "hover:text-gray-800 hover:bg-gray-50":
             hierarchy == "secondary" && !destructive,
-          "hover:border-error-100 hover:bg-error-100":
+          "hover:text-error-800 hover:border-error-300 hover:bg-error-50":
             hierarchy == "secondary" && destructive,
-          "aria-disabled:text-primary-300 aria-disabled:border-primary-25 aria-disabled:bg-primary-25":
+          "aria-disabled:text-gray-300 aria-disabled:border-gray-200":
             hierarchy == "secondary" && !destructive,
-          "aria-disabled:text-error-300 aria-disabled:border-error-25 aria-disabled:bg-error-25":
+          "aria-disabled:text-error-300 aria-disabled:border-error-200":
             hierarchy == "secondary" && destructive,
 
           "border border-transparent bg-transparent": hierarchy == "tertiary",
