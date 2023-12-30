@@ -7,6 +7,7 @@ export const Button = forwardRef(function ForwardedButton(
     size = "md",
     hierarchy = "secondary",
     destructive,
+    icon,
     disabled,
     className,
     onClick,
@@ -21,15 +22,21 @@ export const Button = forwardRef(function ForwardedButton(
       ref={ref}
       className={classNames(
         className,
-        "rounded-lg outline-none",
+        "font-medium rounded-lg outline-none",
+        "inline-flex items-center justify-center",
         "focus:ring-4",
         "aria-disabled:cursor-not-allowed",
         {
-          "h-9 py-1 px-3 text-sm font-medium": size == "sm",
-          "h-10 py-2 px-4 text-sm font-medium": size == "md",
-          "h-11 py-2 px-4 text-base font-medium": size == "lg",
-          "h-12 py-3 px-5 text-base font-medium": size == "xl",
-          "h-14 py-3 px-7 text-lg font-medium": size == "2xl",
+          "h-9 px-3 text-sm": size == "sm" && icon != "only",
+          "h-9": size == "sm" && icon == "only",
+          "h-10 px-4 text-sm": size == "md" && icon != "only",
+          "h-10": size == "md" && icon == "only",
+          "h-11 px-5 text-base": size == "lg" && icon != "only",
+          "h-11": size == "lg" && icon == "only",
+          "h-12 px-6 text-base": size == "xl" && icon != "only",
+          "h-12": size == "xl" && icon == "only",
+          "h-14 px-7 text-lg": size == "2xl" && icon != "only",
+          "h-14": size == "2xl" && icon == "only",
 
           "focus:ring-primary-100": !destructive,
           "focus:ring-error-100": destructive,
@@ -73,6 +80,10 @@ export const Button = forwardRef(function ForwardedButton(
             hierarchy == "tertiary" && !destructive,
           "aria-disabled:text-error-300":
             hierarchy == "tertiary" && destructive,
+
+          "gap-2": Boolean(icon),
+          "flex-row-reverse": icon == "trailing",
+          "aspect-square": icon == "only",
         }
       )}
       onClick={handleClick}

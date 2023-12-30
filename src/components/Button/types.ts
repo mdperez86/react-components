@@ -22,6 +22,10 @@ export type ButtonProps = Omit<
    */
   destructive?: boolean;
   /**
+   * The icon position within the button content.
+   */
+  icon?: "leading" | "trailing" | "only";
+  /**
    * Defines if the button is aria disabled or not.
    * The `onClick` event is prevented when `disabled`
    * is set to `true`. This is intentional to meet
