@@ -17,6 +17,7 @@ const meta = {
   argTypes: {},
   args: {
     children: "Button",
+    disabled: false,
   },
 } satisfies Meta<ButtonProps>;
 
@@ -27,6 +28,17 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     hierarchy: "primary",
-    disabled: false,
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    hierarchy: "secondary",
+  },
+};
+
+export const Tertiary: Story = {
+  args: {
+    hierarchy: "tertiary",
   },
 };
