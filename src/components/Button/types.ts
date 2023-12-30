@@ -18,6 +18,10 @@ export type ButtonProps = Omit<
    */
   hierarchy?: "primary" | "secondary" | "tertiary";
   /**
+   * Visually defines an action that must be done carefully.
+   */
+  destructive?: boolean;
+  /**
    * Defines if the button is aria disabled or not.
    * The `onClick` event is prevented when `disabled`
    * is set to `true`. This is intentional to meet
