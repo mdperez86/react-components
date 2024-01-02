@@ -1,7 +1,7 @@
 import { type ReactNode } from "react";
 
 export type InputFieldProps = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLInputElement>,
+  React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 > & {
   /**

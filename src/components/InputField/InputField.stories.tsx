@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { InputFieldProps } from "./types";
 
@@ -38,5 +38,23 @@ export const WithLeadingIcon: Story = {
 export const WithHelpIcon: Story = {
   args: {
     helpIcon: true,
+  },
+};
+
+export const Invalid: Story = {
+  args: {
+    leadingIcon: <HomeIcon />,
+    helpIcon: true,
+  },
+  render(args) {
+    const ref = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+      if (ref.current) {
+        ref.current.setCustomValidity("Invalid");
+      }
+    }, []);
+
+    return <InputField {...args} ref={ref} />;
   },
 };
