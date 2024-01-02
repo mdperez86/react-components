@@ -19,6 +19,8 @@ export type ButtonProps = Omit<
   hierarchy?: "primary" | "secondary" | "tertiary";
   /**
    * Visually defines an action that must be done carefully.
+   *
+   * @default false
    */
   destructive?: boolean;
   /**

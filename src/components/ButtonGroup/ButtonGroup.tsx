@@ -1,16 +1,16 @@
 import {
   Children,
-  ReactElement,
-  ReactNode,
-  Ref,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
   cloneElement,
   forwardRef,
   isValidElement,
   useMemo,
 } from "react";
 import classNames from "classnames";
-import { Button, ButtonProps } from "@this/components/Button";
-import { ButtonGroupProps } from "./types";
+import { Button, type ButtonProps } from "@this/components/Button";
+import { type ButtonGroupProps } from "./types";
 
 export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
   {
@@ -23,7 +23,7 @@ export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
     children,
     ...props
   }: ButtonGroupProps,
-  ref: Ref<HTMLDivElement>
+  ref: Ref<HTMLDivElement>,
 ) {
   const buttonChildren = useMemo(getButtonChildren, [children]);
 
@@ -38,15 +38,18 @@ export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
     </div>
   );
 
-  function getButtonChildren() {
+  function getButtonChildren(): ReactNode[] {
     return Children.toArray(children).filter(filterChild);
 
-    function filterChild(child: ReactNode) {
+    function filterChild(child: ReactNode): boolean {
       return isValidElement<ButtonProps>(child) && child.type === Button;
     }
   }
 
-  function setupChild(child: ReactNode, index: number) {
+  function setupChild(
+    child: ReactNode,
+    index: number,
+  ): ReactElement<ButtonProps> {
     const button = child as ReactElement<ButtonProps>;
     return cloneElement<ButtonProps>(button, {
       size,
@@ -61,8 +64,8 @@ export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
         "first:border-r-0 last:border-l-0",
         {
           "rounded-none border-l-0 border-r-0":
-            0 < index && index < buttonChildren.length - 1,
-        }
+            index > 0 && index < buttonChildren.length - 1,
+        },
       ),
     });
   }
