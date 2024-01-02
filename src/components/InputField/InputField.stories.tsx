@@ -1,6 +1,8 @@
+import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { InputFieldProps } from "./types";
 
+import { HomeIcon } from "../../stories/buttons/HomeIcon";
 import { InputField } from "./InputField";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -16,6 +18,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {
+    placeholder: "Placeholder",
     disabled: false,
   },
 } satisfies Meta<InputFieldProps>;
@@ -24,8 +27,16 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
+export const Default: Story = {};
+
+export const WithLeadingIcon: Story = {
   args: {
-    placeholder: "Name",
+    leadingIcon: <HomeIcon />,
+  },
+};
+
+export const WithHelpIcon: Story = {
+  args: {
+    helpIcon: true,
   },
 };

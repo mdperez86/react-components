@@ -1,4 +1,3 @@
 module.exports = {
-  "src/**/*": ["npm run lint", "npm run prettier"],
-  "**/*": ["npm run rollup"],
+  "src/**/*.{ts,tsx}": ["npm run lint", "npm run prettier"],
 };
