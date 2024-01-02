@@ -104,13 +104,13 @@ export const WithIconOnly: Story = {
   render(args) {
     return (
       <ButtonGroup {...args}>
-        <Button>
+        <Button aria-label="Home">
           <HomeIcon />
         </Button>
-        <Button disabled>
+        <Button disabled aria-label="Home">
           <HomeIcon />
         </Button>
-        <Button destructive>
+        <Button destructive aria-label="Home">
           <HomeIcon />
         </Button>
       </ButtonGroup>
@@ -129,7 +129,7 @@ export const Mixed: Story = {
           <HomeIcon />
           <span>Middle</span>
         </Button>
-        <Button icon="only">
+        <Button icon="only" aria-label="Home">
           <HomeIcon />
         </Button>
         <Button icon="trailing">
