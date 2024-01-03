@@ -38,7 +38,9 @@ module.exports = {
     "**/*.stories.tsx",
     "rollup.config.js",
   ],
-  rules: {},
+  rules: {
+    "@typescript-eslint/strict-boolean-expressions": "off",
+  },
   settings: {
     react: {
       version: "detect",

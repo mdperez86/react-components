@@ -1,4 +1,4 @@
-import { type Ref, forwardRef } from "react";
+import { type Ref, forwardRef, type FocusEvent } from "react";
 import classNames from "classnames";
 import { AlertCircle, HelpCircle } from "@this/icons";
 import { type InputFieldProps } from "./types";
@@ -8,7 +8,7 @@ export const InputField = forwardRef(function ForwardedInputField(
     leadingIcon,
     helpIcon = false,
     className,
-    onClick,
+    onBlur,
     ...props
   }: InputFieldProps,
   ref: Ref<HTMLInputElement>,
@@ -40,6 +40,7 @@ export const InputField = forwardRef(function ForwardedInputField(
           "outline-none appearance-none flex w-full bg-transparent",
           "disabled:bg-inherit disabled:text-inherit disabled:cursor-[inherit]",
         )}
+        onBlur={handleBlur}
       />
 
       {helpIcon && (
@@ -55,4 +56,10 @@ export const InputField = forwardRef(function ForwardedInputField(
       )}
     </div>
   );
+
+  function handleBlur(event: FocusEvent<HTMLInputElement>): void {
+    onBlur && onBlur(event);
+
+    event.currentTarget.checkValidity();
+  }
 });
