@@ -4,6 +4,7 @@ import type { FormControlProps } from "./types";
 
 import { FormControl } from "./FormControl";
 import { InputField } from "../InputField";
+import { TextAreaField } from "../TextAreaField";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -27,12 +28,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
+export const WithInputField: Story = {
   args: {},
   render(args) {
     return (
       <FormControl {...args} ref={undefined}>
         <InputField />
+      </FormControl>
+    );
+  },
+};
+
+export const WithTextAreaField: Story = {
+  args: {},
+  render(args) {
+    return (
+      <FormControl {...args} ref={undefined}>
+        <TextAreaField />
       </FormControl>
     );
   },
