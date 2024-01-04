@@ -5,6 +5,7 @@ import type { FormControlProps } from "./types";
 import { FormControl } from "./FormControl";
 import { InputField } from "../InputField";
 import { TextAreaField } from "../TextAreaField";
+import { RadioButton } from "../RadioButton";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -45,6 +46,17 @@ export const WithTextAreaField: Story = {
     return (
       <FormControl {...args} ref={undefined}>
         <TextAreaField />
+      </FormControl>
+    );
+  },
+};
+
+export const WithRadioButton: Story = {
+  args: {},
+  render(args) {
+    return (
+      <FormControl {...args} ref={undefined}>
+        <RadioButton />
       </FormControl>
     );
   },

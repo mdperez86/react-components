@@ -1,4 +1,6 @@
 import {
+  type FormEvent,
+  type ReactElement,
   type Ref,
   forwardRef,
   useId,
@@ -7,17 +9,20 @@ import {
   isValidElement,
   useRef,
   useEffect,
-  type ReactElement,
-  type FormEvent,
   useState,
+  type ForwardRefExoticComponent,
+  type RefAttributes,
 } from "react";
 import classNames from "classnames";
+import { RadioButton } from "../RadioButton";
+import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
 import { type InputFieldProps } from "../InputField";
-import { type FormControlProps } from "./types";
+import { type LayoutProps, type FormControlProps } from "./types";
 
 export const FormControl = forwardRef(function ForwardedFormControl(
   {
     label,
+    labelPosition,
     hintText,
     errorText,
     className,
@@ -28,48 +33,51 @@ export const FormControl = forwardRef(function ForwardedFormControl(
 ) {
   const controlId = useId();
   const controlRef = useRef<HTMLInputElement>();
-  const control = Children.only(children);
+  const child = Children.only(children);
   const [validityMessage, setValidityMessage] = useState("");
   const hintTextId = useId();
 
   useEffect(setControlError, [errorText]);
 
-  if (!isValidElement<InputFieldProps>(control)) return null;
+  if (!isValidElement<InputFieldProps>(child)) return null;
 
   const hint = validityMessage || hintText;
 
+  const Layout = getLayout(labelPosition, child);
+
   return (
-    <div
+    <Layout
       {...props}
       ref={ref}
-      className={classNames(className, "group flex flex-col gap-1.5")}
-    >
-      <label
-        htmlFor={control.props.id ?? controlId}
-        className="text-sm font-medium text-gray-700"
-      >
-        {label}
-      </label>
-
-      {cloneElement(control, {
-        ref: getControlRef(control),
-        id: control.props.id ?? controlId,
-        "aria-describedby": hintTextId,
-        onInvalid: controlInvalidHandler(control),
-      })}
-
-      {hint && (
-        <span
-          id={hintTextId}
-          aria-live="assertive"
-          className={classNames(
-            "text-sm text-gray-500 group-has-[:invalid]:text-error-500",
-          )}
+      label={
+        <label
+          htmlFor={child.props.id ?? controlId}
+          className="text-sm font-medium text-gray-700"
         >
-          {hint}
-        </span>
-      )}
-    </div>
+          {label}
+        </label>
+      }
+      hint={
+        hint && (
+          <span
+            id={hintTextId}
+            aria-live="assertive"
+            className={classNames(
+              "text-sm text-gray-500 group-has-[:invalid]:text-error-500",
+            )}
+          >
+            {hint}
+          </span>
+        )
+      }
+    >
+      {cloneElement(child, {
+        ref: getControlRef(child),
+        id: child.props.id ?? controlId,
+        "aria-describedby": hintTextId,
+        onInvalid: controlInvalidHandler(child),
+      })}
+    </Layout>
   );
 
   function setControlError(): void {
@@ -97,3 +105,28 @@ export const FormControl = forwardRef(function ForwardedFormControl(
     };
   }
 });
+
+function getLayout(
+  labelPosition: FormControlProps["labelPosition"],
+  child: ReactElement,
+): ForwardRefExoticComponent<
+  Omit<LayoutProps, "ref"> & RefAttributes<HTMLDivElement>
+> {
+  let position = labelPosition;
+
+  const isLabelOnRight = child.type === RadioButton;
+  if (!position && isLabelOnRight) {
+    position = "right";
+  }
+
+  switch (position) {
+    case "right":
+      return RightLayout;
+    case "bottom":
+      return BottomLayout;
+    case "left":
+      return LeftLayout;
+    default:
+      return TopLayout;
+  }
+}
