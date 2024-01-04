@@ -13,7 +13,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
         type="radio"
         ref={ref}
         className={classNames(
-          "peer",
+          "peer cursor-pointer disabled:cursor-not-allowed",
           "outline-none appearance-none",
           "absolute z-[1] top-0 right-0 bottom-0 left-0",
         )}

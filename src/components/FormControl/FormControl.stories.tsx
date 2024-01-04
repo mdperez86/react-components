@@ -7,6 +7,7 @@ import { InputField } from "../InputField";
 import { TextAreaField } from "../TextAreaField";
 import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
+import { Toggle } from "../Toggle";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -69,6 +70,19 @@ export const WithCheckBoxButton: Story = {
     return (
       <FormControl {...args} ref={undefined}>
         <CheckBox />
+      </FormControl>
+    );
+  },
+};
+
+export const WithToggleButton: Story = {
+  args: {
+    labelPosition: "left",
+  },
+  render(args) {
+    return (
+      <FormControl {...args} ref={undefined}>
+        <Toggle />
       </FormControl>
     );
   },

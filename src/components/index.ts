@@ -5,3 +5,4 @@ export * from "./FormControl";
 export * from "./InputField";
 export * from "./RadioButton";
 export * from "./TextAreaField";
+export * from "./Toggle";
