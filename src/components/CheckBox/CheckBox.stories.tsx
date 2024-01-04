@@ -1,13 +1,13 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import type { RadioButtonProps } from "./types";
+import type { CheckBoxProps } from "./types";
 
-import { RadioButton } from "./RadioButton";
+import { CheckBox } from "./CheckBox";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Components/RadioButton",
-  component: RadioButton as React.FC,
+  title: "Components/CheckBox",
+  component: CheckBox as React.FC,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -23,16 +23,24 @@ const meta = {
     disabled: false,
     "aria-label": "Label",
   },
-} satisfies Meta<RadioButtonProps>;
+} satisfies Meta<CheckBoxProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {};
+export const Default: Story = {
+  args: {},
+};
 
 export const Checked: Story = {
   args: {
     defaultChecked: true,
+  },
+};
+
+export const Indeterminate: Story = {
+  args: {
+    indeterminate: true,
   },
 };

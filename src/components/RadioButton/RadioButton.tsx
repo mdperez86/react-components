@@ -3,16 +3,11 @@ import classNames from "classnames";
 import { type RadioButtonProps } from "./types";
 
 export const RadioButton = forwardRef(function ForwardedRadioButton(
-  { className, onBlur, ...props }: RadioButtonProps,
+  { className, ...props }: RadioButtonProps,
   ref: Ref<HTMLInputElement>,
 ) {
   return (
-    <div
-      className={classNames(
-        className,
-        "group w-fit h-fit relative inline-flex",
-      )}
-    >
+    <div className={classNames(className, "group w-fit h-fit relative flex")}>
       <input
         {...props}
         type="radio"
@@ -31,7 +26,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
           "flex items-center justify-center",
           "bg-white border border-gray-300",
           "peer-hover:border-primary-600 peer-hover:bg-primary-50",
-          "peer-focus:border-primary-300 peer-focus:ring-4 peer-focus:ring-primary-100",
+          "peer-focus:border-primary-300 peer-focus:peer-hover:border-primary-600 peer-focus:ring-4 peer-focus:ring-primary-100",
           "peer-checked:border-primary-600 peer-focus:peer-checked:border-primary-600",
           "peer-disabled:border-gray-200 peer-disabled:bg-gray-100",
         )}
