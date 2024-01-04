@@ -15,6 +15,7 @@ import {
 } from "react";
 import classNames from "classnames";
 import { RadioButton } from "../RadioButton";
+import { CheckBox } from "../CheckBox";
 import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
 import { type InputFieldProps } from "../InputField";
 import { type LayoutProps, type FormControlProps } from "./types";
@@ -114,7 +115,7 @@ function getLayout(
 > {
   let position = labelPosition;
 
-  const isLabelOnRight = child.type === RadioButton;
+  const isLabelOnRight = child.type === RadioButton || child.type === CheckBox;
   if (!position && isLabelOnRight) {
     position = "right";
   }
