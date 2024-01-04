@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { type CardProps } from "./types";
 
 export const Card = forwardRef(function ForwardedCard(
-  { className, onClick, ...props }: CardProps,
+  { className, ...props }: CardProps,
   ref: Ref<HTMLDivElement>,
 ) {
   return (
