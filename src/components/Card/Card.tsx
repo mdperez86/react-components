@@ -12,7 +12,7 @@ export const Card = forwardRef(function ForwardedCard(
       ref={ref}
       className={classNames(
         className,
-        "shadow-md rounded-lg overflow-hidden bg-white border border-gray-200",
+        "shadow-md rounded-lg bg-white border border-gray-200",
       )}
     />
   );
