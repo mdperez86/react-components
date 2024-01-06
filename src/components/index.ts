@@ -2,6 +2,7 @@ export * from "./Button";
 export * from "./ButtonGroup";
 export * from "./Card";
 export * from "./CheckBox";
+export * from "./Dropdown";
 export * from "./FormControl";
 export * from "./InputField";
 export * from "./ListBox";
