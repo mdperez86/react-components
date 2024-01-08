@@ -1,7 +1,7 @@
 import {
-  AriaAttributes,
   Children,
   ForwardedRef,
+  ReactElement,
   ReactNode,
   cloneElement,
   forwardRef,
@@ -9,14 +9,24 @@ import {
   useId,
 } from "react";
 import classNames from "classnames";
-import { ListBoxGroupProps } from "./types";
+import { ListBoxGroupProps, ListBoxOptionProps } from "./types";
 import { ListBoxOption } from "./ListBoxOption";
 
 export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
-  { header, role = "group", className, children, ...props }: ListBoxGroupProps,
+  {
+    header,
+    value,
+    role = "group",
+    selectOnFocus,
+    className,
+    children,
+    onChange,
+    ...props
+  }: ListBoxGroupProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
   const headerId = useId();
+  const optionId = useId();
 
   return (
     <div
@@ -44,20 +54,59 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
     </div>
   );
 
-  function mapChild(child: ReactNode): ReactNode {
-    if (isValidElement<HTMLElement & AriaAttributes>(child)) {
-      if (
-        (child.type === ListBoxGroup && role === "listbox") ||
-        child.type === ListBoxOption
-      ) {
-        if (props["aria-activedescendant"]) {
-          return cloneElement(child, {
-            "aria-activedescendant": props["aria-activedescendant"],
-          });
-        }
-        return child;
-      }
+  function getOptionId(value: string): string {
+    return `${optionId}${value}`;
+  }
+
+  function mapChild(child: ReactNode, index: number): ReactNode {
+    if (
+      isValidElement<ListBoxGroupProps>(child) &&
+      child.type === ListBoxGroup
+    ) {
+      return cloneElement(child, {
+        value,
+        selectOnFocus,
+        "aria-activedescendant": props["aria-activedescendant"],
+        onChange: listBoxGroupChangeHandler(child),
+      });
     }
-    return null;
+
+    if (
+      isValidElement<ListBoxOptionProps>(child) &&
+      child.type === ListBoxOption
+    ) {
+      const id =
+        child.props.id ?? getOptionId(child.props.value || String(index));
+
+      return cloneElement<ListBoxOptionProps>(child, {
+        id,
+        selectOnFocus,
+        focused: props["aria-activedescendant"] === id,
+        "aria-selected": Boolean(value) && value === child.props.value,
+        onSelect: listBoxOptionSelectHandler(child),
+      });
+    }
+
+    return child;
+  }
+
+  function listBoxGroupChangeHandler(
+    listBoxGroup: ReactElement<ListBoxGroupProps>,
+  ) {
+    return function handleListBoxGroupChange(value: string) {
+      listBoxGroup.props.onChange && listBoxGroup.props.onChange(value);
+
+      onChange && onChange(value);
+    };
+  }
+
+  function listBoxOptionSelectHandler(
+    listBoxOption: ReactElement<ListBoxOptionProps>,
+  ) {
+    return function handleListBoxOptionSelect(value: string) {
+      listBoxOption.props.onSelect && listBoxOption.props.onSelect(value);
+
+      onChange && onChange(value);
+    };
   }
 });

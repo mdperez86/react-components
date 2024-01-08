@@ -31,9 +31,9 @@ export const Default: Story = {
     const [value, onChange] = useState("1");
     return (
       <ListBox {...args} value={value} onChange={onChange}>
-        <ListBoxOption>Item 1</ListBoxOption>
-        <ListBoxOption>Item 2</ListBoxOption>
-        <ListBoxOption>Item 3</ListBoxOption>
+        <ListBoxOption value="1.1">Item 1.1</ListBoxOption>
+        <ListBoxOption value="1.2">Item 1.2</ListBoxOption>
+        <ListBoxOption value="1.3">Item 1.3</ListBoxOption>
       </ListBox>
     );
   },
@@ -45,9 +45,9 @@ export const WithHeader: Story = {
     const [value, onChange] = useState("1");
     return (
       <ListBox {...args} value={value} onChange={onChange} header="List header">
-        <ListBoxOption>Item 1</ListBoxOption>
-        <ListBoxOption>Item 2</ListBoxOption>
-        <ListBoxOption>Item 3</ListBoxOption>
+        <ListBoxOption value="1.1">Item 1.1</ListBoxOption>
+        <ListBoxOption value="1.2">Item 1.2</ListBoxOption>
+        <ListBoxOption value="1.3">Item 1.3</ListBoxOption>
       </ListBox>
     );
   },
@@ -56,18 +56,24 @@ export const WithHeader: Story = {
 export const WithGoups: Story = {
   args: {},
   render(args) {
-    const [value, onChange] = useState("1.1");
+    const [value, onChange] = useState<string>();
     return (
-      <ListBox {...args} value={value} onChange={onChange} header="List header">
+      <ListBox
+        {...args}
+        selectOnFocus={false}
+        value={value}
+        onChange={onChange}
+        header="List header"
+      >
         <ListBoxGroup header="Group header">
-          <ListBoxOption>Item 1.1</ListBoxOption>
-          <ListBoxOption>Item 1.2</ListBoxOption>
-          <ListBoxOption>Item 1.2</ListBoxOption>
+          <ListBoxOption value="1.1">Item 1.1</ListBoxOption>
+          <ListBoxOption value="1.2">Item 1.2</ListBoxOption>
+          <ListBoxOption value="1.3">Item 1.3</ListBoxOption>
         </ListBoxGroup>
         <ListBoxGroup header="Group header">
-          <ListBoxOption>Item 2.1</ListBoxOption>
-          <ListBoxOption>Item 2.2</ListBoxOption>
-          <ListBoxOption>Item 2.2</ListBoxOption>
+          <ListBoxOption value="2.1">Item 2.1</ListBoxOption>
+          <ListBoxOption value="2.2">Item 2.2</ListBoxOption>
+          <ListBoxOption value="2.3">Item 2.3</ListBoxOption>
         </ListBoxGroup>
       </ListBox>
     );

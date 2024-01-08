@@ -1,36 +1,39 @@
-import { ForwardedRef, forwardRef, useId } from "react";
+import { ForwardedRef, MouseEvent, forwardRef, useEffect } from "react";
 import classNames from "classnames";
 import { Check } from "@this/icons";
 import { ListBoxOptionProps } from "./types";
 
 export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
   {
-    role = "option",
+    value,
+    focused,
+    selectOnFocus,
     icon,
     className,
     children,
-    "aria-activedescendant": activeDescendantId,
+    role = "option",
+    "aria-selected": selected,
+    onSelect,
     onClick,
     ...props
   }: ListBoxOptionProps,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
-  const optionId = useId();
-  const isSelected = activeDescendantId === optionId;
+  useEffect(autoSelectOnFocus, [selectOnFocus, focused, value, onSelect]);
 
   return (
     <div
       {...props}
       ref={ref}
-      id={props.id ?? optionId}
       role={role}
-      aria-selected={isSelected}
-      className="group/option relative"
+      data-value={value}
+      aria-selected={selected}
+      className="relative"
     >
       <div
         className={classNames(
           className,
-          "py-2.5 px-3.5 flex gap-3",
+          "py-2.5 px-3.5 flex gap-3 cursor-pointer",
           "text-sm text-gray-900",
           "aria-disabled:text-gray-200",
           "group-has-[>[role=option]:first-child]:group-[>:first-child>]:rounded-t-lg",
@@ -40,12 +43,11 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
           {
             "group-has-[[data-role=icon]]:pl-[2.625rem]":
               role === "option" && !icon,
-            "hover:bg-primary-50 hover:text-primary-700 cursor-pointer":
-              role === "option",
-            "group-aria-[selected=true]/option:bg-primary-25 group-aria-[selected=true]/option:hover:bg-primary-50":
-              role === "option",
+            "bg-primary-25": focused || selected,
+            "hover:bg-primary-50 hover:text-primary-700": role === "option",
           },
         )}
+        onClick={handleClick}
       >
         {icon && (
           <div
@@ -59,7 +61,7 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
 
         <div className="flex-auto truncate">{children}</div>
 
-        {isSelected && (
+        {selected && (
           <div
             aria-hidden="true"
             className="w-4 flex shrink-0 items-center justify-center text-primary-600"
@@ -70,4 +72,16 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
       </div>
     </div>
   );
+
+  function autoSelectOnFocus() {
+    if (selectOnFocus && focused && value && onSelect) {
+      onSelect(value);
+    }
+  }
+
+  function handleClick(event: MouseEvent<HTMLDivElement>) {
+    onClick && onClick(event);
+
+    value && onSelect && onSelect(value);
+  }
 });

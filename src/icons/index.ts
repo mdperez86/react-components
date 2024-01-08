@@ -5,3 +5,4 @@ export * from "./ChevronRight";
 export * from "./ChevronUp";
 export * from "./HelpCircle";
 export * from "./Minus";
+export * from "./User";

@@ -1,4 +1,5 @@
 import {
+  FocusEvent,
   ForwardedRef,
   KeyboardEvent,
   MouseEvent,
@@ -11,12 +12,15 @@ import { ListBoxProps } from "./types";
 
 export const ListBox = forwardRef(function ForwardedListBox(
   {
+    selectOnFocus,
+    value,
     className,
     children,
-    value,
     onChange,
     onKeyDown,
     onClick,
+    onFocus,
+    onBlur,
     ...props
   }: ListBoxProps,
   ref: ForwardedRef<HTMLDivElement>,
@@ -27,6 +31,8 @@ export const ListBox = forwardRef(function ForwardedListBox(
     <ListBoxGroup
       tabIndex={0}
       {...props}
+      selectOnFocus={selectOnFocus}
+      value={value}
       ref={ref}
       role="listbox"
       className={classNames(
@@ -35,9 +41,14 @@ export const ListBox = forwardRef(function ForwardedListBox(
         "rounded-lg shadow-lg",
         "outline-none focus:ring-4 focus:ring-gray-100",
       )}
-      aria-activedescendant={activeDescendant?.id}
+      aria-activedescendant={
+        activeDescendant?.id ?? props["aria-activedescendant"]
+      }
       onKeyDown={handleKeyDown}
       onClick={handleClick}
+      onChange={onChange}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
     >
       {children}
     </ListBoxGroup>
@@ -102,32 +113,40 @@ export const ListBox = forwardRef(function ForwardedListBox(
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>): void {
     onKeyDown && onKeyDown(event);
 
-    let selectedOption: HTMLDivElement | undefined;
+    let focusedOption: HTMLDivElement | undefined;
 
     switch (event.key) {
       case "Down":
       case "ArrowDown":
         event.preventDefault();
-        selectedOption = findNextOption(event.currentTarget);
+        focusedOption = findNextOption(event.currentTarget);
         break;
       case "Up":
       case "ArrowUp":
         event.preventDefault();
-        selectedOption = findPreviousOption(event.currentTarget);
+        focusedOption = findPreviousOption(event.currentTarget);
         break;
 
       case "Home":
         event.preventDefault();
-        selectedOption = findFirstOption(event.currentTarget);
+        focusedOption = findFirstOption(event.currentTarget);
         break;
       case "End":
         event.preventDefault();
-        selectedOption = findLastOption(event.currentTarget);
+        focusedOption = findLastOption(event.currentTarget);
+        break;
+
+      case " ":
+        event.preventDefault();
+        if (!selectOnFocus && activeDescendant && onChange) {
+          const currentValue = activeDescendant.dataset["value"];
+          currentValue && onChange(currentValue);
+        }
         break;
     }
 
-    if (selectedOption) {
-      setActiveDescendant(selectedOption);
+    if (focusedOption) {
+      setActiveDescendant(focusedOption);
     }
   }
 
@@ -145,6 +164,26 @@ export const ListBox = forwardRef(function ForwardedListBox(
       setActiveDescendant(parentOption);
       return;
     }
+  }
+
+  function handleFocus(event: FocusEvent<HTMLDivElement>) {
+    onFocus && onFocus(event);
+
+    if (value) {
+      const selectedOption = event.target.querySelector<HTMLDivElement>(
+        `[data-value="${value}"]`,
+      );
+
+      if (selectedOption) {
+        setActiveDescendant(selectedOption);
+      }
+    }
+  }
+
+  function handleBlur(event: FocusEvent<HTMLDivElement>) {
+    onBlur && onBlur(event);
+
+    setActiveDescendant(undefined);
   }
 });
 
