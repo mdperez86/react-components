@@ -33,7 +33,7 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
       <div
         className={classNames(
           className,
-          "py-2.5 px-3.5 flex gap-3 cursor-pointer",
+          "py-2.5 px-3.5 flex gap-3",
           "text-sm text-gray-900",
           "aria-disabled:text-gray-200",
           "group-has-[>[role=option]:first-child]:group-[>:first-child>]:rounded-t-lg",
@@ -44,7 +44,8 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
             "group-has-[[data-role=icon]]:pl-[2.625rem]":
               role === "option" && !icon,
             "bg-primary-25": focused || selected,
-            "hover:bg-primary-50 hover:text-primary-700": role === "option",
+            "hover:bg-primary-50 hover:text-primary-700 cursor-pointer":
+              role === "option",
           },
         )}
         onClick={handleClick}
