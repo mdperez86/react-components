@@ -10,8 +10,8 @@ import {
   useRef,
   useEffect,
   useState,
-  type ForwardRefExoticComponent,
   type RefAttributes,
+  type FC,
 } from "react";
 import classNames from "classnames";
 import { RadioButton } from "../RadioButton";
@@ -110,9 +110,7 @@ export const FormControl = forwardRef(function ForwardedFormControl(
 function getLayout(
   labelPosition: FormControlProps["labelPosition"],
   child: ReactElement,
-): ForwardRefExoticComponent<
-  Omit<LayoutProps, "ref"> & RefAttributes<HTMLDivElement>
-> {
+): FC<LayoutProps & RefAttributes<HTMLDivElement>> {
   let position = labelPosition;
 
   const isLabelOnRight = child.type === RadioButton || child.type === CheckBox;
