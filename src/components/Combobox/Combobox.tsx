@@ -69,7 +69,9 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           ref={getRef}
           size={1}
           aria-haspopup="listbox"
-          aria-activedescendant={activeOption && getOptionId(activeOption)}
+          aria-activedescendant={
+            toggle && activeOption ? getOptionId(activeOption) : undefined
+          }
           className={classNames(
             "outline-none appearance-none flex min-w-48",
             "bg-white text-gray-900 border border-gray-300 placeholder:text-gray-500",
@@ -144,35 +146,31 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         case "Down":
         case "ArrowDown":
           event.preventDefault();
-          if (!toggle) {
-            onToggle();
-            return;
-          }
-          if (listboxRef.current) {
+          if (toggle) {
             selectedOption = findNextOption();
+          } else {
+            onToggle();
           }
           break;
         case "Up":
         case "ArrowUp":
           event.preventDefault();
-          if (!toggle) {
-            onToggle();
-            return;
-          }
-          if (listboxRef.current) {
+          if (toggle) {
             selectedOption = findPreviousOption();
+          } else {
+            onToggle();
           }
           break;
 
         case "Home":
-          event.preventDefault();
-          if (listboxRef.current) {
+          if (toggle) {
+            event.preventDefault();
             selectedOption = findFirstOption();
           }
           break;
         case "End":
-          event.preventDefault();
-          if (listboxRef.current) {
+          if (toggle) {
+            event.preventDefault();
             selectedOption = findLastOption();
           }
           break;
@@ -180,21 +178,55 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         case " ":
         case "Enter":
         case "Tab":
-          event.preventDefault();
-          if (onChange) {
-            activeOption && onChange && onChange(activeOption);
-
-            toggle && onToggle();
+          if (toggle && activeOption && onChange) {
+            onChange(activeOption);
+            onToggle();
           }
           break;
 
         case "Escape":
-          toggle && onToggle();
+          if (toggle) {
+            selectedOption = value;
+            onToggle();
+          }
           break;
       }
 
       if (selectedOption) {
         setActiveOption(selectedOption);
+
+        keepActiveOptionVisible(selectedOption);
+      } else {
+        setTimeout(keepActiveOptionVisible, undefined, activeOption);
+      }
+    }
+  }
+
+  function keepActiveOptionVisible(option: T): void {
+    if (listboxRef.current) {
+      const optionId = getOptionId(option);
+      const listboxOption = listboxRef.current.querySelector<HTMLElement>(
+        `#${optionId.replaceAll(":", "\\:")}`,
+      );
+
+      if (!listboxOption) {
+        return;
+      }
+
+      const { offsetHeight, offsetTop } = listboxOption;
+      const { offsetHeight: parentOffsetHeight, scrollTop } =
+        listboxRef.current;
+
+      const isAbove = offsetTop < scrollTop;
+      const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
+
+      if (isAbove) {
+        listboxRef.current.scrollTo(0, offsetTop);
+      } else if (isBelow) {
+        listboxRef.current.scrollTo(
+          0,
+          offsetTop - parentOffsetHeight + offsetHeight,
+        );
       }
     }
   }
