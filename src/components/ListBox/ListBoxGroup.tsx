@@ -1,15 +1,15 @@
 import {
   Children,
-  ForwardedRef,
-  ReactElement,
-  ReactNode,
+  type ForwardedRef,
+  type ReactElement,
+  type ReactNode,
   cloneElement,
   forwardRef,
   isValidElement,
   useId,
 } from "react";
 import classNames from "classnames";
-import { ListBoxGroupProps, ListBoxOptionProps } from "./types";
+import { type ListBoxGroupProps, type ListBoxOptionProps } from "./types";
 import { ListBoxOption } from "./ListBoxOption";
 
 export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
@@ -76,7 +76,7 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
       child.type === ListBoxOption
     ) {
       const id =
-        child.props.id ?? getOptionId(child.props.value || String(index));
+        child.props.id ?? getOptionId(child.props.value ?? String(index));
 
       return cloneElement<ListBoxOptionProps>(child, {
         id,

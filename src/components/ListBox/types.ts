@@ -1,4 +1,8 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps, ReactNode } from "react";
+import {
+  type ButtonHTMLAttributes,
+  type DetailedHTMLProps,
+  type ReactNode,
+} from "react";
 
 export type ListBoxProps = ListBoxGroupProps;
 
@@ -22,7 +26,7 @@ export type ListBoxGroupProps = Omit<
    * Trigered when a list box option is selected.
    * @param value The value of the selected list box option.
    */
-  onChange?(value: string): void;
+  onChange?: (value: string) => void;
 };
 
 export type ListBoxOptionProps = Omit<
@@ -49,5 +53,5 @@ export type ListBoxOptionProps = Omit<
    * Trigered when a list box option is clicked.
    * @param value The value of the target list box option.
    */
-  onSelect?(value: string): void;
+  onSelect?: (value: string) => void;
 };

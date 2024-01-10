@@ -1,14 +1,14 @@
 import {
-  FocusEvent,
-  ForwardedRef,
-  KeyboardEvent,
-  MouseEvent,
+  type FocusEvent,
+  type ForwardedRef,
+  type KeyboardEvent,
+  type MouseEvent,
   forwardRef,
   useState,
 } from "react";
 import classNames from "classnames";
 import { ListBoxGroup } from "./ListBoxGroup";
-import { ListBoxProps } from "./types";
+import { type ListBoxProps } from "./types";
 
 export const ListBox = forwardRef(function ForwardedListBox(
   {
@@ -38,7 +38,6 @@ export const ListBox = forwardRef(function ForwardedListBox(
       className={classNames(
         className,
         "group min-w-40",
-        "rounded-lg shadow-lg",
         "outline-none focus:ring-4 focus:ring-gray-100",
       )}
       aria-activedescendant={
@@ -139,7 +138,7 @@ export const ListBox = forwardRef(function ForwardedListBox(
       case " ":
         event.preventDefault();
         if (!selectOnFocus && activeDescendant && onChange) {
-          const currentValue = activeDescendant.dataset["value"];
+          const currentValue = activeDescendant.dataset.value;
           currentValue && onChange(currentValue);
         }
         break;
@@ -162,11 +161,10 @@ export const ListBox = forwardRef(function ForwardedListBox(
     const parentOption = target.closest<HTMLDivElement>("[role=option]");
     if (parentOption) {
       setActiveDescendant(parentOption);
-      return;
     }
   }
 
-  function handleFocus(event: FocusEvent<HTMLDivElement>) {
+  function handleFocus(event: FocusEvent<HTMLDivElement>): void {
     onFocus && onFocus(event);
 
     if (value) {
@@ -180,7 +178,7 @@ export const ListBox = forwardRef(function ForwardedListBox(
     }
   }
 
-  function handleBlur(event: FocusEvent<HTMLDivElement>) {
+  function handleBlur(event: FocusEvent<HTMLDivElement>): void {
     onBlur && onBlur(event);
 
     setActiveDescendant(undefined);

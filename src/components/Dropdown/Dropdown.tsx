@@ -1,10 +1,10 @@
-import { useEffect, useId, useRef, useState } from "react";
-import { DropdownProps } from "./types";
+import { type ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type DropdownProps } from "./types";
 
 export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
-  toggle,
-  popup,
-}: DropdownProps<T, M>) {
+  renderToggle,
+  renderPopup,
+}: DropdownProps<T, M>): ReactNode {
   const [expanded, setExpanded] = useState(false);
   const popupId = useId();
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -13,16 +13,16 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
 
   return (
     <div ref={wrapperRef} className="relative flex flex-col">
-      {toggle({
+      {renderToggle({
         toggle: expanded,
         onToggle: handleToggle,
-        "aria-expanded": expanded,
+        "aria-expanded": expanded || undefined,
         "aria-haspopup": "dialog",
-        "aria-controls": popupId,
+        "aria-controls": expanded ? popupId : undefined,
       })}
 
       {expanded &&
-        popup({
+        renderPopup({
           id: popupId,
           open: expanded,
           close: closePopup,
@@ -33,22 +33,22 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
     </div>
   );
 
-  function handleToggle() {
+  function handleToggle(): void {
     setExpanded((current) => !current);
   }
 
-  function closePopup() {
+  function closePopup(): void {
     setExpanded(false);
   }
 
-  function registerListeners() {
+  function registerListeners(): () => void {
     document.addEventListener("click", onClick);
 
     return function removeListeners() {
       document.removeEventListener("click", onClick);
     };
 
-    function onClick(event: MouseEvent) {
+    function onClick(event: MouseEvent): void {
       const target = event.target as HTMLElement;
 
       if (!wrapperRef.current?.contains(target)) {

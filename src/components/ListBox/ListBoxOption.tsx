@@ -1,7 +1,12 @@
-import { ForwardedRef, MouseEvent, forwardRef, useEffect } from "react";
+import {
+  type ForwardedRef,
+  type MouseEvent,
+  forwardRef,
+  useEffect,
+} from "react";
 import classNames from "classnames";
 import { Check } from "@this/icons";
-import { ListBoxOptionProps } from "./types";
+import { type ListBoxOptionProps } from "./types";
 
 export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
   {
@@ -36,14 +41,10 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
           "py-2.5 px-3.5 flex gap-3",
           "text-sm text-gray-900",
           "aria-disabled:text-gray-200",
-          "group-has-[>[role=option]:first-child]:group-[>:first-child>]:rounded-t-lg",
-          "group-has-[>[role=option]:last-child]:group-[>:last-child>]:rounded-b-lg",
-          "group-has-[>[role=group]:first-child]:group-[>:first-child>:first-child>]:rounded-t-lg",
-          "group-has-[>[role=group]:last-child]:group-[>:last-child>:last-child>]:rounded-b-lg",
           {
             "group-has-[[data-role=icon]]:pl-[2.625rem]":
               role === "option" && !icon,
-            "bg-primary-25": focused || selected,
+            "bg-primary-25": focused ?? selected,
             "hover:bg-primary-50 hover:text-primary-700 cursor-pointer":
               role === "option",
           },
@@ -74,13 +75,13 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
     </div>
   );
 
-  function autoSelectOnFocus() {
+  function autoSelectOnFocus(): void {
     if (selectOnFocus && focused && value && onSelect) {
       onSelect(value);
     }
   }
 
-  function handleClick(event: MouseEvent<HTMLDivElement>) {
+  function handleClick(event: MouseEvent<HTMLDivElement>): void {
     onClick && onClick(event);
 
     value && onSelect && onSelect(value);
