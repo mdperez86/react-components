@@ -21,7 +21,7 @@ const meta = {
   args: {
     placeholder: "Placeholder",
     disabled: false,
-    options: Array.from({ length: 10 }).map((_, index) => ({
+    options: Array.from({ length: 30 }).map((_, index) => ({
       value: index,
       text: `Option ${index}`,
     })),

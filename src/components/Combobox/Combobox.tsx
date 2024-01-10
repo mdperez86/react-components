@@ -156,30 +156,64 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         case "ArrowUp":
           event.preventDefault();
           if (toggle) {
-            selectedOption = findPreviousOption();
+            if (event.altKey) {
+              if (activeOption && onChange) {
+                onChange(activeOption);
+              }
+              onToggle();
+            } else {
+              selectedOption = findPreviousOption();
+            }
           } else {
             onToggle();
+            selectedOption = findFirstOption();
           }
           break;
 
         case "Home":
-          if (toggle) {
-            event.preventDefault();
-            selectedOption = findFirstOption();
+          event.preventDefault();
+          if (!toggle) {
+            onToggle();
           }
+          selectedOption = findFirstOption();
           break;
         case "End":
+          event.preventDefault();
+          if (!toggle) {
+            onToggle();
+          }
+          selectedOption = findLastOption();
+          break;
+
+        case "PageUp":
+          event.preventDefault();
           if (toggle) {
-            event.preventDefault();
-            selectedOption = findLastOption();
+            selectedOption = jumpUp10();
+          }
+          break;
+        case "PageDown":
+          event.preventDefault();
+          if (toggle) {
+            selectedOption = jumpDown10();
           }
           break;
 
-        case " ":
         case "Enter":
+        case " ":
+          if (!toggle) {
+            onToggle();
+          } else {
+            if (activeOption && onChange) {
+              onChange(activeOption);
+            }
+            onToggle();
+          }
+          break;
         case "Tab":
-          if (toggle && activeOption && onChange) {
-            onChange(activeOption);
+          if (toggle) {
+            if (activeOption && onChange) {
+              onChange(activeOption);
+            }
             onToggle();
           }
           break;
@@ -194,11 +228,13 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
       if (selectedOption) {
         setActiveOption(selectedOption);
-
-        keepActiveOptionVisible(selectedOption);
-      } else {
-        setTimeout(keepActiveOptionVisible, undefined, activeOption);
       }
+
+      setTimeout(
+        keepActiveOptionVisible,
+        undefined,
+        selectedOption ?? activeOption,
+      );
     }
   }
 
@@ -315,6 +351,26 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
     if (options.length) {
       return options[options.length - 1];
+    }
+    return undefined;
+  }
+
+  function jumpUp10(): T | undefined {
+    if (options.length && activeOption) {
+      const index = options.findIndex((option) => option === activeOption);
+      if (index >= 0) {
+        return options[Math.max(0, index - 10)];
+      }
+    }
+    return undefined;
+  }
+
+  function jumpDown10(): T | undefined {
+    if (options.length && activeOption) {
+      const index = options.findIndex((option) => option === activeOption);
+      if (index >= 0) {
+        return options[Math.min(options.length - 1, index + 10)];
+      }
     }
     return undefined;
   }
