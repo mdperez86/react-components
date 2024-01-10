@@ -9,7 +9,7 @@ import {
   useMemo,
 } from "react";
 import classNames from "classnames";
-import { Button, type ButtonProps } from "@this/components/Button";
+import { Button, type ButtonProps } from "../Button";
 import { type ButtonGroupProps } from "./types";
 
 export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
