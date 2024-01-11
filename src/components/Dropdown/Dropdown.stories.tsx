@@ -1,5 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import type {
   DropdownProps,
   DropdownToggleProps,
@@ -23,18 +24,22 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {
-    toggle({
+    renderToggle({
+      expanded,
       toggle,
-      onToggle,
       ...props
     }: DropdownToggleProps<HTMLButtonElement>) {
       return (
-        <Button {...props} onClick={onToggle}>
+        <Button {...props} onClick={toggle}>
           Toggle
         </Button>
       );
     },
-    popup(attrs: DropdownPopupProps<HTMLDivElement>) {
+    renderPopup({
+      expanded,
+      collapse,
+      ...attrs
+    }: DropdownPopupProps<HTMLDivElement>) {
       return (
         <ListBox {...attrs} value={undefined} onChange={undefined}>
           <ListBoxOption>Item 1</ListBoxOption>
@@ -43,6 +48,9 @@ const meta = {
         </ListBox>
       );
     },
+    onCollapsed: fn(),
+    onExpanded: fn(),
+    onToggled: fn(),
   },
 } satisfies Meta<DropdownProps<HTMLButtonElement, HTMLDivElement>>;
 
