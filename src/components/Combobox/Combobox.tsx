@@ -1,14 +1,14 @@
 import {
-  forwardRef,
   type FocusEvent,
   type ForwardedRef,
   type MouseEvent,
-  useRef,
-  useState,
   type KeyboardEvent,
+  type ReactNode,
+  forwardRef,
+  useRef,
   useEffect,
   useId,
-  type ReactNode,
+  useReducer,
 } from "react";
 import classNames from "classnames";
 import { ChevronDown, ChevronUp } from "@this/icons";
@@ -18,6 +18,7 @@ import {
   type DropdownToggleProps,
 } from "../Dropdown";
 import { ListBox, ListBoxOption, type ListBoxOptionProps } from "../ListBox";
+import { reducer } from "./reducer";
 import { type ComboboxProps } from "./types";
 
 export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
@@ -40,23 +41,34 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 ) {
   const comboboxRef = useRef<HTMLInputElement>();
   const listboxRef = useRef<HTMLDivElement>(null);
-  const [activeOption, setActiveOption] = useState<T>();
   const optionId = useId();
 
-  useEffect(autoSelectFirstOption, [value, options, onChange]);
+  const [state, dispatch] = useReducer(reducer<T>, {
+    options,
+    activeOption: value,
+  });
 
-  return <Dropdown renderToggle={renderToggle} renderPopup={renderPopup} />;
+  useEffect(autoSelectFirstOption, [value, options, onChange]);
+  useEffect(scrollIntoViewActiveOption, [state.activeOption]);
+
+  return (
+    <Dropdown
+      renderToggle={renderToggle}
+      renderPopup={renderPopup}
+      onExpanded={handleDropdownExpanded}
+    />
+  );
 
   function autoSelectFirstOption(): void {
     if (!value && options.length && onChange) {
-      setActiveOption(options[0]);
+      dispatch({ type: "FOCUS_FIRST_OPTION" });
       onChange(options[0]);
     }
   }
 
   function renderToggle({
-    toggle,
-    onToggle,
+    expanded: toggle,
+    toggle: onToggle,
     ...toggleProps
   }: DropdownToggleProps<HTMLInputElement>): ReactNode {
     return (
@@ -70,7 +82,9 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           size={1}
           aria-haspopup="listbox"
           aria-activedescendant={
-            toggle && activeOption ? getOptionId(activeOption) : undefined
+            toggle && state.activeOption
+              ? getOptionId(state.activeOption)
+              : undefined
           }
           className={classNames(
             "outline-none appearance-none flex min-w-48",
@@ -140,14 +154,12 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     function handleKeyDown(event: KeyboardEvent<HTMLInputElement>): void {
       onKeyDown && onKeyDown(event);
 
-      let selectedOption: T | undefined;
-
       switch (event.key) {
         case "Down":
         case "ArrowDown":
           event.preventDefault();
           if (toggle) {
-            selectedOption = findNextOption();
+            dispatch({ type: "FOCUS_NEXT_OPTION" });
           } else {
             onToggle();
           }
@@ -157,16 +169,16 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           event.preventDefault();
           if (toggle) {
             if (event.altKey) {
-              if (activeOption && onChange) {
-                onChange(activeOption);
+              if (state.activeOption && onChange) {
+                onChange(state.activeOption);
               }
               onToggle();
             } else {
-              selectedOption = findPreviousOption();
+              dispatch({ type: "FOCUS_PEVIOUS_OPTION" });
             }
           } else {
             onToggle();
-            selectedOption = findFirstOption();
+            dispatch({ type: "FOCUS_FIRST_OPTION" });
           }
           break;
 
@@ -175,44 +187,42 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           if (!toggle) {
             onToggle();
           }
-          selectedOption = findFirstOption();
+          dispatch({ type: "FOCUS_FIRST_OPTION" });
           break;
         case "End":
           event.preventDefault();
           if (!toggle) {
             onToggle();
           }
-          selectedOption = findLastOption();
+          dispatch({ type: "FOCUS_LAST_OPTION" });
           break;
 
         case "PageUp":
           event.preventDefault();
           if (toggle) {
-            selectedOption = jumpUp10();
+            dispatch({ type: "FOCUS_PREVIOUS_10TH_OPTION" });
           }
           break;
         case "PageDown":
           event.preventDefault();
           if (toggle) {
-            selectedOption = jumpDown10();
+            dispatch({ type: "FOCUS_NEXT_10TH_OPTION" });
           }
           break;
 
         case "Enter":
         case " ":
-          if (!toggle) {
-            onToggle();
-          } else {
-            if (activeOption && onChange) {
-              onChange(activeOption);
+          if (toggle) {
+            if (state.activeOption && onChange) {
+              onChange(state.activeOption);
             }
-            onToggle();
           }
+          onToggle();
           break;
         case "Tab":
           if (toggle) {
-            if (activeOption && onChange) {
-              onChange(activeOption);
+            if (state.activeOption && onChange) {
+              onChange(state.activeOption);
             }
             onToggle();
           }
@@ -220,56 +230,55 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
         case "Escape":
           if (toggle) {
-            selectedOption = value;
+            dispatch({
+              type: "FOCUS_OPTION",
+              payload: { activeOption: value },
+            });
+
             onToggle();
           }
           break;
       }
-
-      if (selectedOption) {
-        setActiveOption(selectedOption);
-      }
-
-      setTimeout(
-        keepActiveOptionVisible,
-        undefined,
-        selectedOption ?? activeOption,
-      );
     }
   }
 
-  function keepActiveOptionVisible(option: T): void {
-    if (listboxRef.current) {
-      const optionId = getOptionId(option);
-      const listboxOption = listboxRef.current.querySelector<HTMLElement>(
-        `#${optionId.replaceAll(":", "\\:")}`,
+  function handleDropdownExpanded(): void {
+    scrollIntoViewActiveOption();
+  }
+
+  function scrollIntoViewActiveOption(): void {
+    if (!listboxRef.current || !state.activeOption) {
+      return;
+    }
+
+    const optionId = getOptionId(state.activeOption);
+    const listboxOption = listboxRef.current.querySelector<HTMLElement>(
+      `#${optionId.replaceAll(":", "\\:")}`,
+    );
+
+    if (!listboxOption) {
+      return;
+    }
+
+    const { offsetHeight, offsetTop } = listboxOption;
+    const { offsetHeight: parentOffsetHeight, scrollTop } = listboxRef.current;
+
+    const isAbove = offsetTop < scrollTop;
+    const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
+
+    if (isAbove) {
+      listboxRef.current.scrollTo(0, offsetTop);
+    } else if (isBelow) {
+      listboxRef.current.scrollTo(
+        0,
+        offsetTop - parentOffsetHeight + offsetHeight,
       );
-
-      if (!listboxOption) {
-        return;
-      }
-
-      const { offsetHeight, offsetTop } = listboxOption;
-      const { offsetHeight: parentOffsetHeight, scrollTop } =
-        listboxRef.current;
-
-      const isAbove = offsetTop < scrollTop;
-      const isBelow = offsetTop + offsetHeight > scrollTop + parentOffsetHeight;
-
-      if (isAbove) {
-        listboxRef.current.scrollTo(0, offsetTop);
-      } else if (isBelow) {
-        listboxRef.current.scrollTo(
-          0,
-          offsetTop - parentOffsetHeight + offsetHeight,
-        );
-      }
     }
   }
 
   function renderPopup({
-    open,
-    close,
+    expanded: open,
+    collapse: close,
     className,
     ...props
   }: DropdownPopupProps<HTMLDivElement>): ReactNode {
@@ -278,7 +287,9 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         {...props}
         ref={listboxRef}
         aria-modal={undefined}
-        aria-activedescendant={activeOption && getOptionId(activeOption)}
+        aria-activedescendant={
+          state.activeOption && getOptionId(state.activeOption)
+        }
         tabIndex={-1}
         className={classNames(
           className,
@@ -292,9 +303,12 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     );
 
     function handleListBoxChange(value: string): void {
-      const option = findOption(value);
-      setActiveOption(option);
-      option && onChange && onChange(option);
+      const activeOption = findOption(value);
+
+      if (activeOption) {
+        dispatch({ type: "FOCUS_OPTION", payload: { activeOption } });
+        onChange && onChange(activeOption);
+      }
 
       close();
       comboboxRef.current?.focus();
@@ -323,70 +337,6 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
   function findOption(value: string): T | undefined {
     return options.find((option) => getOptionValue(option) === value);
-  }
-
-  function findNextOption(): T | undefined {
-    if (activeOption) {
-      const index = options.findIndex((option) => option === activeOption);
-      if (index < options.length - 1) {
-        return options[index + 1];
-      }
-      return undefined;
-    }
-
-    if (options.length) {
-      return options[0];
-    }
-    return undefined;
-  }
-
-  function findPreviousOption(): T | undefined {
-    if (activeOption) {
-      const index = options.findIndex((option) => option === activeOption);
-      if (index > 0) {
-        return options[index - 1];
-      }
-      return undefined;
-    }
-
-    if (options.length) {
-      return options[options.length - 1];
-    }
-    return undefined;
-  }
-
-  function jumpUp10(): T | undefined {
-    if (options.length && activeOption) {
-      const index = options.findIndex((option) => option === activeOption);
-      if (index >= 0) {
-        return options[Math.max(0, index - 10)];
-      }
-    }
-    return undefined;
-  }
-
-  function jumpDown10(): T | undefined {
-    if (options.length && activeOption) {
-      const index = options.findIndex((option) => option === activeOption);
-      if (index >= 0) {
-        return options[Math.min(options.length - 1, index + 10)];
-      }
-    }
-    return undefined;
-  }
-
-  function findFirstOption(): T | undefined {
-    if (options.length) {
-      return options[0];
-    }
-    return undefined;
-  }
-
-  function findLastOption(): T | undefined {
-    if (options.length) {
-      return options[options.length - 1];
-    }
-    return undefined;
   }
 });
 

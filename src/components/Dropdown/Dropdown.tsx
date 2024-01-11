@@ -4,18 +4,22 @@ import { type DropdownProps } from "./types";
 export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
   renderToggle,
   renderPopup,
+  onCollapsed,
+  onExpanded,
+  onToggled,
 }: DropdownProps<T, M>): ReactNode {
   const [expanded, setExpanded] = useState(false);
   const popupId = useId();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(registerListeners, []);
+  useEffect(triggerEvents, [expanded, onCollapsed, onExpanded, onToggled]);
 
   return (
     <div ref={wrapperRef} className="relative flex flex-col">
       {renderToggle({
-        toggle: expanded,
-        onToggle: handleToggle,
+        expanded,
+        toggle,
         "aria-expanded": expanded || undefined,
         "aria-haspopup": "dialog",
         "aria-controls": expanded ? popupId : undefined,
@@ -24,22 +28,12 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
       {expanded &&
         renderPopup({
           id: popupId,
-          open: expanded,
-          close: closePopup,
-          role: "dialog",
-          "aria-modal": true,
+          expanded,
+          collapse,
           className: "mt-2 absolute top-full left-0 z-10",
         })}
     </div>
   );
-
-  function handleToggle(): void {
-    setExpanded((current) => !current);
-  }
-
-  function closePopup(): void {
-    setExpanded(false);
-  }
 
   function registerListeners(): () => void {
     document.addEventListener("click", onClick);
@@ -52,8 +46,26 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
       const target = event.target as HTMLElement;
 
       if (!wrapperRef.current?.contains(target)) {
-        closePopup();
+        collapse();
       }
     }
+  }
+
+  function triggerEvents(): void {
+    if (expanded) {
+      onExpanded && onExpanded();
+    } else {
+      onCollapsed && onCollapsed();
+    }
+
+    onToggled && onToggled(expanded);
+  }
+
+  function toggle(): void {
+    setExpanded((current) => !current);
+  }
+
+  function collapse(): void {
+    setExpanded(false);
   }
 }
