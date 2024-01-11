@@ -16,3 +16,4 @@ export * from "./ListBox";
 export * from "./RadioButton";
 export * from "./TextAreaField";
 export * from "./Toggle";
+export * from "./Tooltip";
