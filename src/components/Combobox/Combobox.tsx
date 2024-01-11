@@ -332,7 +332,12 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   }
 
   function getOptionId(option: T): string {
-    return `${optionId}:${getOptionValue(option)}`;
+    const optionValue = getOptionValue(option);
+    return `${optionId}:${normalizeValue(optionValue)}`;
+
+    function normalizeValue(value: string): string {
+      return value.toLowerCase().replaceAll(/[^a-z0-9]/g, "");
+    }
   }
 
   function findOption(value: string): T | undefined {

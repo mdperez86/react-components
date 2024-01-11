@@ -37,7 +37,7 @@ export const ListBox = forwardRef(function ForwardedListBox(
       role="listbox"
       className={classNames(
         className,
-        "group min-w-40",
+        "group min-w-40 bg-white",
         "outline-none focus:ring-4 focus:ring-gray-100",
       )}
       aria-activedescendant={

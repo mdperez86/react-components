@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { FormControlProps } from "./types";
 
@@ -8,6 +8,7 @@ import { TextAreaField } from "../TextAreaField";
 import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
 import { Toggle } from "../Toggle";
+import { Combobox } from "../Combobox";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -37,6 +38,24 @@ export const WithInputField: Story = {
     return (
       <FormControl {...args} ref={undefined}>
         <InputField />
+      </FormControl>
+    );
+  },
+};
+
+export const WithComboboxButton: Story = {
+  args: {},
+  render(args) {
+    const [value, onChange] = useState<string>();
+    return (
+      <FormControl {...args} ref={undefined}>
+        <Combobox
+          options={Array.from({ length: 10 }).map(
+            (_, index) => `Option ${index}`,
+          )}
+          value={value}
+          onChange={onChange}
+        />
       </FormControl>
     );
   },
