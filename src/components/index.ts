@@ -9,6 +9,7 @@ export * from "./ButtonGroup";
 export * from "./Card";
 export * from "./CheckBox";
 export * from "./Combobox";
+export * from "./DatePicker";
 export * from "./Dropdown";
 export * from "./FormControl";
 export * from "./InputField";
