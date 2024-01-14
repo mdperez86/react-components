@@ -1,5 +1,5 @@
-export type YearPickerProps = {
+export interface YearPickerProps {
   value?: number;
-  onChange?(value: number): void;
-  onClose?(): void;
-};
+  onChange?: (value: number) => void;
+  onClose?: () => void;
+}

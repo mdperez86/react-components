@@ -1,6 +1,6 @@
-export type MonthPickerProps = {
+export interface MonthPickerProps {
   locale?: string;
   value?: number;
-  onChange?(value: number): void;
-  onClose?(): void;
-};
+  onChange?: (value: number) => void;
+  onClose?: () => void;
+}

@@ -27,11 +27,13 @@ export const Button = forwardRef(function ForwardedButton(
       ref={ref}
       className={classNames(
         className,
-        "font-medium rounded-lg outline-none",
+        "font-medium outline-none",
         "inline-flex items-center justify-center",
         "focus:ring-4",
         "aria-disabled:cursor-not-allowed",
         {
+          "rounded-lg": !className?.includes("rounded"),
+
           "h-9 px-3 text-sm": size === "sm" && icon !== "only",
           "h-9": size === "sm" && icon === "only",
           "h-10 px-4 text-sm": size === "md" && icon !== "only",

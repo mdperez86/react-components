@@ -1,8 +1,8 @@
 "use client";
 
-import { KeyboardEvent, useEffect, useId, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
 import classNames from "classnames";
-import { MonthPickerProps } from "./types";
+import { type MonthPickerProps } from "./types";
 
 export function MonthPicker({
   locale = "en-US",

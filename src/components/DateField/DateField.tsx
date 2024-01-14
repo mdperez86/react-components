@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  ChangeEvent,
-  ForwardedRef,
-  KeyboardEvent,
+  type ChangeEvent,
+  type ForwardedRef,
+  type KeyboardEvent,
   forwardRef,
   useMemo,
   useRef,
@@ -12,7 +12,7 @@ import classNames from "classnames";
 import { DatePicker } from "../DatePicker";
 import { Dropdown } from "../Dropdown";
 import { InputField } from "../InputField";
-import { DateFieldProps } from "./types";
+import { type DateFieldProps } from "./types";
 
 export const DateField = forwardRef(function ForwardedDateField(
   { locale = "en-US", className, value, onChange, ...props }: DateFieldProps,
@@ -58,7 +58,7 @@ export const DateField = forwardRef(function ForwardedDateField(
 
   function getInputFieldRef(element: HTMLInputElement) {
     if (ref) {
-      if (typeof ref == "function") ref(element);
+      if (typeof ref === "function") ref(element);
       else ref.current = element;
     }
     inputFieldRef.current = element;

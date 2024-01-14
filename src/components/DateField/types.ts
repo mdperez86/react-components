@@ -1,4 +1,4 @@
-import { InputFieldProps } from "../InputField";
+import { type InputFieldProps } from "../InputField";
 
 export type DateFieldProps = Omit<
   InputFieldProps,
@@ -6,5 +6,5 @@ export type DateFieldProps = Omit<
 > & {
   locale?: string;
   value?: Date;
-  onChange?(value?: Date): void;
+  onChange?: (value?: Date) => void;
 };

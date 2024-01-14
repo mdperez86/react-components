@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  KeyboardEvent,
+  type KeyboardEvent,
   useEffect,
   useId,
   useMemo,
@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import classNames from "classnames";
-import { YearPickerProps } from "./types";
+import { type YearPickerProps } from "./types";
 
 const RANGE_SIZE = 10;
 const RANGE_PAGE_SIZE = 9;

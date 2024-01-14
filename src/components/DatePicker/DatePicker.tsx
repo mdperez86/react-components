@@ -1,19 +1,23 @@
-"use client";
-
-import { KeyboardEvent, useEffect, useId, useRef, useState } from "react";
-import classNames from "classnames";
+import {
+  type KeyboardEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import { ChevronLeft, ChevronRight } from "@this/icons";
 import { MonthPicker } from "../MonthPicker";
 import { YearPicker } from "../YearPicker";
 import { Button } from "../Button";
-import { DatePickerProps } from "./types";
+import { type DatePickerProps } from "./types";
 
 export function DatePicker({
   autofocus = false,
   locale = "en-US",
   value,
   onChange,
-}: DatePickerProps) {
+}: DatePickerProps): ReactNode {
   const today = new Date();
   const [date, setDate] = useState<Date>(value ?? today);
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -65,14 +69,16 @@ export function DatePicker({
     <div className="p-4 bg-white rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg">
       <div className="grid grid-flow-row grid-cols-7 gap-1 text-gray-600">
         <div className="flex items-center justify-center">
-          <button
+          <Button
             type="button"
+            hierarchy="tertiary"
+            icon="only"
             className="aspect-square rounded-full h-10 flex items-center justify-center"
             onClick={handlePreviousMonthClick}
             aria-label="Previous month"
           >
-            <ChevronLeft className="h-6" aria-hidden="true" />
-          </button>
+            <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+          </Button>
         </div>
 
         <div
@@ -98,14 +104,16 @@ export function DatePicker({
         </div>
 
         <div className="flex items-center justify-center">
-          <button
+          <Button
             type="button"
+            hierarchy="tertiary"
+            icon="only"
             className="aspect-square rounded-full h-10 flex items-center justify-center"
             onClick={handleNextMonthClick}
             aria-label="Next month"
           >
             <ChevronRight className="h-6" aria-hidden="true" />
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -140,26 +148,20 @@ export function DatePicker({
                 .slice(weekIndex * 7, weekIndex * 7 + 7)
                 .map((weekDay) => (
                   <td key={weekDay.toISOString()} className="text-center gap-2">
-                    <button
+                    <Button
                       ref={equals(weekDay, date) ? selectedDayRef : undefined}
                       type="button"
+                      hierarchy={
+                        equals(weekDay, date)
+                          ? "primary"
+                          : equals(weekDay, today)
+                            ? "secondary"
+                            : "tertiary"
+                      }
+                      icon="only"
                       tabIndex={equals(weekDay, date) ? 0 : -1}
-                      className={classNames(
-                        "rounded-full aspect-square h-10",
-                        "text-sm",
-                        "outline-none",
-                        {
-                          "text-gray-400":
-                            weekDay.getMonth() != date.getMonth(),
-                          "bg-gray-100 hover:bg-gray-200":
-                            equals(weekDay, today) && !equals(weekDay, date),
-                          "text-white bg-primary-600 hover:bg-primary-700":
-                            equals(weekDay, date),
-                          "hover:bg-primary-50 hover:text-primary-700":
-                            !equals(weekDay, date) && !equals(weekDay, today),
-                        },
-                      )}
-                      aria-disabled={weekDay.getMonth() != date.getMonth()}
+                      className="rounded-full aspect-square h-10 text-sm font-normal"
+                      aria-disabled={weekDay.getMonth() !== date.getMonth()}
                       aria-selected={equals(weekDay, value)}
                       onClick={monthDayClickHandler(weekDay)}
                       onKeyDown={monthDayKeyDownHandler(weekDay)}
@@ -167,7 +169,7 @@ export function DatePicker({
                       {weekDay.toLocaleString(locale, {
                         day: "numeric",
                       })}
-                    </button>
+                    </Button>
                   </td>
                 ))}
             </tr>
@@ -177,52 +179,54 @@ export function DatePicker({
     </div>
   );
 
-  function handlePreviousMonthClick() {
+  function handlePreviousMonthClick(): void {
     setDate(getPreviousDateByMonth);
   }
 
-  function handleNextMonthClick() {
+  function handleNextMonthClick(): void {
     setDate(getNextDateByMonth);
   }
 
-  function handleMonthPickerClick() {
+  function handleMonthPickerClick(): void {
     setShowMonthPicker(true);
   }
 
-  function handleYearPickerClick() {
+  function handleYearPickerClick(): void {
     setShowYearPicker(true);
   }
 
-  function handleMonthPickerChange(month: number) {
+  function handleMonthPickerChange(month: number): void {
     setDate(setCurrentDateByMonth(month));
     setShowMonthPicker(false);
   }
 
-  function handleMonthPickerClose() {
+  function handleMonthPickerClose(): void {
     setShowMonthPicker(false);
     // Forces focus
     setDate((current) => new Date(current));
   }
 
-  function handleYearPickerClose() {
+  function handleYearPickerClose(): void {
     setShowYearPicker(false);
     // Forces focus
     setDate((current) => new Date(current));
   }
 
-  function handleYearPickerChange(year: number) {
+  function handleYearPickerChange(year: number): void {
     setDate(setCurrentDateByYear(year));
     setShowYearPicker(false);
   }
 
-  function monthDayClickHandler(monthDay: Date) {
+  function monthDayClickHandler(monthDay: Date): () => void {
     return function handleMonthDayClick() {
       setDate(monthDay);
       onChange && onChange(monthDay);
     };
   }
 
-  function monthDayKeyDownHandler(monthDay: Date) {
+  function monthDayKeyDownHandler(
+    monthDay: Date,
+  ): (event: KeyboardEvent<HTMLButtonElement>) => void {
     return function handleMonthDayKeyDown(
       event: KeyboardEvent<HTMLButtonElement>,
     ) {
@@ -255,14 +259,16 @@ export function DatePicker({
           newDate.setDate(newDate.getDate() - 1);
           break;
 
-        case "Home":
+        case "Home": {
           const [firstDay] = getWeekDays(locale, newDate);
           newDate = firstDay;
           break;
-        case "End":
+        }
+        case "End": {
           const [lastDay] = getWeekDays(locale, newDate).reverse();
           newDate = lastDay;
           break;
+        }
 
         case "PageUp":
           if (event.shiftKey) {
@@ -286,7 +292,7 @@ export function DatePicker({
   }
 }
 
-function getFirstWeekDay(tag: string) {
+function getFirstWeekDay(tag: string): number {
   const locale = new Intl.Locale(tag);
 
   let firstDay = 1;
@@ -298,7 +304,7 @@ function getFirstWeekDay(tag: string) {
   return firstDay;
 }
 
-function getWeekDays(tag: string, relativeDate?: Date) {
+function getWeekDays(tag: string, relativeDate?: Date): Date[] {
   const firstWeekDay = getFirstWeekDay(tag) % 7;
 
   const current = new Date(relativeDate ?? new Date());
@@ -315,7 +321,7 @@ function getWeekDays(tag: string, relativeDate?: Date) {
   });
 }
 
-function getMonthDays(date: Date, tag: string) {
+function getMonthDays(date: Date, tag: string): Date[] {
   const firstDay = new Date(date);
   firstDay.setMilliseconds(0);
   firstDay.setSeconds(0);
@@ -328,7 +334,7 @@ function getMonthDays(date: Date, tag: string) {
 
   const lastDay = new Date(firstDay);
   lastDay.setDate(lastDay.getDate() + 7);
-  while (lastDay.getMonth() == date.getMonth()) {
+  while (lastDay.getMonth() === date.getMonth()) {
     lastDay.setDate(lastDay.getDate() + 7);
   }
 
@@ -346,17 +352,17 @@ function getMonthDays(date: Date, tag: string) {
   return monthDays;
 }
 
-function equals(date1?: Date, date2?: Date) {
+function equals(date1?: Date, date2?: Date): boolean {
   if (!date1 || !date2) return false;
 
   return (
-    date1.getFullYear() == date2.getFullYear() &&
-    date1.getMonth() == date2.getMonth() &&
-    date1.getDate() == date2.getDate()
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate()
   );
 }
 
-function getDateByMonth(month: number, date: Date) {
+function getDateByMonth(month: number, date: Date): Date {
   const newDate = new Date(date);
   newDate.setMonth(month);
   if (
@@ -368,19 +374,19 @@ function getDateByMonth(month: number, date: Date) {
   return newDate;
 }
 
-function setCurrentDateByMonth(month: number) {
+function setCurrentDateByMonth(month: number): (date: Date) => Date {
   return getDateByMonth.bind(undefined, month);
 }
 
-function getPreviousDateByMonth(date: Date) {
+function getPreviousDateByMonth(date: Date): Date {
   return getDateByMonth(date.getMonth() - 1, date);
 }
 
-function getNextDateByMonth(date: Date) {
+function getNextDateByMonth(date: Date): Date {
   return getDateByMonth(date.getMonth() + 1, date);
 }
 
-function getDateByYear(year: number, date: Date) {
+function getDateByYear(year: number, date: Date): Date {
   const newDate = new Date(date);
   newDate.setFullYear(year);
   if (newDate.getMonth() !== date.getMonth()) {
@@ -389,14 +395,14 @@ function getDateByYear(year: number, date: Date) {
   return newDate;
 }
 
-function setCurrentDateByYear(year: number) {
+function setCurrentDateByYear(year: number): (date: Date) => Date {
   return getDateByYear.bind(undefined, year);
 }
 
-function getPreviousDateByYear(date: Date) {
+function getPreviousDateByYear(date: Date): Date {
   return getDateByYear(date.getFullYear() - 1, date);
 }
 
-function getNextDateByYear(date: Date) {
+function getNextDateByYear(date: Date): Date {
   return getDateByYear(date.getFullYear() + 1, date);
 }
