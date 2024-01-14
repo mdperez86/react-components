@@ -73,7 +73,7 @@ export function DatePicker({
             type="button"
             hierarchy="tertiary"
             icon="only"
-            className="aspect-square rounded-full h-10 flex items-center justify-center"
+            className="aspect-square rounded-full h-10"
             onClick={handlePreviousMonthClick}
             aria-label="Previous month"
           >
@@ -108,7 +108,7 @@ export function DatePicker({
             type="button"
             hierarchy="tertiary"
             icon="only"
-            className="aspect-square rounded-full h-10 flex items-center justify-center"
+            className="aspect-square rounded-full h-10"
             onClick={handleNextMonthClick}
             aria-label="Next month"
           >

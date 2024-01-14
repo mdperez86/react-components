@@ -1,7 +1,13 @@
-"use client";
-
-import { type KeyboardEvent, useEffect, useId, useRef, useState } from "react";
-import classNames from "classnames";
+import {
+  type KeyboardEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import { ChevronLeft } from "@this/icons";
+import { Button } from "../Button";
 import { type MonthPickerProps } from "./types";
 
 export function MonthPicker({
@@ -9,7 +15,7 @@ export function MonthPicker({
   value,
   onChange,
   onClose,
-}: MonthPickerProps) {
+}: MonthPickerProps): ReactNode {
   const [selectedMonth, setSelectedMonth] = useState<number>(value ?? 1);
   const selectedMonthRef = useRef<HTMLButtonElement>(null);
   const monthLabelId = useId();
@@ -20,22 +26,24 @@ export function MonthPicker({
     function changeFocus() {
       selectedMonthRef.current?.focus();
     },
-    [selectedMonth]
+    [selectedMonth],
   );
 
   return (
-    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit border border-secondary-400/60">
-      <div className="shrink-0 h-10 flex items-center justify-between">
-        <button
+    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg">
+      <div className="shrink-0 h-10 flex gap-4 items-center justify-between">
+        <Button
           type="button"
-          className="aspect-square rounded-full bg-secondary-200 h-10"
+          hierarchy="tertiary"
+          icon="only"
+          className="aspect-square rounded-full h-10"
           aria-label="Close"
           onClick={onClose}
         >
-          {"<"}
-        </button>
+          <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+        </Button>
 
-        <p id={monthLabelId} className="font-semibold">
+        <p id={monthLabelId} className="font-semibold text-gray-600">
           Select a month
         </p>
 
@@ -43,40 +51,46 @@ export function MonthPicker({
       </div>
 
       <ol
-        className="grid grid-flow-col grid-rows-6 gap-1"
+        className="grid grid-flow-col grid-rows-6 gap-1 grid-cols-2"
         aria-labelledby={monthLabelId}
       >
         {months.map((name, month) => (
           <li key={name}>
-            <button
-              ref={selectedMonth == month ? selectedMonthRef : undefined}
+            <Button
+              ref={selectedMonth === month ? selectedMonthRef : undefined}
               type="button"
-              className={classNames("rounded-xl px-3 py-1 w-full text-center", {
-                "border-2 border-dashed border-accent-600": value == month,
-                "bg-accent-600 text-secondary-200": selectedMonth == month,
-              })}
-              tabIndex={selectedMonth == month ? 0 : -1}
-              aria-selected={value == month}
+              hierarchy={
+                value === month
+                  ? "secondary"
+                  : selectedMonth === month
+                    ? "primary"
+                    : "tertiary"
+              }
+              className="w-full"
+              tabIndex={selectedMonth === month ? 0 : -1}
+              aria-selected={value === month}
               onClick={monthDayClickHandler(month)}
               onKeyDown={monthDayKeyDownHandler(month)}
             >
               {name}
-            </button>
+            </Button>
           </li>
         ))}
       </ol>
     </div>
   );
 
-  function monthDayClickHandler(month: number) {
+  function monthDayClickHandler(month: number): () => void {
     return function handleMonthDayClick() {
       onChange && onChange(month);
     };
   }
 
-  function monthDayKeyDownHandler(month: number) {
+  function monthDayKeyDownHandler(
+    month: number,
+  ): (event: KeyboardEvent<HTMLButtonElement>) => void {
     return function handleMonthDayKeyDown(
-      event: KeyboardEvent<HTMLButtonElement>
+      event: KeyboardEvent<HTMLButtonElement>,
     ) {
       switch (event.key) {
         case "Escape":
@@ -128,7 +142,7 @@ export function MonthPicker({
   }
 }
 
-function getMonths(locales?: Intl.LocalesArgument) {
+function getMonths(locales?: Intl.LocalesArgument): string[] {
   const current = new Date();
   current.setMonth(0);
   current.setDate(1);
