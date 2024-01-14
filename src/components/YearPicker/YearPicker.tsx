@@ -1,5 +1,3 @@
-"use client";
-
 import {
   type KeyboardEvent,
   useEffect,
@@ -7,14 +5,20 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
-import classNames from "classnames";
+import { ChevronLeft, ChevronRight } from "@this/icons";
+import { Button } from "../Button";
 import { type YearPickerProps } from "./types";
 
 const RANGE_SIZE = 10;
 const RANGE_PAGE_SIZE = 9;
 
-export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
+export function YearPicker({
+  value,
+  onChange,
+  onClose,
+}: YearPickerProps): ReactNode {
   const [yearRange, setYearRange] = useState<number>();
   const [currentRange, setCurrentRange] = useState<number>();
   const currentRangeRef = useRef<HTMLButtonElement>(null);
@@ -28,7 +32,7 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
     function calcRange() {
       return getYearRanges(rangePage, value);
     },
-    [rangePage, value]
+    [rangePage, value],
   );
 
   useEffect(
@@ -37,7 +41,7 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
         return current ?? yearRanges.find(isValueInRange);
       });
     },
-    [yearRanges]
+    [yearRanges],
   );
 
   useEffect(
@@ -50,98 +54,107 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
         }
       }
     },
-    [value, yearRange]
+    [value, yearRange],
   );
 
   useEffect(
     function changeFocus() {
       currentRangeRef.current?.focus();
     },
-    [currentRange]
+    [currentRange],
   );
 
   useEffect(
     function changeFocus() {
       currentYearRef.current?.focus();
     },
-    [currentYear]
+    [currentYear],
   );
 
   return (
-    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit border border-secondary-400/60">
+    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg text-gray-600">
       {yearRange ? (
         <>
-          <div className="flex items-center justify-between h-10">
-            <button
+          <div className="flex gap-4 items-center justify-between h-10">
+            <Button
               type="button"
-              className="shrink-0 h-full aspect-square rounded-full bg-secondary-200"
+              hierarchy="tertiary"
+              icon="only"
+              className="aspect-square rounded-full h-10"
               onClick={handleBackClick}
             >
-              {"<"}
-            </button>
+              <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+            </Button>
+
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
               <p id={rangeTitleId} className="font-semibold text-center">
                 Select a year
               </p>
             </div>
+
             <div className="shrink-0 h-full aspect-square" />
           </div>
 
           <ol
             aria-labelledby={rangeTitleId}
-            className="grid grid-flow-col grid-rows-5 gap-1"
+            className="grid grid-flow-col grid-rows-5 grid-cols-2 gap-1"
           >
             {Array.from({ length: RANGE_SIZE }).map((_, index) => (
               <li key={yearRange + index}>
-                <button
+                <Button
                   ref={
-                    currentYear == yearRange + index
+                    currentYear === yearRange + index
                       ? currentYearRef
                       : undefined
                   }
                   type="button"
-                  className={classNames(
-                    "rounded-xl px-3 py-1 w-full text-center",
-                    {
-                      "border-2 border-dashed border-accent-600":
-                        value == yearRange + index,
-                      "bg-accent-600 text-secondary-200":
-                        currentYear == yearRange + index,
-                    }
-                  )}
-                  tabIndex={currentYear == yearRange + index ? 0 : -1}
-                  aria-selected={value == yearRange + index}
+                  hierarchy={
+                    value === yearRange + index
+                      ? "secondary"
+                      : currentYear === yearRange + index
+                        ? "primary"
+                        : "tertiary"
+                  }
+                  className="w-full"
+                  tabIndex={currentYear === yearRange + index ? 0 : -1}
+                  aria-selected={value === yearRange + index}
                   onClick={yearClickHandler(yearRange + index)}
                   onKeyDown={yearKeyDownHandler(yearRange + index)}
                 >
                   {yearRange + index}
-                </button>
+                </Button>
               </li>
             ))}
           </ol>
         </>
       ) : (
         <>
-          <div className="flex items-center justify-between h-10">
-            <button
+          <div className="flex gap-4 items-center justify-between h-10">
+            <Button
               type="button"
-              className="shrink-0 h-full aspect-square rounded-full bg-secondary-200"
+              hierarchy="tertiary"
+              icon="only"
+              className="aspect-square rounded-full h-10"
               onClick={handlePreviousRangeClick}
             >
-              {"<"}
-            </button>
+              <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+            </Button>
+
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
               <p id={yearTitleId} className="font-semibold text-center">
                 Select a range
               </p>
             </div>
-            <button
+
+            <Button
               type="button"
-              className="shrink-0 h-full aspect-square rounded-full bg-secondary-200"
+              hierarchy="tertiary"
+              icon="only"
+              className="aspect-square rounded-full h-10"
               onClick={handleNextRangeClick}
             >
-              {">"}
-            </button>
+              <ChevronRight className="h-6 aspect-square" aria-hidden="true" />
+            </Button>
           </div>
 
           <ol
@@ -150,25 +163,27 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
           >
             {yearRanges.map((range) => (
               <li key={range}>
-                <button
-                  ref={currentRange == range ? currentRangeRef : undefined}
+                <Button
+                  ref={currentRange === range ? currentRangeRef : undefined}
                   type="button"
-                  className={classNames(
-                    "rounded-xl px-3 py-1 w-full text-center",
-                    {
-                      "border-2 border-dashed border-accent-600":
-                        isValueInRange(range),
-                      "bg-accent-600 text-secondary-200": currentRange == range,
-                    }
-                  )}
-                  tabIndex={currentRange == range ? 0 : -1}
+                  hierarchy={
+                    isValueInRange(range)
+                      ? "secondary"
+                      : currentRange === range
+                        ? "primary"
+                        : "tertiary"
+                  }
+                  className="w-full inline-flex h-fit py-2"
+                  tabIndex={currentRange === range ? 0 : -1}
                   aria-selected={isValueInRange(range)}
                   onClick={yearRangeClickHandler(range)}
                   onKeyDown={yearRangeKeyDownHandler(range)}
                 >
-                  <div>{range}</div>
-                  <div>{range + RANGE_SIZE - 1}</div>
-                </button>
+                  <div className="flex flex-col">
+                    <div>{range}</div>
+                    <div>{range + RANGE_SIZE - 1}</div>
+                  </div>
+                </Button>
               </li>
             ))}
           </ol>
@@ -177,37 +192,39 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
     </div>
   );
 
-  function getNextRangePage(page: number) {
+  function getNextRangePage(page: number): number {
     return page + RANGE_PAGE_SIZE * RANGE_SIZE;
   }
 
-  function getPreviousRangePage(page: number) {
+  function getPreviousRangePage(page: number): number {
     return page - RANGE_PAGE_SIZE * RANGE_SIZE;
   }
 
-  function handleNextRangeClick() {
+  function handleNextRangeClick(): void {
     setRangePage(getNextRangePage);
     setCurrentRange((current) => current && getNextRangePage(current));
   }
 
-  function handlePreviousRangeClick() {
+  function handlePreviousRangeClick(): void {
     setRangePage(getPreviousRangePage);
     setCurrentRange((current) => current && getPreviousRangePage(current));
   }
 
-  function handleBackClick() {
+  function handleBackClick(): void {
     setYearRange(undefined);
   }
 
-  function yearRangeClickHandler(yearRange: number) {
+  function yearRangeClickHandler(yearRange: number): () => void {
     return function handleYearRangeClick() {
       setYearRange(yearRange);
     };
   }
 
-  function yearRangeKeyDownHandler(range: number) {
+  function yearRangeKeyDownHandler(
+    range: number,
+  ): (event: KeyboardEvent<HTMLButtonElement>) => void {
     return function handleYearRangeKeyDown(
-      event: KeyboardEvent<HTMLButtonElement>
+      event: KeyboardEvent<HTMLButtonElement>,
     ) {
       const firstRange = yearRanges[0];
       const lastRange = yearRanges[yearRanges.length - 1];
@@ -271,13 +288,15 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
     };
   }
 
-  function yearClickHandler(year: number) {
+  function yearClickHandler(year: number): () => void {
     return function handleYearClick() {
       onChange && onChange(year);
     };
   }
 
-  function yearKeyDownHandler(year: number) {
+  function yearKeyDownHandler(
+    year: number,
+  ): (event: KeyboardEvent<HTMLButtonElement>) => void {
     return function handleYearKeyDown(event: KeyboardEvent<HTMLButtonElement>) {
       let newYear = year;
 
@@ -313,10 +332,10 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
           break;
 
         case "Home":
-          newYear = yearRange!;
+          if (yearRange) newYear = yearRange;
           break;
         case "End":
-          newYear = yearRange! + RANGE_SIZE - 1;
+          if (yearRange) newYear = yearRange + RANGE_SIZE - 1;
           break;
 
         case "PageUp":
@@ -329,17 +348,19 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
 
       setCurrentYear(newYear);
 
-      if (newYear < yearRange!) {
-        setYearRange((current) => current! - RANGE_SIZE);
-      }
+      if (yearRange) {
+        if (newYear < yearRange) {
+          setYearRange((current) => current && current - RANGE_SIZE);
+        }
 
-      if (newYear > yearRange! + RANGE_SIZE - 1) {
-        setYearRange((current) => current! + RANGE_SIZE);
+        if (newYear > yearRange + RANGE_SIZE - 1) {
+          setYearRange((current) => current && current + RANGE_SIZE);
+        }
       }
     };
   }
 
-  function isValueInRange(yearFrom: number) {
+  function isValueInRange(yearFrom: number): boolean {
     if (!value) return false;
 
     const yearTo = yearFrom + RANGE_SIZE - 1;
@@ -347,14 +368,14 @@ export function YearPicker({ value, onChange, onClose }: YearPickerProps) {
   }
 }
 
-function getYearRanges(page: number, year?: number) {
+function getYearRanges(page: number, year?: number): number[] {
   const current = new Date();
   if (year) {
     current.setFullYear(year);
   }
   current.setFullYear(
     current.getFullYear() -
-      (current.getFullYear() % (RANGE_PAGE_SIZE * RANGE_SIZE))
+      (current.getFullYear() % (RANGE_PAGE_SIZE * RANGE_SIZE)),
   );
   current.setFullYear(current.getFullYear() + page);
 

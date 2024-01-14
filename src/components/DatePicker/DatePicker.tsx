@@ -112,7 +112,7 @@ export function DatePicker({
             onClick={handleNextMonthClick}
             aria-label="Next month"
           >
-            <ChevronRight className="h-6" aria-hidden="true" />
+            <ChevronRight className="h-6 aspect-square" aria-hidden="true" />
           </Button>
         </div>
       </div>
