@@ -16,7 +16,12 @@ export type ButtonProps = Omit<
    *
    * @default secondary
    */
-  hierarchy?: "primary" | "secondary" | "tertiary";
+  hierarchy?:
+    | "primary"
+    | "secondary"
+    | "secondary color"
+    | "tertiary"
+    | "tertiary color";
   /**
    * Visually defines an action that must be done carefully.
    *
