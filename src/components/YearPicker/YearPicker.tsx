@@ -6,9 +6,10 @@ import {
   useRef,
   useState,
   type ReactNode,
+  type MouseEvent,
 } from "react";
 import { ChevronLeft, ChevronRight } from "@this/icons";
-import { Button } from "../Button";
+import { Button, type ButtonProps } from "../Button";
 import { type YearPickerProps } from "./types";
 
 const RANGE_SIZE = 10;
@@ -72,7 +73,7 @@ export function YearPicker({
   );
 
   return (
-    <div className="p-4 flex flex-col gap-4 min-w-fit">
+    <div className="p-4 flex flex-col gap-4 min-w-max">
       {yearRange ? (
         <>
           <div className="flex gap-4 items-center justify-between h-10">
@@ -111,13 +112,7 @@ export function YearPicker({
                       : undefined
                   }
                   type="button"
-                  hierarchy={
-                    currentYear === yearRange + index
-                      ? "primary"
-                      : value === yearRange + index
-                        ? "secondary"
-                        : "tertiary"
-                  }
+                  hierarchy={getYearButtonHierarchy(yearRange + index)}
                   className="w-full"
                   tabIndex={currentYear === yearRange + index ? 0 : -1}
                   aria-selected={value === yearRange + index}
@@ -172,13 +167,7 @@ export function YearPicker({
                 <Button
                   ref={currentRange === range ? currentRangeRef : undefined}
                   type="button"
-                  hierarchy={
-                    currentRange === range
-                      ? "primary"
-                      : isValueInRange(range)
-                        ? "secondary"
-                        : "tertiary"
-                  }
+                  hierarchy={getRangeButtonHierarchy(range)}
                   className="w-full inline-flex h-fit py-2"
                   tabIndex={currentRange === range ? 0 : -1}
                   aria-selected={isValueInRange(range)}
@@ -220,8 +209,12 @@ export function YearPicker({
     setYearRange(undefined);
   }
 
-  function yearRangeClickHandler(yearRange: number): () => void {
-    return function handleYearRangeClick() {
+  function yearRangeClickHandler(
+    yearRange: number,
+  ): (event: MouseEvent<HTMLButtonElement>) => void {
+    return function handleYearRangeClick(event: MouseEvent<HTMLButtonElement>) {
+      event.preventDefault();
+
       setYearRange(yearRange);
     };
   }
@@ -294,8 +287,24 @@ export function YearPicker({
     };
   }
 
-  function yearClickHandler(year: number): () => void {
-    return function handleYearClick() {
+  function getYearButtonHierarchy(year: number): ButtonProps["hierarchy"] {
+    if (year === value) {
+      return "primary";
+    }
+
+    if (year === currentYear) {
+      return "secondary color";
+    }
+
+    return "tertiary";
+  }
+
+  function yearClickHandler(
+    year: number,
+  ): (event: MouseEvent<HTMLButtonElement>) => void {
+    return function handleYearClick(event: MouseEvent<HTMLButtonElement>) {
+      event.preventDefault();
+
       onChange && onChange(year);
     };
   }
@@ -364,6 +373,18 @@ export function YearPicker({
         }
       }
     };
+  }
+
+  function getRangeButtonHierarchy(range: number): ButtonProps["hierarchy"] {
+    if (isValueInRange(range)) {
+      return "primary";
+    }
+
+    if (range === currentRange) {
+      return "secondary color";
+    }
+
+    return "tertiary";
   }
 
   function isValueInRange(yearFrom: number): boolean {

@@ -5,9 +5,10 @@ import {
   useRef,
   useState,
   type ReactNode,
+  type MouseEvent,
 } from "react";
 import { ChevronLeft } from "@this/icons";
-import { Button } from "../Button";
+import { Button, type ButtonProps } from "../Button";
 import { type MonthPickerProps } from "./types";
 
 export function MonthPicker({
@@ -22,15 +23,10 @@ export function MonthPicker({
 
   const months = getMonths(locale);
 
-  useEffect(
-    function changeFocus() {
-      selectedMonthRef.current?.focus();
-    },
-    [selectedMonth],
-  );
+  useEffect(changeFocus, [selectedMonth]);
 
   return (
-    <div className="p-4 flex flex-col gap-4 min-w-fit">
+    <div className="p-4 flex flex-col gap-4 min-w-max">
       <div className="shrink-0 h-10 flex gap-4 items-center justify-between">
         <Button
           type="button"
@@ -38,12 +34,12 @@ export function MonthPicker({
           icon="only"
           className="aspect-square rounded-full h-10"
           aria-label="Close"
-          onClick={onClose}
+          onClick={handleCloseButtonClick}
         >
           <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
         </Button>
 
-        <p id={monthLabelId} className="font-semibold text-gray-600">
+        <p id={monthLabelId} className="font-semibold text-gray-600 shrink-0">
           Select a month
         </p>
 
@@ -59,14 +55,8 @@ export function MonthPicker({
             <Button
               ref={selectedMonth === month ? selectedMonthRef : undefined}
               type="button"
-              hierarchy={
-                selectedMonth === month
-                  ? "primary"
-                  : value === month
-                    ? "secondary"
-                    : "tertiary"
-              }
-              className="w-full"
+              hierarchy={getMonthButtonHierarchy(month)}
+              className="w-full font-normal"
               tabIndex={selectedMonth === month ? 0 : -1}
               aria-selected={value === month}
               onClick={monthDayClickHandler(month)}
@@ -80,8 +70,34 @@ export function MonthPicker({
     </div>
   );
 
-  function monthDayClickHandler(month: number): () => void {
-    return function handleMonthDayClick() {
+  function changeFocus(): void {
+    selectedMonthRef.current?.focus();
+  }
+
+  function handleCloseButtonClick(event: MouseEvent<HTMLButtonElement>): void {
+    event.preventDefault();
+
+    onClose && onClose();
+  }
+
+  function getMonthButtonHierarchy(month: number): ButtonProps["hierarchy"] {
+    if (month === value) {
+      return "primary";
+    }
+
+    if (month === selectedMonth) {
+      return "secondary color";
+    }
+
+    return "tertiary";
+  }
+
+  function monthDayClickHandler(
+    month: number,
+  ): (event: MouseEvent<HTMLButtonElement>) => void {
+    return function handleMonthDayClick(event: MouseEvent<HTMLButtonElement>) {
+      event.preventDefault();
+
       onChange && onChange(month);
     };
   }

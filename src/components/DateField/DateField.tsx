@@ -16,14 +16,14 @@ import { type DateFieldProps } from "./types";
 
 export const DateField = forwardRef(function ForwardedDateField(
   { locale = "en-US", className, value, onChange, ...props }: DateFieldProps,
-  ref: ForwardedRef<HTMLInputElement>
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
   const inputFieldRef = useRef<HTMLInputElement>();
   const inputValue = useMemo(getInputValue, [locale, value]);
 
   return (
     <Dropdown<HTMLInputElement>
-      toggle={({ toggle, onToggle, ...toggleProps }) => (
+      renderToggle={({ expanded, toggle, ...toggleProps }) => (
         <InputField
           {...props}
           {...toggleProps}
@@ -33,14 +33,15 @@ export const DateField = forwardRef(function ForwardedDateField(
           className={classNames(toggleProps.className, className)}
           aria-autocomplete="none"
           role="combobox"
-          onClick={onToggle}
+          onClick={toggle}
           onBlur={handleInputFieldBlur}
-          onKeyDown={inputFieldKeyDownHandler(toggle, onToggle)}
+          onKeyDown={inputFieldKeyDownHandler(expanded, toggle)}
         />
       )}
-      popup={({ close: onClose, ...props }) => (
+      renderPopup={({ expanded, collapse: onClose, ...props }) => (
         <dialog
           {...props}
+          open={expanded}
           aria-label="Choose a date"
           tabIndex={-1}
           onKeyDown={dialogKeyDownHandler(onClose)}
@@ -56,7 +57,7 @@ export const DateField = forwardRef(function ForwardedDateField(
     />
   );
 
-  function getInputFieldRef(element: HTMLInputElement) {
+  function getInputFieldRef(element: HTMLInputElement): void {
     if (ref) {
       if (typeof ref === "function") ref(element);
       else ref.current = element;
@@ -64,20 +65,23 @@ export const DateField = forwardRef(function ForwardedDateField(
     inputFieldRef.current = element;
   }
 
-  function getInputValue() {
+  function getInputValue(): string | undefined {
     return value && toLocalDateString(value, locale);
   }
 
-  function handleInputFieldBlur(event: ChangeEvent<HTMLInputElement>) {
+  function handleInputFieldBlur(event: ChangeEvent<HTMLInputElement>): void {
     if (!onChange) return;
 
     const valueAsDate = toDate(event.target.value);
     onChange(valueAsDate);
   }
 
-  function inputFieldKeyDownHandler(toggle: boolean, onToggle: () => void) {
+  function inputFieldKeyDownHandler(
+    toggle: boolean,
+    onToggle: () => void,
+  ): (event: KeyboardEvent<HTMLInputElement>) => void {
     return function handleInputFieldKeyDown(
-      event: KeyboardEvent<HTMLInputElement>
+      event: KeyboardEvent<HTMLInputElement>,
     ) {
       switch (event.key) {
         case "Down":
@@ -88,9 +92,11 @@ export const DateField = forwardRef(function ForwardedDateField(
     };
   }
 
-  function dialogKeyDownHandler(onClose: () => void) {
+  function dialogKeyDownHandler(
+    onClose: () => void,
+  ): (event: KeyboardEvent<HTMLDialogElement>) => void {
     return function handleDialogKeyDown(
-      event: KeyboardEvent<HTMLDialogElement>
+      event: KeyboardEvent<HTMLDialogElement>,
     ) {
       switch (event.key) {
         case "Enter":
@@ -103,7 +109,7 @@ export const DateField = forwardRef(function ForwardedDateField(
   }
 });
 
-function toDate(value: string) {
+function toDate(value: string): Date | undefined {
   const localDate = new Date(value.trim());
 
   if (isNaN(localDate.valueOf())) return undefined;
@@ -111,6 +117,6 @@ function toDate(value: string) {
   return localDate;
 }
 
-function toLocalDateString(date: Date, locale?: string) {
+function toLocalDateString(date: Date, locale?: string): string {
   return date.toLocaleDateString(locale);
 }

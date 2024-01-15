@@ -5,11 +5,12 @@ import {
   useRef,
   useState,
   type ReactNode,
+  type MouseEvent,
 } from "react";
 import { ChevronLeft, ChevronRight } from "@this/icons";
 import { MonthPicker } from "../MonthPicker";
 import { YearPicker } from "../YearPicker";
-import { Button } from "../Button";
+import { Button, type ButtonProps } from "../Button";
 import { type DatePickerProps } from "./types";
 
 export function DatePicker({
@@ -66,7 +67,7 @@ export function DatePicker({
   }
 
   return (
-    <div className="p-4 bg-white flex flex-col gap-4 min-w-fit">
+    <div className="p-4 flex flex-col gap-4 min-w-fit">
       <div className="grid grid-flow-row grid-cols-7 gap-1 text-gray-600">
         <div className="flex items-center justify-center">
           <Button
@@ -151,13 +152,7 @@ export function DatePicker({
                     <Button
                       ref={equals(weekDay, date) ? selectedDayRef : undefined}
                       type="button"
-                      hierarchy={
-                        equals(weekDay, date)
-                          ? "primary"
-                          : equals(weekDay, today)
-                            ? "secondary"
-                            : "tertiary"
-                      }
+                      hierarchy={getDayButtonHierarchy(weekDay)}
                       icon="only"
                       tabIndex={equals(weekDay, date) ? 0 : -1}
                       className="rounded-full aspect-square h-10 text-sm font-normal"
@@ -187,11 +182,15 @@ export function DatePicker({
     setDate(getNextDateByMonth);
   }
 
-  function handleMonthPickerClick(): void {
+  function handleMonthPickerClick(event: MouseEvent<HTMLButtonElement>): void {
+    event.preventDefault();
+
     setShowMonthPicker(true);
   }
 
-  function handleYearPickerClick(): void {
+  function handleYearPickerClick(event: MouseEvent<HTMLButtonElement>): void {
+    event.preventDefault();
+
     setShowYearPicker(true);
   }
 
@@ -289,6 +288,22 @@ export function DatePicker({
       setDate(newDate);
       setCanChangeFocus(true);
     };
+  }
+
+  function getDayButtonHierarchy(weekDay: Date): ButtonProps["hierarchy"] {
+    if (equals(weekDay, value)) {
+      return "primary";
+    }
+
+    if (equals(weekDay, date)) {
+      return "secondary color";
+    }
+
+    if (equals(weekDay, today)) {
+      return "secondary";
+    }
+
+    return "tertiary";
   }
 }
 

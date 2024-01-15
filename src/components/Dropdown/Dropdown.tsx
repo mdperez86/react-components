@@ -43,9 +43,13 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
     };
 
     function onClick(event: MouseEvent): void {
+      if (event.defaultPrevented) {
+        return;
+      }
+
       const target = event.target as HTMLElement;
 
-      if (!wrapperRef.current?.contains(target)) {
+      if (wrapperRef.current && !wrapperRef.current.contains(target)) {
         collapse();
       }
     }
