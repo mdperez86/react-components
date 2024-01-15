@@ -33,6 +33,7 @@ module.exports = {
   plugins: ["react"],
   ignorePatterns: [
     "dist",
+    "coverage",
     "src/stories",
     "**/*.stories.ts",
     "**/*.stories.tsx",

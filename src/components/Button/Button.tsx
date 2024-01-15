@@ -21,11 +21,13 @@ export const Button = forwardRef(function ForwardedButton(
     hierarchy === "secondary color" ||
     hierarchy === "tertiary color";
 
+  const isDisabled = disabled ?? props["aria-disabled"];
+
   return (
     <button
-      aria-disabled={disabled}
       {...props}
       ref={ref}
+      aria-disabled={isDisabled}
       className={classNames(
         className,
         "font-medium outline-none",
@@ -36,16 +38,16 @@ export const Button = forwardRef(function ForwardedButton(
           "rounded-lg": rounded === "lg",
           "rounded-full": rounded === "full",
 
-          "h-9 px-3 text-sm": size === "sm" && icon !== "only",
-          "h-9": size === "sm" && icon === "only",
-          "h-10 px-4 text-sm": size === "md" && icon !== "only",
-          "h-10": size === "md" && icon === "only",
-          "h-11 px-5 text-base": size === "lg" && icon !== "only",
-          "h-11": size === "lg" && icon === "only",
-          "h-12 px-6 text-base": size === "xl" && icon !== "only",
-          "h-12": size === "xl" && icon === "only",
-          "h-14 px-7 text-lg": size === "2xl" && icon !== "only",
-          "h-14": size === "2xl" && icon === "only",
+          "h-9": size === "sm",
+          "px-3 text-sm": size === "sm" && icon !== "only",
+          "h-10": size === "md",
+          "px-4 text-sm": size === "md" && icon !== "only",
+          "h-11": size === "lg",
+          "px-5 text-base": size === "lg" && icon !== "only",
+          "h-12": size === "xl",
+          "px-6 text-base": size === "xl" && icon !== "only",
+          "h-14": size === "2xl",
+          "px-7 text-lg": size === "2xl" && icon !== "only",
 
           "focus:ring-primary-100": colored && !destructive,
           "focus:ring-gray-100": !colored && !destructive,
@@ -126,7 +128,7 @@ export const Button = forwardRef(function ForwardedButton(
   );
 
   function handleClick(event: MouseEvent<HTMLButtonElement>): void {
-    if (disabled ?? false) {
+    if (isDisabled) {
       event.preventDefault();
     }
 

@@ -21,7 +21,7 @@ export default [
     ],
     plugins: [
       // NEW
-      typescript(),
+      typescript({ tsconfig: "./tsconfig.rollup.json" }),
       peerDepsExternal(),
 
       resolve(),
