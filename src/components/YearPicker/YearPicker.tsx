@@ -81,6 +81,7 @@ export function YearPicker({
               type="button"
               hierarchy="tertiary"
               icon="only"
+              rounded="full"
               className="aspect-square rounded-full h-10"
               onClick={handleBackClick}
             >
@@ -132,6 +133,7 @@ export function YearPicker({
               type="button"
               hierarchy="tertiary"
               icon="only"
+              rounded="full"
               className="aspect-square rounded-full h-10"
               onClick={handlePreviousRangeClick}
             >
@@ -151,6 +153,7 @@ export function YearPicker({
               type="button"
               hierarchy="tertiary"
               icon="only"
+              rounded="full"
               className="aspect-square rounded-full h-10"
               onClick={handleNextRangeClick}
             >

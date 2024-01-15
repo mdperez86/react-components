@@ -32,6 +32,7 @@ export function MonthPicker({
           type="button"
           hierarchy="tertiary"
           icon="only"
+          rounded="full"
           className="aspect-square rounded-full h-10"
           aria-label="Close"
           onClick={handleCloseButtonClick}

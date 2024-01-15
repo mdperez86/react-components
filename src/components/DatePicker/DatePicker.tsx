@@ -31,19 +31,8 @@ export function DatePicker({
 
   const calendarLabelId = useId();
 
-  useEffect(
-    function changeFocus() {
-      canChangeFocus && selectedDayRef.current?.focus();
-    },
-    [date, canChangeFocus],
-  );
-
-  useEffect(
-    function setFocusOnAutofocus() {
-      selectedDayRef.current?.focus();
-    },
-    [autofocus],
-  );
+  useEffect(changeFocus, [date, canChangeFocus]);
+  useEffect(setFocusOnAutofocus, [autofocus]);
 
   if (showMonthPicker) {
     return (
@@ -74,6 +63,7 @@ export function DatePicker({
             type="button"
             hierarchy="tertiary"
             icon="only"
+            rounded="full"
             className="aspect-square rounded-full h-10"
             onClick={handlePreviousMonthClick}
             aria-label="Previous month"
@@ -109,6 +99,7 @@ export function DatePicker({
             type="button"
             hierarchy="tertiary"
             icon="only"
+            rounded="full"
             className="aspect-square rounded-full h-10"
             onClick={handleNextMonthClick}
             aria-label="Next month"
@@ -154,6 +145,7 @@ export function DatePicker({
                       type="button"
                       hierarchy={getDayButtonHierarchy(weekDay)}
                       icon="only"
+                      rounded="full"
                       tabIndex={equals(weekDay, date) ? 0 : -1}
                       className="rounded-full aspect-square h-10 text-sm font-normal"
                       aria-disabled={weekDay.getMonth() !== date.getMonth()}
@@ -173,6 +165,14 @@ export function DatePicker({
       </table>
     </div>
   );
+
+  function changeFocus(): void {
+    canChangeFocus && selectedDayRef.current?.focus();
+  }
+
+  function setFocusOnAutofocus(): void {
+    selectedDayRef.current?.focus();
+  }
 
   function handlePreviousMonthClick(): void {
     setDate(getPreviousDateByMonth);
