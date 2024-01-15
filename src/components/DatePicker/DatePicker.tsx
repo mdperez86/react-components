@@ -66,7 +66,7 @@ export function DatePicker({
   }
 
   return (
-    <div className="p-4 bg-white rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg">
+    <div className="p-4 bg-white flex flex-col gap-4 min-w-fit">
       <div className="grid grid-flow-row grid-cols-7 gap-1 text-gray-600">
         <div className="flex items-center justify-center">
           <Button

@@ -30,7 +30,7 @@ export function MonthPicker({
   );
 
   return (
-    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg">
+    <div className="p-4 flex flex-col gap-4 min-w-fit">
       <div className="shrink-0 h-10 flex gap-4 items-center justify-between">
         <Button
           type="button"
@@ -60,10 +60,10 @@ export function MonthPicker({
               ref={selectedMonth === month ? selectedMonthRef : undefined}
               type="button"
               hierarchy={
-                value === month
-                  ? "secondary"
-                  : selectedMonth === month
-                    ? "primary"
+                selectedMonth === month
+                  ? "primary"
+                  : value === month
+                    ? "secondary"
                     : "tertiary"
               }
               className="w-full"

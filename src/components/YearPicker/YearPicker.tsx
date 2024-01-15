@@ -72,7 +72,7 @@ export function YearPicker({
   );
 
   return (
-    <div className="p-4 bg-secondary-50 rounded-2xl flex flex-col gap-4 min-w-fit shadow-lg text-gray-600">
+    <div className="p-4 flex flex-col gap-4 min-w-fit">
       {yearRange ? (
         <>
           <div className="flex gap-4 items-center justify-between h-10">
@@ -87,7 +87,10 @@ export function YearPicker({
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
-              <p id={rangeTitleId} className="font-semibold text-center">
+              <p
+                id={rangeTitleId}
+                className="font-semibold text-center text-gray-600"
+              >
                 Select a year
               </p>
             </div>
@@ -109,10 +112,10 @@ export function YearPicker({
                   }
                   type="button"
                   hierarchy={
-                    value === yearRange + index
-                      ? "secondary"
-                      : currentYear === yearRange + index
-                        ? "primary"
+                    currentYear === yearRange + index
+                      ? "primary"
+                      : value === yearRange + index
+                        ? "secondary"
                         : "tertiary"
                   }
                   className="w-full"
@@ -141,7 +144,10 @@ export function YearPicker({
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
-              <p id={yearTitleId} className="font-semibold text-center">
+              <p
+                id={yearTitleId}
+                className="font-semibold text-center text-gray-600"
+              >
                 Select a range
               </p>
             </div>
@@ -167,10 +173,10 @@ export function YearPicker({
                   ref={currentRange === range ? currentRangeRef : undefined}
                   type="button"
                   hierarchy={
-                    isValueInRange(range)
-                      ? "secondary"
-                      : currentRange === range
-                        ? "primary"
+                    currentRange === range
+                      ? "primary"
+                      : isValueInRange(range)
+                        ? "secondary"
                         : "tertiary"
                   }
                   className="w-full inline-flex h-fit py-2"
