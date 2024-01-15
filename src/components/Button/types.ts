@@ -39,4 +39,10 @@ export type ButtonProps = Omit<
    * a11y requirements.
    */
   disabled?: boolean;
+  /**
+   * Defines the border radius of the button.
+   *
+   * @default lg
+   */
+  rounded?: "lg" | "full";
 };

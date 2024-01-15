@@ -7,6 +7,7 @@ export const Button = forwardRef(function ForwardedButton(
     size = "md",
     hierarchy = "secondary",
     destructive = false,
+    rounded = "lg",
     icon,
     disabled,
     className,
@@ -32,7 +33,8 @@ export const Button = forwardRef(function ForwardedButton(
         "focus:ring-4",
         "aria-disabled:cursor-not-allowed",
         {
-          "rounded-lg": !className?.includes("rounded"),
+          "rounded-lg": rounded === "lg",
+          "rounded-full": rounded === "full",
 
           "h-9 px-3 text-sm": size === "sm" && icon !== "only",
           "h-9": size === "sm" && icon === "only",
