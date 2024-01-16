@@ -4,6 +4,7 @@ declare module "react" {
   ): (props: P & React.RefAttributes<T>) => React.ReactNode | null;
 }
 
+export * from "./Avatar";
 export * from "./Button";
 export * from "./ButtonGroup";
 export * from "./Card";
