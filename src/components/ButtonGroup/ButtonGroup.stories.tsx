@@ -1,10 +1,9 @@
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Home } from "@this/icons";
 import type { ButtonGroupProps } from "./types";
 
 import { ButtonGroup } from "./ButtonGroup";
 import { Button } from "../Button";
-import { HomeIcon } from "../../stories/buttons/HomeIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -81,15 +80,15 @@ export const WithIcon: Story = {
     return (
       <ButtonGroup {...args}>
         <Button>
-          <HomeIcon />
+          <Home />
           <span>Leading</span>
         </Button>
         <Button disabled>
-          <HomeIcon />
+          <Home />
           <span>Middle</span>
         </Button>
         <Button destructive>
-          <HomeIcon />
+          <Home />
           <span>Trailing</span>
         </Button>
       </ButtonGroup>
@@ -105,13 +104,13 @@ export const WithIconOnly: Story = {
     return (
       <ButtonGroup {...args}>
         <Button aria-label="Home">
-          <HomeIcon />
+          <Home />
         </Button>
         <Button disabled aria-label="Home">
-          <HomeIcon />
+          <Home />
         </Button>
         <Button destructive aria-label="Home">
-          <HomeIcon />
+          <Home />
         </Button>
       </ButtonGroup>
     );
@@ -126,14 +125,14 @@ export const Mixed: Story = {
         <span>Not a button</span>
         <Button hierarchy="primary">Leading</Button>
         <Button icon="leading">
-          <HomeIcon />
+          <Home />
           <span>Middle</span>
         </Button>
         <Button icon="only" aria-label="Home">
-          <HomeIcon />
+          <Home />
         </Button>
         <Button icon="trailing">
-          <HomeIcon />
+          <Home />
           <span>Middle</span>
         </Button>
         <Button disabled>Middle</Button>

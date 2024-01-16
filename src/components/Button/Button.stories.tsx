@@ -1,9 +1,7 @@
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Home } from "@this/icons";
 import type { ButtonProps } from "./types";
 
-import { LeadingIconContent } from "../../stories/buttons/LeadingIconContent";
-import { HomeIcon } from "../../stories/buttons/HomeIcon";
 import { Button } from "./Button";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -49,13 +47,26 @@ export const Tertiary: Story = {
 export const WithIcon: Story = {
   args: {
     icon: "leading",
-    children: React.createElement(LeadingIconContent),
+  },
+  render(args) {
+    return (
+      <Button {...args}>
+        <Home />
+        <span>Button</span>
+      </Button>
+    );
   },
 };
 
 export const IconOnly: Story = {
   args: {
     icon: "only",
-    children: React.createElement(HomeIcon),
+  },
+  render(args) {
+    return (
+      <Button {...args}>
+        <Home />
+      </Button>
+    );
   },
 };
