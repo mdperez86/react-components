@@ -1,8 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Home } from "@this/icons";
 import type { TextAreaFieldProps } from "./types";
 
-import { HomeIcon } from "../../stories/buttons/HomeIcon";
 import { TextAreaField } from "./TextAreaField";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -31,7 +31,7 @@ export const Default: Story = {};
 
 export const WithLeadingIcon: Story = {
   args: {
-    leadingIcon: <HomeIcon />,
+    leadingIcon: <Home />,
   },
 };
 
@@ -43,7 +43,7 @@ export const WithHelpIcon: Story = {
 
 export const Invalid: Story = {
   args: {
-    leadingIcon: <HomeIcon />,
+    leadingIcon: <Home />,
     helpIcon: true,
   },
   render(args) {
