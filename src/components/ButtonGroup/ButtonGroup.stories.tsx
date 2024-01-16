@@ -56,9 +56,41 @@ export const Secondary: Story = {
   },
 };
 
+export const SecondaryColor: Story = {
+  args: {
+    hierarchy: "secondary color",
+  },
+  render(args) {
+    return (
+      <ButtonGroup {...args}>
+        <Button>Leading</Button>
+        <Button>Middle</Button>
+        <Button disabled>Middle</Button>
+        <Button destructive>Trailing</Button>
+      </ButtonGroup>
+    );
+  },
+};
+
 export const Tertiary: Story = {
   args: {
     hierarchy: "tertiary",
+  },
+  render(args) {
+    return (
+      <ButtonGroup {...args}>
+        <Button>Leading</Button>
+        <Button>Middle</Button>
+        <Button disabled>Middle</Button>
+        <Button destructive>Trailing</Button>
+      </ButtonGroup>
+    );
+  },
+};
+
+export const TertiaryColor: Story = {
+  args: {
+    hierarchy: "tertiary color",
   },
   render(args) {
     return (

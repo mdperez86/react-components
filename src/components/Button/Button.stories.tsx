@@ -38,9 +38,21 @@ export const Secondary: Story = {
   },
 };
 
+export const SecondaryColor: Story = {
+  args: {
+    hierarchy: "secondary color",
+  },
+};
+
 export const Tertiary: Story = {
   args: {
     hierarchy: "tertiary",
+  },
+};
+
+export const TertiaryColor: Story = {
+  args: {
+    hierarchy: "tertiary color",
   },
 };
 
