@@ -49,3 +49,16 @@ export const Indeterminate: Story = {
     );
   },
 };
+
+export const WithValueAndLabel: Story = {
+  args: {
+    value: 80,
+    "aria-label": "Active users",
+    renderLabel(formattedValue) {
+      return `(${formattedValue}) active users`;
+    },
+  },
+  render(args) {
+    return <ProgressBar {...args} />;
+  },
+};

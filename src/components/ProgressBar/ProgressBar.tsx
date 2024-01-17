@@ -5,16 +5,18 @@ import {
   forwardRef,
 } from "react";
 import classNames from "classnames";
-import { Infotip } from "../Infotip";
+import { Infotip, type InfotipProps } from "../Infotip";
 import { type ProgressBarProps } from "./types";
 
 export const ProgressBar = forwardRef(function ForwardedProgressBar(
   {
     min = 0,
     max = 100,
-    labelPosition,
+    locale = "en-US",
     value,
+    labelPosition,
     className,
+    renderLabel,
     ...props
   }: ProgressBarProps,
   ref: Ref<HTMLDivElement>,
@@ -24,6 +26,11 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
     ? undefined
     : labelPosition ?? "floating top";
   const currentValue = getValue();
+  const formattedValue = getValueAsPercentage(
+    (currentValue ?? 0) / max,
+    locale,
+  );
+  const label = renderLabel ? renderLabel(formattedValue) : formattedValue;
 
   return (
     <div
@@ -37,6 +44,7 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
       aria-valuemin={indeterminate ? undefined : min}
       aria-valuemax={indeterminate ? undefined : max}
       aria-valuenow={currentValue}
+      aria-valuetext={label}
     >
       <div
         className="h-2 w-full rounded-lg bg-primary-50 overflow-hidden"
@@ -66,10 +74,6 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
   }
 
   function renderText(): ReactNode {
-    if (currentValue === undefined) return undefined;
-
-    const label = getValueAsPercentage(currentValue / max);
-
     switch (currentLabelPosition) {
       case "right":
       case "bottom":
@@ -82,29 +86,27 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
           </span>
         );
       case "floating bottom":
-        return (
-          <Infotip
-            position="bottom"
-            x={calcInfotipX()}
-            y={8}
-            aria-hidden="true"
-          >
-            {label}
-          </Infotip>
-        );
       case "floating top":
         return (
-          <Infotip position="top" x={calcInfotipX()} y={0} aria-hidden="true">
+          <Infotip
+            {...getInfotipProps()}
+            aria-hidden="true"
+            className="min-w-max"
+          >
             {label}
           </Infotip>
         );
     }
   }
 
-  function calcInfotipX(): string | undefined {
+  function getInfotipProps(): InfotipProps | undefined {
     if (currentValue === undefined) return undefined;
 
-    return `max(4px, calc(${currentValue}% - 4px))`;
+    return {
+      position: labelPosition === "floating top" ? "top" : "bottom",
+      x: `max(4px, calc(${currentValue}% - 4px))`,
+      y: labelPosition === "floating top" ? 0 : 8,
+    };
   }
 });
 

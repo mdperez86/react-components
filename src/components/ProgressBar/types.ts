@@ -37,4 +37,17 @@ export type ProgressBarProps = Omit<
    * @default floating top
    */
   labelPosition?: "right" | "bottom" | "floating top" | "floating bottom";
+  /**
+   * The locale used to format the `value` when rendering the
+   * label.
+   *
+   * @default "en-US"
+   */
+  locale?: string;
+  /**
+   * Defines the human readable text alternative of `value`.
+   *
+   * @param formattedValue The formatted value.
+   */
+  renderLabel?: (formattedValue?: string) => string;
 };
