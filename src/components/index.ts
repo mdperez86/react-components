@@ -18,6 +18,7 @@ export * from "./Infotip";
 export * from "./InputField";
 export * from "./ListBox";
 export * from "./MonthPicker";
+export * from "./ProgressBar";
 export * from "./RadioButton";
 export * from "./TextAreaField";
 export * from "./Toggle";
