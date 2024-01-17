@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { AvatarProps } from "./types";
+import type { ProgressBarProps } from "./types";
 
-import { Avatar } from "./Avatar";
+import { ProgressBar } from "./ProgressBar";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Components/Avatar",
-  component: Avatar as React.FC,
+  title: "Components/ProgressBar",
+  component: ProgressBar as React.FC,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -16,23 +16,36 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {},
-} satisfies Meta<AvatarProps>;
+} satisfies Meta<ProgressBarProps>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Meta<Partial<ProgressBarProps>>>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {};
-
-export const WithImage: Story = {
+export const WithValue: Story = {
   args: {
-    url: "https://avatars.githubusercontent.com/u/13334210?v=4",
-    alt: "The name on the avatar",
+    value: 80,
+    "aria-label": "Active users",
+  },
+  render(args) {
+    return <ProgressBar {...args} />;
   },
 };
 
-export const WithText: Story = {
+export const Indeterminate: Story = {
   args: {
-    alt: "md",
+    id: "progress-1",
+    "aria-label": "Content loading...",
+  },
+  render(args) {
+    return (
+      <>
+        <div aria-busy="true" aria-describedby={args.id}>
+          Busy content
+        </div>
+
+        <ProgressBar {...args} />
+      </>
+    );
   },
 };
