@@ -4,23 +4,15 @@ import {
   type HTMLAttributes,
   type ReactNode,
 } from "react";
+import { type InfotipProps } from "../Infotip";
 
-export type TooltipProps<T = HTMLDivElement> = DetailedHTMLProps<
-  HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
-> & {
+export type TooltipProps<T = HTMLDivElement> = InfotipProps & {
   /**
    * The toggle component.
    *
    * @param attrs The trigger props.
    */
   renderTrigger: (attrs: TooltipTriggerProps<T>) => ReactNode;
-  /**
-   * The position where the tooltip is going to be shown.
-   *
-   * @default top
-   */
-  position?: "top" | "right" | "bottom" | "left" | "top left" | "top right";
 };
 
 export type TooltipTriggerProps<T = HTMLDivElement> = AriaAttributes &

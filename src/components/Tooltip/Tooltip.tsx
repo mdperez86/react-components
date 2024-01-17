@@ -9,9 +9,8 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import classNames from "classnames";
+import { Infotip } from "../Infotip";
 import { type TooltipProps } from "./types";
-
-const TOOLTIP_PADDING = 8;
 
 export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
   {
@@ -45,37 +44,18 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
 
       {open &&
         createPortal(
-          <div
+          <Infotip
             {...props}
             id={tooltipId}
             ref={getRef}
-            role="tooltip"
-            tabIndex={-1}
-            className={classNames(className, "absolute z-10 drop-shadow-lg")}
-            style={{ ...getTooltipPlacement(), padding: TOOLTIP_PADDING }}
+            position={position}
+            className={classNames(className, "absolute z-10")}
+            style={{ ...getTooltipPlacement() }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <div
-              role="presentation"
-              className={classNames(
-                "absolute z-0 h-3 aspect-square rotate-45 rounded-[1px] bg-white dark:bg-gray-900",
-              )}
-              style={getTooltipArrowPlacement()}
-            />
-
-            <div
-              className={classNames(
-                className,
-                "relative py-2 px-3",
-                "bg-white rounded-lg",
-                "text-gray-700 text-xs font-medium",
-                "dark:text-white dark:bg-gray-900",
-              )}
-            >
-              {children}
-            </div>
-          </div>,
+            {children}
+          </Infotip>,
           document.body,
         )}
     </>
@@ -110,50 +90,6 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
 
     const tooltipBounds = tooltipRef.current.getBoundingClientRect();
     setTooltipBounds(tooltipBounds);
-  }
-
-  function getTooltipArrowPlacement(): CSSProperties | undefined {
-    if (!tooltipBounds) return undefined;
-
-    const tooltipCenter = {
-      x: tooltipBounds.width / 2 - 6,
-      y: tooltipBounds.height / 2 - 6,
-    };
-
-    const offset = 4;
-
-    switch (position) {
-      case "top left":
-        return {
-          bottom: offset,
-          left: TOOLTIP_PADDING + 12,
-        };
-      case "top right":
-        return {
-          bottom: offset,
-          right: TOOLTIP_PADDING + 12,
-        };
-      case "right":
-        return {
-          top: tooltipCenter.y,
-          left: offset,
-        };
-      case "bottom":
-        return {
-          top: offset,
-          left: tooltipCenter.x,
-        };
-      case "left":
-        return {
-          top: tooltipCenter.y,
-          right: offset,
-        };
-      default:
-        return {
-          bottom: offset,
-          left: tooltipCenter.x,
-        };
-    }
   }
 
   function getTooltipPlacement(): CSSProperties | undefined {
