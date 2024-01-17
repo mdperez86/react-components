@@ -1,112 +1,69 @@
-import {
-  type CSSProperties,
-  type ForwardedRef,
-  forwardRef,
-  useRef,
-  useState,
-  useLayoutEffect,
-} from "react";
+import { type Ref, forwardRef } from "react";
 import classNames from "classnames";
 import { type InfotipProps } from "./types";
 
-export const INFOTIP_PADDING = 8;
-
 export const Infotip = forwardRef(function ForwardedInfotip(
-  { position = "top", className, style, children, ...props }: InfotipProps,
-  ref: ForwardedRef<HTMLDivElement>,
+  {
+    position = "top",
+    x,
+    y,
+    style,
+    className,
+    children,
+    ...props
+  }: InfotipProps,
+  ref: Ref<HTMLDivElement>,
 ) {
-  const infotipRef = useRef<HTMLDivElement>();
-  const [tooltipBounds, setTooltipBounds] = useState<DOMRect>();
-
-  useLayoutEffect(getTooltipBounds, []);
-
   return (
     <div
       {...props}
-      ref={getRef}
+      ref={ref}
       role="tooltip"
       tabIndex={-1}
-      className={classNames(className, "drop-shadow-lg")}
-      style={{ ...style, padding: INFOTIP_PADDING }}
-    >
-      <div
-        role="presentation"
-        className={classNames(
-          "absolute z-0 h-3 aspect-square rotate-45 rounded-[1px] bg-white dark:bg-gray-900",
-        )}
-        style={getTooltipArrowPlacement()}
-      />
+      className={classNames(className, "absolute z-10 drop-shadow-lg", {
+        "-translate-x-1/2 -translate-y-full": position === "top",
+        "translate-x-0 -translate-y-1/2": position === "right",
+        "-translate-x-1/2 translate-y-0": position === "bottom",
+        "-translate-x-full -translate-y-1/2": position === "left",
 
-      <div
-        className={classNames(
-          className,
-          "relative py-2 px-3",
-          "bg-white rounded-lg",
-          "text-gray-700 text-xs font-medium",
-          "dark:text-white dark:bg-gray-900",
-        )}
-      >
-        {children}
+        "-translate-x-7 -translate-y-full": position === "top right",
+        "-translate-x-[calc(100%-1.75rem)] -translate-y-full":
+          position === "top left",
+      })}
+      style={{
+        ...style,
+        left: x,
+        top: y,
+      }}
+    >
+      <div className="relative p-2">
+        <div
+          role="presentation"
+          className={classNames(
+            "absolute z-0 h-3 aspect-square rotate-45 rounded-[1px] bg-white dark:bg-gray-900",
+            {
+              "bottom-1 left-1/2 -translate-x-1/2": position === "top",
+              "top-1/2 left-1 -translate-y-1/2": position === "right",
+              "top-1 left-1/2 -translate-x-1/2": position === "bottom",
+              "top-1/2 right-1 -translate-y-1/2": position === "left",
+
+              "bottom-1 left-7 -translate-x-1/2": position === "top right",
+              "bottom-1 right-7 translate-x-1/2": position === "top left",
+            },
+          )}
+        />
+
+        <div
+          className={classNames(
+            "relative py-2 px-3",
+            "bg-white rounded-lg",
+            "text-gray-700 text-xs font-medium",
+            "dark:text-white dark:bg-gray-900",
+          )}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );
-
-  function getRef(element: HTMLDivElement): void {
-    infotipRef.current = element;
-
-    if (typeof ref === "function") {
-      ref(element);
-    }
-  }
-
-  function getTooltipBounds(): void {
-    if (!infotipRef.current) return undefined;
-
-    const tooltipBounds = infotipRef.current.getBoundingClientRect();
-    setTooltipBounds(tooltipBounds);
-  }
-
-  function getTooltipArrowPlacement(): CSSProperties | undefined {
-    if (!tooltipBounds) return undefined;
-
-    const tooltipCenter = {
-      x: tooltipBounds.width / 2 - 6,
-      y: tooltipBounds.height / 2 - 6,
-    };
-
-    const offset = 4;
-
-    switch (position) {
-      case "top left":
-        return {
-          bottom: offset,
-          left: INFOTIP_PADDING + 12,
-        };
-      case "top right":
-        return {
-          bottom: offset,
-          right: INFOTIP_PADDING + 12,
-        };
-      case "right":
-        return {
-          top: tooltipCenter.y,
-          left: offset,
-        };
-      case "bottom":
-        return {
-          top: offset,
-          left: tooltipCenter.x,
-        };
-      case "left":
-        return {
-          top: tooltipCenter.y,
-          right: offset,
-        };
-      default:
-        return {
-          bottom: offset,
-          left: tooltipCenter.x,
-        };
-    }
-  }
 });

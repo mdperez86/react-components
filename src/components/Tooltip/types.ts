@@ -6,7 +6,7 @@ import {
 } from "react";
 import { type InfotipProps } from "../Infotip";
 
-export type TooltipProps<T = HTMLDivElement> = InfotipProps & {
+export type TooltipProps<T = HTMLDivElement> = Omit<InfotipProps, "x" | "y"> & {
   /**
    * The toggle component.
    *

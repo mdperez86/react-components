@@ -1,15 +1,6 @@
-import {
-  type CSSProperties,
-  type ForwardedRef,
-  forwardRef,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from "react";
+import { type Ref, forwardRef, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import classNames from "classnames";
-import { Infotip } from "../Infotip";
+import { type InfotipProps, Infotip } from "../Infotip";
 import { type TooltipProps } from "./types";
 
 export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
@@ -20,21 +11,17 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
     children,
     ...props
   }: TooltipProps<T>,
-  ref: ForwardedRef<HTMLDivElement>,
+  ref: Ref<HTMLDivElement>,
 ) {
-  const tooltipId = useId();
-  const tooltipRef = useRef<HTMLDivElement>();
+  const infotipId = useId();
   const triggerRef = useRef<T>(null);
   const [open, setOpen] = useState(false);
-  const [tooltipBounds, setTooltipBounds] = useState<DOMRect>();
-
-  useEffect(getTooltipBounds, [open]);
 
   return (
     <>
       {renderTrigger({
         ref: triggerRef,
-        "aria-describedby": open ? tooltipId : undefined,
+        "aria-describedby": open ? infotipId : undefined,
         onFocus: handleFocus,
         onBlur: handleBlur,
         onMouseEnter: handleMouseEnter,
@@ -46,11 +33,11 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
         createPortal(
           <Infotip
             {...props}
-            id={tooltipId}
-            ref={getRef}
+            {...getInfotipPlacement()}
+            id={infotipId}
+            ref={ref}
             position={position}
-            className={classNames(className, "absolute z-10")}
-            style={{ ...getTooltipPlacement() }}
+            className={className}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -77,75 +64,40 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
     setOpen(false);
   }
 
-  function getRef(element: HTMLDivElement): void {
-    tooltipRef.current = element;
-
-    if (typeof ref === "function") {
-      ref(element);
-    }
-  }
-
-  function getTooltipBounds(): void {
-    if (!open || !tooltipRef.current) return undefined;
-
-    const tooltipBounds = tooltipRef.current.getBoundingClientRect();
-    setTooltipBounds(tooltipBounds);
-  }
-
-  function getTooltipPlacement(): CSSProperties | undefined {
+  function getInfotipPlacement(): Pick<InfotipProps, "x" | "y"> | undefined {
     const triggerBounds = (
       triggerRef.current as HTMLDivElement
     )?.getBoundingClientRect();
 
-    if (!tooltipBounds || !triggerBounds) return undefined;
-
-    const triggerCenter = {
-      x: triggerBounds.width / 2,
-      y: triggerBounds.height / 2,
-    };
-
-    const tooltipCenter = {
-      x: tooltipBounds.width / 2,
-      y: tooltipBounds.height / 2,
-    };
-
-    const offset = 0;
+    if (!triggerBounds) return undefined;
 
     const placementCenter = {
-      x: triggerBounds.left + triggerCenter.x - tooltipCenter.x,
-      y: triggerBounds.top + triggerCenter.y - tooltipCenter.y,
+      x: triggerBounds.left + triggerBounds.width / 2,
+      y: triggerBounds.top + triggerBounds.height / 2,
     };
 
     switch (position) {
-      case "top left":
-        return {
-          top: triggerBounds.top - tooltipBounds.height - offset,
-          left: triggerBounds.left + 12,
-        };
-      case "top right":
-        return {
-          top: triggerBounds.top - tooltipBounds.height - offset,
-          right: triggerBounds.left + 12,
-        };
       case "right":
         return {
-          top: placementCenter.y,
-          left: triggerBounds.right + offset,
+          x: triggerBounds.right,
+          y: placementCenter.y,
         };
       case "bottom":
         return {
-          top: triggerBounds.top + triggerBounds.height + offset,
-          left: placementCenter.x,
+          x: placementCenter.x,
+          y: triggerBounds.bottom,
         };
       case "left":
         return {
-          top: placementCenter.y,
-          right: triggerBounds.right + offset,
+          x: triggerBounds.left,
+          y: placementCenter.y,
         };
+      case "top right":
+      case "top left":
       default:
         return {
-          top: triggerBounds.top - tooltipBounds.height - offset,
-          left: placementCenter.x,
+          x: placementCenter.x,
+          y: triggerBounds.top,
         };
     }
   }
