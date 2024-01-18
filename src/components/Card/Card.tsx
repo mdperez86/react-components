@@ -10,10 +10,7 @@ export const Card = forwardRef(function ForwardedCard(
     <div
       {...props}
       ref={ref}
-      className={classNames(
-        className,
-        "shadow-md rounded-lg bg-white border border-gray-200",
-      )}
+      className={classNames(className, "shadow-md rounded-lg bg-white")}
     />
   );
 });
