@@ -1,7 +1,7 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
-import dts from "rollup-plugin-dts";
+import { dts } from "rollup-plugin-dts";
 
 //NEW
 import terser from "@rollup/plugin-terser";
@@ -34,7 +34,6 @@ export default [
   {
     input: "dist/cjs/types/src/index.d.ts",
     output: [{ file: packageJson.types, format: "esm" }],
-    plugins: [dts.default()],
-    external: [/\.css$/],
+    plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
   },
 ];
