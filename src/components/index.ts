@@ -19,6 +19,7 @@ export * from "./InputField";
 export * from "./ListBox";
 export * from "./MonthPicker";
 export * from "./ProgressBar";
+export * from "./ProgressCircle";
 export * from "./RadioButton";
 export * from "./TextAreaField";
 export * from "./Toggle";
