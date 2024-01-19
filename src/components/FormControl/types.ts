@@ -1,8 +1,8 @@
 import { type ReactNode } from "react";
 
-export type FormControlProps = React.DetailedHTMLProps<
-  React.HTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
+export type FormControlProps = Omit<
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+  "ref"
 > & {
   /**
    * The form control label.

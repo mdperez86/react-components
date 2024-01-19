@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { LoremIpsum } from "lorem-ipsum";
 import type { FormControlProps } from "./types";
 
 import { FormControl } from "./FormControl";
@@ -36,26 +37,23 @@ export const WithInputField: Story = {
   args: {},
   render(args) {
     return (
-      <FormControl {...args} ref={undefined}>
+      <FormControl {...args}>
         <InputField />
       </FormControl>
     );
   },
 };
 
+const lorem = new LoremIpsum();
+const options = Array.from({ length: 10 }).map(() => lorem.generateWords(2));
+
 export const WithComboboxButton: Story = {
   args: {},
   render(args) {
-    const [value, onChange] = useState<string>();
+    const [value, onChange] = useState<string>("");
     return (
-      <FormControl {...args} ref={undefined}>
-        <Combobox
-          options={Array.from({ length: 10 }).map(
-            (_, index) => `Option ${index}`,
-          )}
-          value={value}
-          onChange={onChange}
-        />
+      <FormControl {...args}>
+        <Combobox options={options} value={value} onChange={onChange} />
       </FormControl>
     );
   },
@@ -65,7 +63,7 @@ export const WithTextAreaField: Story = {
   args: {},
   render(args) {
     return (
-      <FormControl {...args} ref={undefined}>
+      <FormControl {...args}>
         <TextAreaField />
       </FormControl>
     );
@@ -76,7 +74,7 @@ export const WithRadioButton: Story = {
   args: {},
   render(args) {
     return (
-      <FormControl {...args} ref={undefined}>
+      <FormControl {...args}>
         <RadioButton />
       </FormControl>
     );
@@ -87,7 +85,7 @@ export const WithCheckBoxButton: Story = {
   args: {},
   render(args) {
     return (
-      <FormControl {...args} ref={undefined}>
+      <FormControl {...args}>
         <CheckBox />
       </FormControl>
     );
@@ -100,7 +98,7 @@ export const WithToggleButton: Story = {
   },
   render(args) {
     return (
-      <FormControl {...args} ref={undefined}>
+      <FormControl {...args}>
         <Toggle />
       </FormControl>
     );

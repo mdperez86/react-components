@@ -1,7 +1,9 @@
 import {
   type FormEvent,
   type ReactElement,
-  type Ref,
+  type ForwardedRef,
+  type RefAttributes,
+  type FC,
   forwardRef,
   useId,
   Children,
@@ -10,8 +12,6 @@ import {
   useRef,
   useEffect,
   useState,
-  type RefAttributes,
-  type FC,
 } from "react";
 import classNames from "classnames";
 import { RadioButton } from "../RadioButton";
@@ -30,7 +30,7 @@ export const FormControl = forwardRef(function ForwardedFormControl(
     children,
     ...props
   }: FormControlProps,
-  ref: Ref<HTMLDivElement>,
+  ref: ForwardedRef<HTMLDivElement>,
 ) {
   const controlId = useId();
   const controlRef = useRef<HTMLInputElement>();

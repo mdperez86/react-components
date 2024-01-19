@@ -1,9 +1,3 @@
-declare module "react" {
-  function forwardRef<T, P = Record<string, unknown>>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactNode | null,
-  ): (props: P & React.RefAttributes<T>) => React.ReactNode | null;
-}
-
 export * from "./Avatar";
 export * from "./Button";
 export * from "./ButtonGroup";
