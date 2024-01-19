@@ -1,10 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useLayoutEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { LoremIpsum } from "lorem-ipsum";
 import type { ComboboxProps } from "./types";
 
 import { User } from "../../icons";
 import { Combobox } from "../index";
-import { ListBoxOption } from "../ListBox";
+
+const lorem = new LoremIpsum();
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -23,7 +25,7 @@ const meta = {
     disabled: false,
     options: Array.from({ length: 30 }).map((_, index) => ({
       value: index,
-      text: `Option ${index}`,
+      text: lorem.generateWords(3),
     })),
     getOptionValue(option) {
       return String(option.value);
@@ -61,14 +63,13 @@ export const Invalid: Story = {
   },
   render(args) {
     const ref = useRef<HTMLInputElement>(null);
+    const [value, onChange] = useState("");
 
-    useEffect(() => {
+    useLayoutEffect(() => {
       if (ref.current) {
         ref.current.setCustomValidity("Invalid");
       }
     }, []);
-
-    const [value, onChange] = useState("");
 
     return <Combobox {...args} ref={ref} value={value} onChange={onChange} />;
   },

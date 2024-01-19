@@ -41,6 +41,8 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 ) {
   const comboboxRef = useRef<HTMLInputElement>();
   const listboxRef = useRef<HTMLDivElement>(null);
+  const searchTimeoutRef = useRef<number>();
+  const searchStringRef = useRef<string>("");
   const optionId = useId();
 
   const [state, dispatch] = useReducer(reducer<T>, {
@@ -80,6 +82,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           readOnly
           ref={getRef}
           size={1}
+          role="combobox"
           aria-haspopup="listbox"
           aria-activedescendant={
             toggle && state.activeOption
@@ -132,7 +135,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
             "group-has-[:invalid]:text-error-500",
           )}
         >
-          {toggle ? <ChevronUp /> : <ChevronDown />}
+          {toggle ? <ChevronUp size="md" /> : <ChevronDown size="md" />}
         </div>
       </div>
     );
@@ -142,6 +145,8 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
       if (typeof ref === "function") {
         ref(element);
+      } else if (ref) {
+        ref.current = element;
       }
     }
 
@@ -238,6 +243,77 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
             onToggle();
           }
           break;
+
+        default:
+          if (isTyping(event)) {
+            !toggle && onToggle();
+
+            const option = searchOptionByChar(event.key, state.activeOption);
+
+            if (option) {
+              dispatch({
+                type: "FOCUS_OPTION",
+                payload: { activeOption: option },
+              });
+            }
+          }
+          break;
+      }
+    }
+
+    function searchOptionByChar(char: string, activeOption?: T): T | undefined {
+      const searchString = getSearchString(char);
+      const activeOptionIndex = activeOption
+        ? options.findIndex(
+            (option) => getOptionValue(option) === getOptionValue(activeOption),
+          )
+        : -1;
+      const index = (activeOptionIndex === -1 ? 0 : activeOptionIndex) + 1;
+      const orderedOptions = [
+        ...options.slice(index),
+        ...options.slice(0, index),
+      ];
+
+      let option = searchOption(orderedOptions, searchString);
+
+      if (!option && allSameCharacters(Array.from(searchString))) {
+        option = searchOption(orderedOptions, searchString[0]);
+      }
+
+      if (!option) {
+        window.clearTimeout(searchTimeoutRef.current);
+        searchStringRef.current = "";
+      }
+
+      return option;
+
+      function allSameCharacters(chars: string[]): boolean {
+        return chars.every((char) => char === chars[0]);
+      }
+    }
+
+    function getSearchString(char: string): string {
+      if (searchTimeoutRef.current !== undefined) {
+        window.clearTimeout(searchTimeoutRef.current);
+      }
+
+      searchTimeoutRef.current = window.setTimeout(() => {
+        searchStringRef.current = "";
+      }, 500);
+
+      searchStringRef.current += char;
+      return searchStringRef.current;
+    }
+
+    function searchOption(options: T[], searchString: string): T | undefined {
+      return options.find(matchesOption);
+
+      function matchesOption(option: T): boolean {
+        return (
+          getOptionText(option)
+            .toLowerCase()
+            .indexOf(searchString.toLowerCase()) === 0
+        );
       }
     }
   }
@@ -283,23 +359,28 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     ...props
   }: DropdownPopupProps<HTMLDivElement>): ReactNode {
     return (
-      <ListBox
-        {...props}
-        ref={listboxRef}
-        aria-modal={undefined}
-        aria-activedescendant={
-          state.activeOption && getOptionId(state.activeOption)
-        }
-        tabIndex={-1}
+      <div
         className={classNames(
           className,
-          "w-full max-h-[12.5rem] shadow-lg rounded-lg overflow-x-hidden",
+          "w-full overflow-hidden rounded-lg shadow-lg",
         )}
-        value={value && getOptionValue(value)}
-        onChange={handleListBoxChange}
+        role="none"
       >
-        {options.map(mapOption)}
-      </ListBox>
+        <ListBox
+          {...props}
+          ref={listboxRef}
+          aria-modal={undefined}
+          aria-activedescendant={
+            state.activeOption && getOptionId(state.activeOption)
+          }
+          tabIndex={-1}
+          className="w-full max-h-[12.5rem] rounded-lg overflow-x-hidden"
+          value={value && getOptionValue(value)}
+          onChange={handleListBoxChange}
+        >
+          {options.map(mapOption)}
+        </ListBox>
+      </div>
     );
 
     function handleListBoxChange(value: string): void {
@@ -333,7 +414,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
   function getOptionId(option: T): string {
     const optionValue = getOptionValue(option);
-    return `${optionId}:${normalizeValue(optionValue)}`;
+    return `${optionId}${normalizeValue(optionValue)}`;
 
     function normalizeValue(value: string): string {
       return value.toLowerCase().replaceAll(/[^a-z0-9]/g, "");
@@ -355,4 +436,16 @@ function defaultDataTextGetter<T>(option: T): string {
 
 function defaultOptionRenderer(props: ListBoxOptionProps): ReactNode {
   return <ListBoxOption {...props} ref={undefined} />;
+}
+
+function isTyping(event: KeyboardEvent<HTMLInputElement>): boolean {
+  return (
+    event.key === "Backspace" ||
+    event.key === "Clear" ||
+    (event.key.length === 1 &&
+      event.key !== " " &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey)
+  );
 }
