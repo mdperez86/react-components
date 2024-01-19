@@ -20,7 +20,7 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
       {renderToggle({
         expanded,
         toggle,
-        "aria-expanded": expanded || undefined,
+        "aria-expanded": expanded,
         "aria-haspopup": "dialog",
         "aria-controls": expanded ? popupId : undefined,
       })}

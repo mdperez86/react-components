@@ -69,8 +69,8 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   }
 
   function renderToggle({
-    expanded: toggle,
-    toggle: onToggle,
+    expanded,
+    toggle,
     ...toggleProps
   }: DropdownToggleProps<HTMLInputElement>): ReactNode {
     return (
@@ -85,7 +85,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           role="combobox"
           aria-haspopup="listbox"
           aria-activedescendant={
-            toggle && state.activeOption
+            expanded && state.activeOption
               ? getOptionId(state.activeOption)
               : undefined
           }
@@ -135,7 +135,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
             "group-has-[:invalid]:text-error-500",
           )}
         >
-          {toggle ? <ChevronUp size="md" /> : <ChevronDown size="md" />}
+          {expanded ? <ChevronUp size="md" /> : <ChevronDown size="md" />}
         </div>
       </div>
     );
@@ -153,7 +153,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     function handleClick(event: MouseEvent<HTMLInputElement>): void {
       onClick && onClick(event);
 
-      onToggle();
+      toggle();
     }
 
     function handleKeyDown(event: KeyboardEvent<HTMLInputElement>): void {
@@ -163,90 +163,90 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         case "Down":
         case "ArrowDown":
           event.preventDefault();
-          if (toggle) {
+          if (expanded) {
             dispatch({ type: "FOCUS_NEXT_OPTION" });
           } else {
-            onToggle();
+            toggle();
           }
           break;
         case "Up":
         case "ArrowUp":
           event.preventDefault();
-          if (toggle) {
+          if (expanded) {
             if (event.altKey) {
               if (state.activeOption && onChange) {
                 onChange(state.activeOption);
               }
-              onToggle();
+              toggle();
             } else {
               dispatch({ type: "FOCUS_PEVIOUS_OPTION" });
             }
           } else {
-            onToggle();
+            toggle();
             dispatch({ type: "FOCUS_FIRST_OPTION" });
           }
           break;
 
         case "Home":
           event.preventDefault();
-          if (!toggle) {
-            onToggle();
+          if (!expanded) {
+            toggle();
           }
           dispatch({ type: "FOCUS_FIRST_OPTION" });
           break;
         case "End":
           event.preventDefault();
-          if (!toggle) {
-            onToggle();
+          if (!expanded) {
+            toggle();
           }
           dispatch({ type: "FOCUS_LAST_OPTION" });
           break;
 
         case "PageUp":
           event.preventDefault();
-          if (toggle) {
+          if (expanded) {
             dispatch({ type: "FOCUS_PREVIOUS_10TH_OPTION" });
           }
           break;
         case "PageDown":
           event.preventDefault();
-          if (toggle) {
+          if (expanded) {
             dispatch({ type: "FOCUS_NEXT_10TH_OPTION" });
           }
           break;
 
         case "Enter":
         case " ":
-          if (toggle) {
+          if (expanded) {
             if (state.activeOption && onChange) {
               onChange(state.activeOption);
             }
           }
-          onToggle();
+          toggle();
           break;
         case "Tab":
-          if (toggle) {
+          if (expanded) {
             if (state.activeOption && onChange) {
               onChange(state.activeOption);
             }
-            onToggle();
+            toggle();
           }
           break;
 
         case "Escape":
-          if (toggle) {
+          if (expanded) {
             dispatch({
               type: "FOCUS_OPTION",
               payload: { activeOption: value },
             });
 
-            onToggle();
+            toggle();
           }
           break;
 
         default:
           if (isTyping(event)) {
-            !toggle && onToggle();
+            !expanded && toggle();
 
             const option = searchOptionByChar(event.key, state.activeOption);
 
