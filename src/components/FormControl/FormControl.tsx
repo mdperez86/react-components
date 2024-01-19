@@ -6,21 +6,20 @@ import {
   type FC,
   forwardRef,
   useId,
-  Children,
-  cloneElement,
-  isValidElement,
   useRef,
   useEffect,
   useState,
+  isValidElement,
 } from "react";
 import classNames from "classnames";
 import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
 import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
-import { type InputFieldProps } from "../InputField";
 import { type LayoutProps, type FormControlProps } from "./types";
 
-export const FormControl = forwardRef(function ForwardedFormControl(
+export const FormControl = forwardRef(function ForwardedFormControl<
+  T extends HTMLObjectElement = HTMLObjectElement,
+>(
   {
     label,
     labelPosition,
@@ -28,19 +27,25 @@ export const FormControl = forwardRef(function ForwardedFormControl(
     errorText,
     className,
     children,
+    renderControl,
     ...props
-  }: FormControlProps,
+  }: FormControlProps<T>,
   ref: ForwardedRef<HTMLDivElement>,
 ) {
+  const controlRef = useRef<T>(null);
   const controlId = useId();
-  const controlRef = useRef<HTMLInputElement>();
-  const child = Children.only(children);
-  const [validityMessage, setValidityMessage] = useState("");
   const hintTextId = useId();
+  const child = renderControl({
+    ref: controlRef,
+    id: controlId,
+    "aria-describedby": hintTextId,
+    onInvalid: handleControlInvalid,
+  });
+  const [validityMessage, setValidityMessage] = useState("");
 
   useEffect(setControlError, [errorText]);
 
-  if (!isValidElement<InputFieldProps>(child)) return null;
+  if (!isValidElement(child)) return null;
 
   const hint = validityMessage || hintText;
 
@@ -52,7 +57,7 @@ export const FormControl = forwardRef(function ForwardedFormControl(
       ref={ref}
       label={
         <label
-          htmlFor={child.props.id ?? controlId}
+          htmlFor={controlId}
           className="text-sm font-medium text-gray-700"
         >
           {label}
@@ -72,12 +77,7 @@ export const FormControl = forwardRef(function ForwardedFormControl(
         )
       }
     >
-      {cloneElement(child, {
-        ref: getControlRef(child),
-        id: child.props.id ?? controlId,
-        "aria-describedby": hintTextId,
-        onInvalid: controlInvalidHandler(child),
-      })}
+      {child}
     </Layout>
   );
 
@@ -88,22 +88,8 @@ export const FormControl = forwardRef(function ForwardedFormControl(
     }
   }
 
-  function getControlRef(control: ReactElement<InputFieldProps>) {
-    return function setControlRef(el: HTMLInputElement) {
-      controlRef.current = el;
-      if (typeof control.props.ref === "function") {
-        control.props.ref(el);
-      }
-    };
-  }
-
-  function controlInvalidHandler(control: ReactElement<InputFieldProps>) {
-    return function handleControlInvalid(event: FormEvent<HTMLInputElement>) {
-      const { onInvalid } = control.props;
-      onInvalid && onInvalid(event);
-
-      setValidityMessage(event.currentTarget.validationMessage);
-    };
+  function handleControlInvalid(event: FormEvent<T>): void {
+    setValidityMessage(event.currentTarget.validationMessage);
   }
 });
 
