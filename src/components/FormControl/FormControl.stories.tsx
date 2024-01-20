@@ -10,6 +10,7 @@ import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
 import { Toggle } from "../Toggle";
 import { Combobox } from "../Combobox";
+import { DateField } from "../DateField";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -42,10 +43,31 @@ export const WithInputField: Story = {
   },
 };
 
+export const WithTextAreaField: Story<HTMLTextAreaElement & HTMLObjectElement> =
+  {
+    args: {
+      renderControl(props) {
+        return <TextAreaField {...props} />;
+      },
+    },
+  };
+
+export const WithDateField: Story = {
+  render(args) {
+    const [value, onChange] = useState<Date>();
+
+    function renderControl(props: {}) {
+      return <DateField {...props} value={value} onChange={onChange} />;
+    }
+
+    return <FormControl {...args} renderControl={renderControl} />;
+  },
+};
+
 const lorem = new LoremIpsum();
 const options = Array.from({ length: 10 }).map(() => lorem.generateWords(2));
 
-export const WithComboboxButton: Story = {
+export const WithCombobox: Story = {
   render(args) {
     const [value, onChange] = useState<string>();
 
@@ -64,15 +86,6 @@ export const WithComboboxButton: Story = {
   },
 };
 
-export const WithTextAreaField: Story<HTMLTextAreaElement & HTMLObjectElement> =
-  {
-    args: {
-      renderControl(props) {
-        return <TextAreaField {...props} />;
-      },
-    },
-  };
-
 export const WithRadioButton: Story = {
   args: {
     renderControl(props) {
@@ -81,7 +94,7 @@ export const WithRadioButton: Story = {
   },
 };
 
-export const WithCheckBoxButton: Story = {
+export const WithCheckBox: Story = {
   args: {
     renderControl(props) {
       return <CheckBox {...props} />;
@@ -89,7 +102,7 @@ export const WithCheckBoxButton: Story = {
   },
 };
 
-export const WithToggleButton: Story = {
+export const WithToggle: Story = {
   args: {
     labelPosition: "left",
     renderControl(props) {

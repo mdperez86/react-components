@@ -16,7 +16,9 @@ const meta = {
   tags: ["autodocs"],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
-  args: {},
+  args: {
+    "aria-label": "Select a date",
+  },
 } satisfies Meta<DateFieldProps>;
 
 export default meta;
@@ -24,9 +26,8 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  args: {},
   render(args) {
-    const [value, onChange] = useState<Date>();
+    const [value, onChange] = useState<Date | undefined>(new Date());
 
     return <DateField {...args} value={value} onChange={onChange} />;
   },

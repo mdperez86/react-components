@@ -3,8 +3,9 @@ import {
   type ForwardedRef,
   type KeyboardEvent,
   forwardRef,
-  useMemo,
   useRef,
+  useState,
+  useEffect,
 } from "react";
 import classNames from "classnames";
 import { DatePicker } from "../DatePicker";
@@ -17,7 +18,9 @@ export const DateField = forwardRef(function ForwardedDateField(
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const inputFieldRef = useRef<HTMLInputElement>();
-  const inputValue = useMemo(getInputValue, [locale, value]);
+  const [inputValue, setInputValue] = useState("");
+
+  useEffect(setFormattedValue, [locale, value]);
 
   return (
     <Dropdown<HTMLInputElement>
@@ -27,22 +30,23 @@ export const DateField = forwardRef(function ForwardedDateField(
           {...toggleProps}
           ref={getInputFieldRef}
           type="text"
-          defaultValue={inputValue}
+          value={inputValue}
           className={classNames(toggleProps.className, className)}
           aria-autocomplete="none"
           role="combobox"
+          onChange={handleInputChange}
           onClick={toggle}
           onBlur={handleInputFieldBlur}
           onKeyDown={inputFieldKeyDownHandler(expanded, toggle)}
         />
       )}
-      renderPopup={({ expanded, collapse: onClose, ...props }) => (
+      renderPopup={({ expanded, collapse, ...props }) => (
         <dialog
           {...props}
           open={expanded}
           aria-label="Choose a date"
           tabIndex={-1}
-          onKeyDown={dialogKeyDownHandler(onClose)}
+          onKeyDown={dialogKeyDownHandler(collapse)}
         >
           <DatePicker
             autofocus
@@ -55,6 +59,10 @@ export const DateField = forwardRef(function ForwardedDateField(
     />
   );
 
+  function handleInputChange(event: ChangeEvent<HTMLInputElement>): void {
+    setInputValue(event.target.value);
+  }
+
   function getInputFieldRef(element: HTMLInputElement): void {
     if (ref) {
       if (typeof ref === "function") ref(element);
@@ -63,8 +71,8 @@ export const DateField = forwardRef(function ForwardedDateField(
     inputFieldRef.current = element;
   }
 
-  function getInputValue(): string | undefined {
-    return value && toLocalDateString(value, locale);
+  function setFormattedValue(): void {
+    setInputValue((value && toLocalDateString(value, locale)) ?? "");
   }
 
   function handleInputFieldBlur(event: ChangeEvent<HTMLInputElement>): void {
@@ -84,6 +92,9 @@ export const DateField = forwardRef(function ForwardedDateField(
       switch (event.key) {
         case "Down":
         case "ArrowDown":
+          if (inputValue) {
+            onChange && onChange(toDate(inputValue));
+          }
           !toggle && onToggle();
           break;
       }
@@ -100,7 +111,7 @@ export const DateField = forwardRef(function ForwardedDateField(
         case "Enter":
         case "Escape":
           onClose();
-          setTimeout(() => inputFieldRef.current?.focus());
+          inputFieldRef.current?.focus();
           break;
       }
     };
