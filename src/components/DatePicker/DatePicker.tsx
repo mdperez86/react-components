@@ -68,30 +68,32 @@ export function DatePicker({
             onClick={handlePreviousMonthClick}
             aria-label="Previous month"
           >
-            <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+            <ChevronLeft size="md" className="h-6 aspect-square" />
           </Button>
         </div>
 
         <div
           id={calendarLabelId}
-          className="col-span-5 flex items-center justify-center gap-2 font-semibold h-10"
+          className="col-span-5 flex items-center justify-center h-10"
           aria-live="polite"
         >
-          <button
+          <Button
             type="button"
-            className="col-span-5"
+            hierarchy="tertiary"
+            className="col-span-5 px-1 h-auto"
             onClick={handleMonthPickerClick}
           >
             {date.toLocaleString(locale, { month: "long" })}
-          </button>
+          </Button>
 
-          <button
+          <Button
             type="button"
-            className="col-span-5"
+            hierarchy="tertiary"
+            className="col-span-5 px-1 h-auto"
             onClick={handleYearPickerClick}
           >
             {date.toLocaleString(locale, { year: "numeric" })}
-          </button>
+          </Button>
         </div>
 
         <div className="flex items-center justify-center">
@@ -104,7 +106,7 @@ export function DatePicker({
             onClick={handleNextMonthClick}
             aria-label="Next month"
           >
-            <ChevronRight className="h-6 aspect-square" aria-hidden="true" />
+            <ChevronRight size="md" className="h-6 aspect-square" />
           </Button>
         </div>
       </div>
@@ -233,43 +235,52 @@ export function DatePicker({
 
       switch (event.key) {
         case "Escape":
+          event.preventDefault();
           newDate = value ?? today;
           break;
 
         case " ":
         case "Enter":
+          event.preventDefault();
           onChange && onChange(newDate);
           return;
 
         case "Up":
         case "ArrowUp":
+          event.preventDefault();
           newDate.setDate(newDate.getDate() - 7);
           break;
         case "Right":
         case "ArrowRight":
+          event.preventDefault();
           newDate.setDate(newDate.getDate() + 1);
           break;
         case "Down":
         case "ArrowDown":
+          event.preventDefault();
           newDate.setDate(newDate.getDate() + 7);
           break;
         case "Left":
         case "ArrowLeft":
+          event.preventDefault();
           newDate.setDate(newDate.getDate() - 1);
           break;
 
         case "Home": {
+          event.preventDefault();
           const [firstDay] = getWeekDays(locale, newDate);
           newDate = firstDay;
           break;
         }
         case "End": {
+          event.preventDefault();
           const [lastDay] = getWeekDays(locale, newDate).reverse();
           newDate = lastDay;
           break;
         }
 
         case "PageUp":
+          event.preventDefault();
           if (event.shiftKey) {
             newDate = getPreviousDateByYear(monthDay);
           } else {
@@ -277,6 +288,7 @@ export function DatePicker({
           }
           break;
         case "PageDown":
+          event.preventDefault();
           if (event.shiftKey) {
             newDate = getNextDateByYear(monthDay);
           } else {
