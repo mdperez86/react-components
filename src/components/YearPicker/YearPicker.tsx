@@ -16,7 +16,7 @@ const RANGE_SIZE = 10;
 const RANGE_PAGE_SIZE = 9;
 
 export function YearPicker({
-  value,
+  value = new Date().getFullYear(),
   onChange,
   onClose,
 }: YearPickerProps): ReactNode {
@@ -29,48 +29,12 @@ export function YearPicker({
   const rangeTitleId = useId();
   const yearTitleId = useId();
 
-  const yearRanges = useMemo(
-    function calcRange() {
-      return getYearRanges(rangePage, value);
-    },
-    [rangePage, value],
-  );
+  const yearRanges = useMemo(calcRange, [rangePage, value]);
 
-  useEffect(
-    function findRange() {
-      setCurrentRange((current) => {
-        return current ?? yearRanges.find(isValueInRange);
-      });
-    },
-    [yearRanges],
-  );
-
-  useEffect(
-    function initialYear() {
-      if (yearRange) {
-        if (isValueInRange(yearRange)) {
-          setCurrentYear(value);
-        } else {
-          setCurrentYear(yearRange);
-        }
-      }
-    },
-    [value, yearRange],
-  );
-
-  useEffect(
-    function changeFocus() {
-      currentRangeRef.current?.focus();
-    },
-    [currentRange],
-  );
-
-  useEffect(
-    function changeFocus() {
-      currentYearRef.current?.focus();
-    },
-    [currentYear],
-  );
+  useEffect(findRange, [yearRanges]);
+  useEffect(initialYear, [value, yearRange]);
+  useEffect(changeRangeFocus, [currentRange]);
+  useEffect(changeYearFocus, [currentYear]);
 
   return (
     <div className="p-4 flex flex-col gap-4 min-w-max">
@@ -85,7 +49,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handleBackClick}
             >
-              <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+              <ChevronLeft size="md" className="h-6 aspect-square" />
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
@@ -137,7 +101,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handlePreviousRangeClick}
             >
-              <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
+              <ChevronLeft size="md" className="h-6 aspect-square" />
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
@@ -157,7 +121,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handleNextRangeClick}
             >
-              <ChevronRight className="h-6 aspect-square" aria-hidden="true" />
+              <ChevronRight size="md" className="h-6 aspect-square" />
             </Button>
           </div>
 
@@ -189,6 +153,34 @@ export function YearPicker({
       )}
     </div>
   );
+
+  function calcRange(): number[] {
+    return getYearRanges(rangePage, value);
+  }
+
+  function findRange(): void {
+    setCurrentRange((current) => {
+      return current ?? yearRanges.find(isValueInRange);
+    });
+  }
+
+  function initialYear(): void {
+    if (yearRange) {
+      if (isValueInRange(yearRange)) {
+        setCurrentYear(value);
+      } else {
+        setCurrentYear(yearRange);
+      }
+    }
+  }
+
+  function changeRangeFocus(): void {
+    currentRangeRef.current?.focus();
+  }
+
+  function changeYearFocus(): void {
+    currentYearRef.current?.focus();
+  }
 
   function getNextRangePage(page: number): number {
     return page + RANGE_PAGE_SIZE * RANGE_SIZE;
