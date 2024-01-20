@@ -8,7 +8,7 @@ export type ListBoxProps = ListBoxGroupProps;
 
 export type ListBoxGroupProps = Omit<
   DetailedHTMLProps<ButtonHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-  "value" | "onChange"
+  "ref" | "value" | "onChange"
 > & {
   /**
    * The header of the list box group.
@@ -31,7 +31,7 @@ export type ListBoxGroupProps = Omit<
 
 export type ListBoxOptionProps = Omit<
   DetailedHTMLProps<ButtonHTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-  "value" | "onSelect"
+  "ref" | "value" | "onSelect"
 > & {
   /**
    * The value of the list box option.

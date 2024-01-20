@@ -18,9 +18,9 @@ import {
   type DropdownPopupProps,
   type DropdownToggleProps,
 } from "../Dropdown";
-import { ListBox, ListBoxOption, type ListBoxOptionProps } from "../ListBox";
+import { ListBox, ListBoxOption } from "../ListBox";
 import { reducer } from "./reducer";
-import { type ComboboxProps } from "./types";
+import { type ComboboxOptionProps, type ComboboxProps } from "./types";
 
 export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   {
@@ -52,7 +52,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     options: [],
   });
 
-  useEffect(setOptions, [options]);
+  useEffect(setOptions, [options, type, state.inputValue]);
   useEffect(autoSelectFirstOption, [type, value, state.options, onChange]);
   useEffect(setInputValue, [value, getOptionText]);
   useEffect(scrollIntoViewActiveOption, [state.activeOption]);
@@ -67,6 +67,10 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
   function setOptions(): void {
     dispatch({ type: "OPTIONS_CHANGE", payload: { options } });
+
+    if (type === "autocomplete" && state.inputValue?.length) {
+      dispatch({ type: "FOCUS_FIRST_OPTION" });
+    }
   }
 
   function autoSelectFirstOption(): void {
@@ -307,9 +311,8 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
               }
             }
             toggle();
-            break;
           }
-        // eslint-disable-next-line no-fallthrough
+          break;
         case "Tab":
           if (expanded) {
             toggle();
@@ -496,10 +499,10 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
     function mapOption(option: T): ReactNode {
       return renderOption({
-        key: getOptionValue(option),
+        option,
         id: getOptionId(option),
         value: getOptionValue(option),
-        children: getOptionText(option),
+        text: getOptionText(option),
         tabIndex: -1,
       });
     }
@@ -533,8 +536,16 @@ function defaultDataTextGetter<T>(option: T): string {
   return String(option);
 }
 
-function defaultOptionRenderer(props: ListBoxOptionProps): ReactNode {
-  return <ListBoxOption {...props} ref={undefined} />;
+function defaultOptionRenderer<T>({
+  option,
+  text,
+  ...props
+}: ComboboxOptionProps<T>): ReactNode {
+  return (
+    <ListBoxOption {...props} key={props.value}>
+      {text}
+    </ListBoxOption>
+  );
 }
 
 function isTyping(event: KeyboardEvent<HTMLInputElement>): boolean {

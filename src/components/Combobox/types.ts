@@ -1,5 +1,4 @@
 import { type ReactNode } from "react";
-import { type ListBoxOptionProps } from "../ListBox";
 
 export type ComboboxProps<T = string> = Omit<
   React.DetailedHTMLProps<
@@ -46,9 +45,9 @@ export type ComboboxProps<T = string> = Omit<
    * Used to render the option within the listbox.
    *
    * @default ListBoxOption
-   * @param props The {@link ListBoxOptionProps}.
+   * @param props The {@link ComboboxOptionProps}.
    */
-  renderOption?: (props: ListBoxOptionProps) => ReactNode;
+  renderOption?: (props: ComboboxOptionProps<T>) => ReactNode;
   /**
    * Triggered when the user selects an option from the listbox.
    *
@@ -63,3 +62,29 @@ export type ComboboxProps<T = string> = Omit<
    */
   onSearch?: (value: string) => void;
 };
+
+export interface ComboboxOptionProps<T> {
+  /**
+   * The option to render as listbox option.
+   */
+  option: T;
+  /**
+   * The id of the option element.
+   */
+  id: string;
+  /**
+   * The extracted value from the option.
+   */
+  value: string;
+  /**
+   * The extracted text from the option.
+   */
+  text: string;
+  /**
+   * Remove focus from the option so the focus
+   * remains in the combobox.
+   *
+   * @default -1
+   */
+  tabIndex: number;
+}

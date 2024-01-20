@@ -4,7 +4,7 @@ import { LoremIpsum } from "lorem-ipsum";
 import type { ComboboxProps } from "./types";
 
 import { User } from "../../icons";
-import { Combobox } from "../index";
+import { Combobox, ListBoxOption } from "../index";
 
 const lorem = new LoremIpsum();
 
@@ -52,6 +52,13 @@ export const SelectOnly: Story = {
 export const WithLeadingIcon: Story = {
   args: {
     leadingIcon: <User />,
+    renderOption({ option, text, ...props }) {
+      return (
+        <ListBoxOption {...props} icon={<User />}>
+          {text}
+        </ListBoxOption>
+      );
+    },
   },
   render(args) {
     const [value, onChange] = useState<Option>();
@@ -97,7 +104,9 @@ export const Autocomplete: Story = {
 
     function onSearch(value: string) {
       setOptions(
-        (args.options ?? []).filter((option) => option.text.includes(value)),
+        (args.options ?? []).filter((option) =>
+          option.text.toLowerCase().includes(value.toLowerCase()),
+        ),
       );
     }
   },
