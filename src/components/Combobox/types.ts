@@ -6,8 +6,14 @@ export type ComboboxProps<T = string> = Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   >,
-  "children" | "value" | "onChange"
+  "ref" | "type" | "children" | "value" | "onChange"
 > & {
+  /**
+   * Represents the combobox behavior.
+   *
+   * @default "select only"
+   */
+  type?: "select only" | "autocomplete";
   /**
    * Display the given icon at the begining of the input field.
    */
@@ -48,5 +54,12 @@ export type ComboboxProps<T = string> = Omit<
    *
    * @param value The selected option value.
    */
-  onChange?: (value: T) => void;
+  onChange?: (value?: T) => void;
+  /**
+   * Triggered when the user types in the combobox input to
+   * filter options and when it behaves as `autocomplete`.
+   *
+   * @param value The typed string.
+   */
+  onSearch?: (value: string) => void;
 };

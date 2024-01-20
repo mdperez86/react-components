@@ -9,6 +9,7 @@ import {
   useEffect,
   useId,
   useReducer,
+  type ChangeEvent,
 } from "react";
 import classNames from "classnames";
 import { ChevronDown, ChevronUp } from "@this/icons";
@@ -23,6 +24,7 @@ import { type ComboboxProps } from "./types";
 
 export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   {
+    type = "select only",
     options = [],
     leadingIcon,
     className,
@@ -32,6 +34,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     getOptionText = defaultDataTextGetter,
     renderOption = defaultOptionRenderer,
     onChange,
+    onSearch,
     onClick,
     onKeyDown,
     onBlur,
@@ -46,11 +49,12 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   const optionId = useId();
 
   const [state, dispatch] = useReducer(reducer<T>, {
-    options,
-    activeOption: value,
+    options: [],
   });
 
-  useEffect(autoSelectFirstOption, [value, options, onChange]);
+  useEffect(setOptions, [options]);
+  useEffect(autoSelectFirstOption, [type, value, state.options, onChange]);
+  useEffect(setInputValue, [value, getOptionText]);
   useEffect(scrollIntoViewActiveOption, [state.activeOption]);
 
   return (
@@ -61,10 +65,28 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     />
   );
 
+  function setOptions(): void {
+    dispatch({ type: "OPTIONS_CHANGE", payload: { options } });
+  }
+
   function autoSelectFirstOption(): void {
-    if (!value && options.length && onChange) {
+    if (
+      type === "select only" &&
+      value === undefined &&
+      state.options.length &&
+      onChange
+    ) {
       dispatch({ type: "FOCUS_FIRST_OPTION" });
       onChange(options[0]);
+    }
+  }
+
+  function setInputValue(): void {
+    if (value !== undefined) {
+      dispatch({
+        type: "ON_INPUT",
+        payload: { inputValue: getOptionText(value) },
+      });
     }
   }
 
@@ -78,11 +100,13 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         <input
           {...props}
           {...toggleProps}
-          value={value ? getOptionText(value) : ""}
-          readOnly
+          type="text"
+          value={getInputValue()}
+          readOnly={type === "select only"}
           ref={getRef}
           size={1}
           role="combobox"
+          aria-autocomplete={type === "autocomplete" ? "list" : undefined}
           aria-haspopup="listbox"
           aria-activedescendant={
             expanded && state.activeOption
@@ -102,16 +126,13 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
               "pl-3.5": leadingIcon === undefined,
             },
           )}
+          onChange={handleChange}
           onClick={handleClick}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
         />
 
-        <input
-          type="hidden"
-          name={name}
-          value={value && getOptionValue(value)}
-        />
+        <input type="hidden" name={name} value={getHiddenValue()} />
 
         {leadingIcon !== undefined && (
           <div
@@ -150,6 +171,33 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
       }
     }
 
+    function getHiddenValue(): string {
+      return (value && getOptionValue(value)) ?? "";
+    }
+
+    function getInputValue(): string {
+      return state.inputValue ?? "";
+    }
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+      const inputValue = event.currentTarget.value;
+
+      dispatch({
+        type: "ON_INPUT",
+        payload: { inputValue },
+      });
+
+      onSearch && onSearch(inputValue);
+      onChange && onChange();
+
+      !expanded && toggle();
+
+      dispatch({
+        type: "FOCUS_OPTION",
+        payload: { activeOption: undefined },
+      });
+    }
+
     function handleClick(event: MouseEvent<HTMLInputElement>): void {
       onClick && onClick(event);
 
@@ -164,9 +212,19 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         case "ArrowDown":
           event.preventDefault();
           if (expanded) {
-            dispatch({ type: "FOCUS_NEXT_OPTION" });
+            if (state.activeOption) {
+              dispatch({
+                type: "FOCUS_NEXT_OPTION",
+                payload: { loop: type === "autocomplete" },
+              });
+            } else {
+              dispatch({ type: "FOCUS_FIRST_OPTION" });
+            }
           } else {
             toggle();
+            if (type === "autocomplete" && !event.altKey) {
+              dispatch({ type: "FOCUS_FIRST_OPTION" });
+            }
           }
           break;
         case "Up":
@@ -179,27 +237,38 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
               }
               toggle();
             } else {
-              dispatch({ type: "FOCUS_PEVIOUS_OPTION" });
+              dispatch({
+                type: "FOCUS_PEVIOUS_OPTION",
+                payload: { loop: type === "autocomplete" },
+              });
             }
           } else {
             toggle();
-            dispatch({ type: "FOCUS_FIRST_OPTION" });
+            if (type === "autocomplete") {
+              dispatch({ type: "FOCUS_LAST_OPTION" });
+            } else {
+              dispatch({ type: "FOCUS_FIRST_OPTION" });
+            }
           }
           break;
 
         case "Home":
-          event.preventDefault();
-          if (!expanded) {
-            toggle();
+          if (type === "select only") {
+            event.preventDefault();
+            if (!expanded) {
+              toggle();
+            }
+            dispatch({ type: "FOCUS_FIRST_OPTION" });
           }
-          dispatch({ type: "FOCUS_FIRST_OPTION" });
           break;
         case "End":
-          event.preventDefault();
-          if (!expanded) {
-            toggle();
+          if (type === "select only") {
+            event.preventDefault();
+            if (!expanded) {
+              toggle();
+            }
+            dispatch({ type: "FOCUS_LAST_OPTION" });
           }
-          dispatch({ type: "FOCUS_LAST_OPTION" });
           break;
 
         case "PageUp":
@@ -216,20 +285,43 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           break;
 
         case "Enter":
-        case " ":
-          if (expanded) {
-            if (state.activeOption && onChange) {
-              onChange(state.activeOption);
+          if (type === "autocomplete" && expanded) {
+            toggle();
+            if (state.activeOption) {
+              const inputValue = getOptionText(state.activeOption);
+              dispatch({
+                type: "ON_INPUT",
+                payload: { inputValue },
+              });
+              onChange && onChange(state.activeOption);
+              onSearch && onSearch(inputValue);
             }
+            break;
           }
-          toggle();
-          break;
-        case "Tab":
-          if (expanded) {
-            if (state.activeOption && onChange) {
-              onChange(state.activeOption);
+        // eslint-disable-next-line no-fallthrough
+        case " ":
+          if (type === "select only") {
+            if (expanded) {
+              if (state.activeOption && onChange) {
+                onChange(state.activeOption);
+              }
             }
             toggle();
+            break;
+          }
+        // eslint-disable-next-line no-fallthrough
+        case "Tab":
+          if (expanded) {
+            toggle();
+            if (state.activeOption) {
+              const inputValue = getOptionText(state.activeOption);
+              dispatch({
+                type: "ON_INPUT",
+                payload: { inputValue },
+              });
+              onChange && onChange(state.activeOption);
+              onSearch && onSearch(inputValue);
+            }
           }
           break;
 
@@ -241,11 +333,18 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
             });
 
             toggle();
+          } else if (type === "autocomplete") {
+            dispatch({
+              type: "ON_INPUT",
+              payload: { inputValue: "" },
+            });
+            onChange && onChange();
+            onSearch && onSearch("");
           }
           break;
 
         default:
-          if (isTyping(event)) {
+          if (type === "select only" && isTyping(event)) {
             !expanded && toggle();
 
             const option = searchOptionByChar(event.key, state.activeOption);
@@ -264,14 +363,14 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     function searchOptionByChar(char: string, activeOption?: T): T | undefined {
       const searchString = getSearchString(char);
       const activeOptionIndex = activeOption
-        ? options.findIndex(
+        ? state.options.findIndex(
             (option) => getOptionValue(option) === getOptionValue(activeOption),
           )
         : -1;
       const index = (activeOptionIndex === -1 ? 0 : activeOptionIndex) + 1;
       const orderedOptions = [
-        ...options.slice(index),
-        ...options.slice(0, index),
+        ...state.options.slice(index),
+        ...state.options.slice(0, index),
       ];
 
       let option = searchOption(orderedOptions, searchString);
@@ -378,7 +477,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           value={value && getOptionValue(value)}
           onChange={handleListBoxChange}
         >
-          {options.map(mapOption)}
+          {state.options.map(mapOption)}
         </ListBox>
       </div>
     );
@@ -422,7 +521,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   }
 
   function findOption(value: string): T | undefined {
-    return options.find((option) => getOptionValue(option) === value);
+    return state.options.find((option) => getOptionValue(option) === value);
   }
 });
 

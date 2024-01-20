@@ -8,10 +8,12 @@ import { Combobox } from "../index";
 
 const lorem = new LoremIpsum();
 
+export type Option = { value: number; text: string };
+
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: "Components/Combobox",
-  component: Combobox as React.FC,
+  component: Combobox<Option>,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -34,15 +36,15 @@ const meta = {
       return option.text;
     },
   },
-} satisfies Meta<ComboboxProps<{ value: number; text: string }>>;
+} satisfies Meta<ComboboxProps<Option>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
+export const SelectOnly: Story = {
   render(args) {
-    const [value, onChange] = useState("");
+    const [value, onChange] = useState<Option>();
     return <Combobox {...args} value={value} onChange={onChange} />;
   },
 };
@@ -52,7 +54,7 @@ export const WithLeadingIcon: Story = {
     leadingIcon: <User />,
   },
   render(args) {
-    const [value, onChange] = useState("");
+    const [value, onChange] = useState<Option>();
     return <Combobox {...args} value={value} onChange={onChange} />;
   },
 };
@@ -63,7 +65,7 @@ export const Invalid: Story = {
   },
   render(args) {
     const ref = useRef<HTMLInputElement>(null);
-    const [value, onChange] = useState("");
+    const [value, onChange] = useState<Option>();
 
     useLayoutEffect(() => {
       if (ref.current) {
@@ -72,5 +74,31 @@ export const Invalid: Story = {
     }, []);
 
     return <Combobox {...args} ref={ref} value={value} onChange={onChange} />;
+  },
+};
+
+export const Autocomplete: Story = {
+  args: {
+    type: "autocomplete",
+  },
+  render(args) {
+    const [value, onChange] = useState<Option>();
+    const [options, setOptions] = useState(args.options ?? []);
+
+    return (
+      <Combobox
+        {...args}
+        options={options}
+        value={value}
+        onChange={onChange}
+        onSearch={onSearch}
+      />
+    );
+
+    function onSearch(value: string) {
+      setOptions(
+        (args.options ?? []).filter((option) => option.text.includes(value)),
+      );
+    }
   },
 };

@@ -3,16 +3,20 @@ export interface State<T> {
   value?: T;
   activeOption?: T;
   popupOpened?: boolean;
+  inputValue?: string;
+  loop?: boolean;
 }
 
 export type ActionType =
+  | "OPTIONS_CHANGE"
   | "FOCUS_OPTION"
   | "FOCUS_FIRST_OPTION"
   | "FOCUS_LAST_OPTION"
   | "FOCUS_PEVIOUS_OPTION"
   | "FOCUS_NEXT_OPTION"
   | "FOCUS_PREVIOUS_10TH_OPTION"
-  | "FOCUS_NEXT_10TH_OPTION";
+  | "FOCUS_NEXT_10TH_OPTION"
+  | "ON_INPUT";
 
 export interface Action<T> {
   type: ActionType;
@@ -21,6 +25,12 @@ export interface Action<T> {
 
 export function reducer<T>(state: State<T>, action: Action<T>): State<T> {
   switch (action.type) {
+    case "OPTIONS_CHANGE":
+      return {
+        ...state,
+        options: action.payload?.options ?? [],
+      };
+
     case "FOCUS_OPTION":
       return {
         ...state,
@@ -53,6 +63,12 @@ export function reducer<T>(state: State<T>, action: Action<T>): State<T> {
         if (index > 0) {
           return { ...state, activeOption: state.options[index - 1] };
         }
+        if (action.payload?.loop && index === 0) {
+          return {
+            ...state,
+            activeOption: state.options[state.options.length - 1],
+          };
+        }
       }
       break;
 
@@ -63,6 +79,9 @@ export function reducer<T>(state: State<T>, action: Action<T>): State<T> {
         );
         if (index > -1 && index < state.options.length - 1) {
           return { ...state, activeOption: state.options[index + 1] };
+        }
+        if (action.payload?.loop && index === state.options.length - 1) {
+          return { ...state, activeOption: state.options[0] };
         }
       }
       break;
@@ -95,6 +114,12 @@ export function reducer<T>(state: State<T>, action: Action<T>): State<T> {
         }
       }
       break;
+
+    case "ON_INPUT":
+      return {
+        ...state,
+        inputValue: action.payload?.inputValue ?? "",
+      };
   }
 
   return state;
