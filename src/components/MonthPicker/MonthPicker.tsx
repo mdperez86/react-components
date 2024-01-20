@@ -17,7 +17,7 @@ export function MonthPicker({
   onChange,
   onClose,
 }: MonthPickerProps): ReactNode {
-  const [selectedMonth, setSelectedMonth] = useState<number>(value ?? 1);
+  const [selectedMonth, setSelectedMonth] = useState<number>(value ?? 0);
   const selectedMonthRef = useRef<HTMLButtonElement>(null);
   const monthLabelId = useId();
 
@@ -28,23 +28,27 @@ export function MonthPicker({
   return (
     <div className="p-4 flex flex-col gap-4 min-w-max">
       <div className="shrink-0 h-10 flex gap-4 items-center justify-between">
-        <Button
-          type="button"
-          hierarchy="tertiary"
-          icon="only"
-          rounded="full"
-          className="aspect-square rounded-full h-10"
-          aria-label="Close"
-          onClick={handleCloseButtonClick}
-        >
-          <ChevronLeft className="h-6 aspect-square" aria-hidden="true" />
-        </Button>
+        <div className="shrink-0 w-10">
+          {onClose && (
+            <Button
+              type="button"
+              hierarchy="tertiary"
+              icon="only"
+              rounded="full"
+              className="aspect-square rounded-full h-10"
+              aria-label="Close"
+              onClick={handleCloseButtonClick}
+            >
+              <ChevronLeft size="md" className="h-6 aspect-square" />
+            </Button>
+          )}
+        </div>
 
         <p id={monthLabelId} className="font-semibold text-gray-600 shrink-0">
           Select a month
         </p>
 
-        <div className="shrink-0 aspect-square h-10" />
+        <div className="shrink-0 w-10" />
       </div>
 
       <ol
