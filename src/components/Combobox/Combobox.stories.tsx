@@ -1,14 +1,14 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import React, { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { LoremIpsum } from "lorem-ipsum";
 import type { ComboboxProps } from "./types";
 
-import { User } from "../../icons";
+import { Home, User } from "../../icons";
 import { Combobox, ListBoxOption } from "../index";
 
 const lorem = new LoremIpsum();
 
-export type Option = { value: number; text: string };
+export type Option = { value: number; text: string; icon: ReactNode };
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -28,6 +28,7 @@ const meta = {
     options: Array.from({ length: 30 }).map((_, index) => ({
       value: index,
       text: lorem.generateWords(3),
+      icon: index % 2 === 0 ? <Home /> : <User />,
     })),
     getOptionValue(option) {
       return String(option.value);
@@ -54,7 +55,7 @@ export const WithLeadingIcon: Story = {
     leadingIcon: <User />,
     renderOption({ option, text, ...props }) {
       return (
-        <ListBoxOption {...props} icon={<User />}>
+        <ListBoxOption {...props} key={props.value} icon={option.icon}>
           {text}
         </ListBoxOption>
       );
@@ -62,7 +63,14 @@ export const WithLeadingIcon: Story = {
   },
   render(args) {
     const [value, onChange] = useState<Option>();
-    return <Combobox {...args} value={value} onChange={onChange} />;
+    return (
+      <Combobox
+        {...args}
+        leadingIcon={value?.icon ?? args.leadingIcon}
+        value={value}
+        onChange={onChange}
+      />
+    );
   },
 };
 

@@ -47,7 +47,7 @@ const options = Array.from({ length: 10 }).map(() => lorem.generateWords(2));
 
 export const WithComboboxButton: Story = {
   render(args) {
-    const [value, onChange] = useState<string>("");
+    const [value, onChange] = useState<string>();
 
     function renderControl(props: {}) {
       return (
