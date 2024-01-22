@@ -41,13 +41,13 @@ export const FormControl = forwardRef(function ForwardedFormControl<
     "aria-describedby": hintTextId,
     onInvalid: handleControlInvalid,
   });
-  const [validityMessage, setValidityMessage] = useState("");
+  const [validityMessage, setValidityMessage] = useState<string>();
 
   useEffect(setControlError, [errorText]);
 
   if (!isValidElement(child)) return null;
 
-  const hint = validityMessage || hintText;
+  const hint = validityMessage ?? hintText;
 
   const Layout = getLayout(labelPosition, child);
 
@@ -83,9 +83,9 @@ export const FormControl = forwardRef(function ForwardedFormControl<
   );
 
   function setControlError(): void {
-    if (errorText && controlRef.current) {
+    if (controlRef.current) {
       const objectElement: HTMLObjectElement = controlRef.current as never;
-      objectElement.setCustomValidity(errorText);
+      objectElement.setCustomValidity(errorText ?? "");
       setValidityMessage(errorText);
     }
   }
