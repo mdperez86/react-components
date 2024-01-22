@@ -27,7 +27,7 @@ export const InputField = forwardRef(function ForwardedInputField(
       )}
     >
       {leadingIcon !== undefined && (
-        <div className="flex shrink-0 items-center justify-center h-5 min-w-5 text-gray-500">
+        <div className="flex shrink-0 items-center justify-center h-full min-w-5 text-gray-500">
           {leadingIcon}
         </div>
       )}
