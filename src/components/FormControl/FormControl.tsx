@@ -55,6 +55,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
     <Layout
       {...props}
       ref={ref}
+      className={classNames(className, "group")}
       label={
         <label
           htmlFor={controlId}
