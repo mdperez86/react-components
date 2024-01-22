@@ -55,13 +55,15 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
           <div
             role="presentation"
             data-role="icon"
-            className="w-4 flex shrink-0 items-center justify-center"
+            className="w-5 flex shrink-0 items-center justify-center"
           >
             {icon}
           </div>
         )}
 
-        <div className="flex-auto truncate">{children}</div>
+        <div className="flex flex-auto items-center overflow-hidden">
+          <div className="truncate">{children}</div>
+        </div>
 
         {selected && (
           <div
