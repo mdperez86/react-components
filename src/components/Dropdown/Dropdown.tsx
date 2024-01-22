@@ -30,7 +30,8 @@ export function Dropdown<T = HTMLButtonElement, M = HTMLDialogElement>({
           id: popupId,
           expanded,
           collapse,
-          className: "mt-2 absolute top-full left-0 z-10 shadow-lg rounded-lg",
+          className:
+            "m-0 mt-2 absolute top-full left-0 z-10 w-fit h-fit shadow-lg rounded-lg",
         })}
     </div>
   );
