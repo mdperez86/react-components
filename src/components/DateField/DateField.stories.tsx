@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { DateFieldProps } from "./types";
 
 import { DateField } from "./DateField";
+import { CalendarIcon } from "@this/index";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -22,10 +23,21 @@ const meta = {
 } satisfies Meta<DateFieldProps>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<Meta<DateFieldProps>>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
+  render(args) {
+    const [value, onChange] = useState<Date | undefined>(new Date());
+
+    return <DateField {...args} value={value} onChange={onChange} />;
+  },
+};
+
+export const WithLeadingIcon: Story = {
+  args: {
+    leadingIcon: <CalendarIcon />,
+  },
   render(args) {
     const [value, onChange] = useState<Date | undefined>(new Date());
 

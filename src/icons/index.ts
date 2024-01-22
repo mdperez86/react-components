@@ -1,4 +1,5 @@
 export * from "./AlertCircleIcon";
+export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
 export * from "./ChevronLeftIcon";
