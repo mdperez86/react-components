@@ -12,7 +12,7 @@ import {
   type DropDownMenuItemProps,
   type DropDownMenuProps,
 } from "./types";
-import { ChevronRight } from "@this/icons";
+import { ChevronRightIcon } from "@this/icons";
 
 export const DropDownMenu = forwardRef(function ForwardedDropDownMenu(
   { header, className, children, ...props }: DropDownMenuProps,
@@ -136,7 +136,7 @@ export const DropDownMenuItem = forwardRef(function ForwardedDropDownMenuItem(
             role="presentation"
             className="w-4 flex shrink-0 items-center justify-center"
           >
-            <ChevronRight />
+            <ChevronRightIcon />
           </div>
         )}
       </div>

@@ -12,7 +12,7 @@ import {
   type ChangeEvent,
 } from "react";
 import classNames from "classnames";
-import { ChevronDown, ChevronUp } from "@this/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@this/icons";
 import {
   Dropdown,
   type DropdownPopupProps,
@@ -160,7 +160,11 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
             "group-has-[:invalid]:text-error-500",
           )}
         >
-          {expanded ? <ChevronUp size="md" /> : <ChevronDown size="md" />}
+          {expanded ? (
+            <ChevronUpIcon size="md" />
+          ) : (
+            <ChevronDownIcon size="md" />
+          )}
         </div>
       </div>
     );

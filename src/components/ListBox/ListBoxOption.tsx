@@ -5,7 +5,7 @@ import {
   useEffect,
 } from "react";
 import classNames from "classnames";
-import { Check } from "@this/icons";
+import { CheckIcon } from "@this/icons";
 import { type ListBoxOptionProps } from "./types";
 
 export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
@@ -70,7 +70,7 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
             aria-hidden="true"
             className="w-4 flex shrink-0 items-center justify-center text-primary-600"
           >
-            <Check />
+            <CheckIcon />
           </div>
         )}
       </div>

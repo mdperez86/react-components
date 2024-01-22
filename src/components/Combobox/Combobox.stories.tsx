@@ -1,9 +1,9 @@
-import React, { ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { ReactNode, useLayoutEffect, useRef, useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { LoremIpsum } from "lorem-ipsum";
 import type { ComboboxProps } from "./types";
 
-import { Home, User } from "../../icons";
+import { HomeIcon, UserIcon } from "../../icons";
 import { Combobox, ListBoxOption } from "../index";
 
 const lorem = new LoremIpsum();
@@ -28,7 +28,7 @@ const meta = {
     options: Array.from({ length: 30 }).map((_, index) => ({
       value: index,
       text: lorem.generateWords(3),
-      icon: index % 2 === 0 ? <Home /> : <User />,
+      icon: index % 2 === 0 ? <HomeIcon /> : <UserIcon />,
     })),
     getOptionValue(option) {
       return String(option.value);
@@ -52,7 +52,7 @@ export const SelectOnly: Story = {
 
 export const WithLeadingIcon: Story = {
   args: {
-    leadingIcon: <User />,
+    leadingIcon: <UserIcon />,
     renderOption({ option, text, ...props }) {
       return (
         <ListBoxOption {...props} key={props.value} icon={option.icon}>
@@ -76,7 +76,7 @@ export const WithLeadingIcon: Story = {
 
 export const Invalid: Story = {
   args: {
-    leadingIcon: <User />,
+    leadingIcon: <UserIcon />,
   },
   render(args) {
     const ref = useRef<HTMLInputElement>(null);

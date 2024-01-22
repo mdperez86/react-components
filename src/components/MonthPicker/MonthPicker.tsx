@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type MouseEvent,
 } from "react";
-import { ChevronLeft } from "@this/icons";
+import { ChevronLeftIcon } from "@this/icons";
 import { Button, type ButtonProps } from "../Button";
 import { type MonthPickerProps } from "./types";
 
@@ -39,7 +39,7 @@ export function MonthPicker({
               aria-label="Close"
               onClick={handleCloseButtonClick}
             >
-              <ChevronLeft size="md" className="h-6 aspect-square" />
+              <ChevronLeftIcon size="md" className="h-6 aspect-square" />
             </Button>
           )}
         </div>

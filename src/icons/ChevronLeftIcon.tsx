@@ -2,7 +2,7 @@ import { type Ref, forwardRef } from "react";
 import { getIconDimensions } from "./utils";
 import { type IconProps } from "./types";
 
-export const Check = forwardRef(function ForwardedCheck(
+export const ChevronLeftIcon = forwardRef(function ForwardedChevronLeftIcon(
   { size = "sm", ...props }: IconProps,
   ref: Ref<SVGSVGElement>,
 ) {
@@ -17,7 +17,7 @@ export const Check = forwardRef(function ForwardedCheck(
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M20 6L9 17L4 12"
+        d="M15 18L9 12L15 6"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="round"

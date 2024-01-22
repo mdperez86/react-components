@@ -8,7 +8,7 @@ import {
   type ReactNode,
   type MouseEvent,
 } from "react";
-import { ChevronLeft, ChevronRight } from "@this/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@this/icons";
 import { Button, type ButtonProps } from "../Button";
 import { type YearPickerProps } from "./types";
 
@@ -49,7 +49,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handleBackClick}
             >
-              <ChevronLeft size="md" className="h-6 aspect-square" />
+              <ChevronLeftIcon size="md" className="h-6 aspect-square" />
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
@@ -101,7 +101,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handlePreviousRangeClick}
             >
-              <ChevronLeft size="md" className="h-6 aspect-square" />
+              <ChevronLeftIcon size="md" className="h-6 aspect-square" />
             </Button>
 
             <div className="col-span-5 flex items-center justify-center gap-2 font-semibold">
@@ -121,7 +121,7 @@ export function YearPicker({
               className="aspect-square rounded-full h-10"
               onClick={handleNextRangeClick}
             >
-              <ChevronRight size="md" className="h-6 aspect-square" />
+              <ChevronRightIcon size="md" className="h-6 aspect-square" />
             </Button>
           </div>
 

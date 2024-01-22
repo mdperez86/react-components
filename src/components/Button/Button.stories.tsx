@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Home } from "@this/icons";
+import { HomeIcon } from "@this/icons";
 import type { ButtonProps } from "./types";
 
 import { Button } from "./Button";
@@ -63,7 +63,7 @@ export const WithIcon: Story = {
   render(args) {
     return (
       <Button {...args}>
-        <Home />
+        <HomeIcon />
         <span>Button</span>
       </Button>
     );
@@ -77,7 +77,7 @@ export const IconOnly: Story = {
   render(args) {
     return (
       <Button {...args}>
-        <Home />
+        <HomeIcon />
       </Button>
     );
   },

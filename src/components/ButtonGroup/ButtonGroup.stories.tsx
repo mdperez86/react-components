@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Home } from "@this/icons";
+import { HomeIcon } from "@this/icons";
 import type { ButtonGroupProps } from "./types";
 
 import { ButtonGroup } from "./ButtonGroup";
@@ -112,15 +112,15 @@ export const WithIcon: Story = {
     return (
       <ButtonGroup {...args}>
         <Button>
-          <Home />
+          <HomeIcon />
           <span>Leading</span>
         </Button>
         <Button disabled>
-          <Home />
+          <HomeIcon />
           <span>Middle</span>
         </Button>
         <Button destructive>
-          <Home />
+          <HomeIcon />
           <span>Trailing</span>
         </Button>
       </ButtonGroup>
@@ -136,13 +136,13 @@ export const WithIconOnly: Story = {
     return (
       <ButtonGroup {...args}>
         <Button aria-label="Home">
-          <Home />
+          <HomeIcon />
         </Button>
         <Button disabled aria-label="Home">
-          <Home />
+          <HomeIcon />
         </Button>
         <Button destructive aria-label="Home">
-          <Home />
+          <HomeIcon />
         </Button>
       </ButtonGroup>
     );
@@ -157,14 +157,14 @@ export const Mixed: Story = {
         <span>Not a button</span>
         <Button hierarchy="primary">Leading</Button>
         <Button icon="leading">
-          <Home />
+          <HomeIcon />
           <span>Middle</span>
         </Button>
         <Button icon="only" aria-label="Home">
-          <Home />
+          <HomeIcon />
         </Button>
         <Button icon="trailing">
-          <Home />
+          <HomeIcon />
           <span>Middle</span>
         </Button>
         <Button disabled>Middle</Button>

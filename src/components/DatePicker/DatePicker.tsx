@@ -7,7 +7,7 @@ import {
   type ReactNode,
   type MouseEvent,
 } from "react";
-import { ChevronLeft, ChevronRight } from "@this/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@this/icons";
 import { MonthPicker } from "../MonthPicker";
 import { YearPicker } from "../YearPicker";
 import { Button, type ButtonProps } from "../Button";
@@ -68,7 +68,7 @@ export function DatePicker({
             onClick={handlePreviousMonthClick}
             aria-label="Previous month"
           >
-            <ChevronLeft size="md" className="h-6 aspect-square" />
+            <ChevronLeftIcon size="md" className="h-6 aspect-square" />
           </Button>
         </div>
 
@@ -106,7 +106,7 @@ export function DatePicker({
             onClick={handleNextMonthClick}
             aria-label="Next month"
           >
-            <ChevronRight size="md" className="h-6 aspect-square" />
+            <ChevronRightIcon size="md" className="h-6 aspect-square" />
           </Button>
         </div>
       </div>

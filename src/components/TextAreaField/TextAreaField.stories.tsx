@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Home } from "@this/icons";
+import { HomeIcon } from "@this/icons";
 import type { TextAreaFieldProps } from "./types";
 
 import { TextAreaField } from "./TextAreaField";
@@ -31,7 +31,7 @@ export const Default: Story = {};
 
 export const WithLeadingIcon: Story = {
   args: {
-    leadingIcon: <Home />,
+    leadingIcon: <HomeIcon />,
   },
 };
 
@@ -43,7 +43,7 @@ export const WithHelpIcon: Story = {
 
 export const Invalid: Story = {
   args: {
-    leadingIcon: <Home />,
+    leadingIcon: <HomeIcon />,
     helpIcon: true,
   },
   render(args) {

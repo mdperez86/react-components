@@ -2,7 +2,7 @@ import { type Ref, forwardRef } from "react";
 import { getIconDimensions } from "./utils";
 import { type IconProps } from "./types";
 
-export const Minus = forwardRef(function ForwardedMinus(
+export const MinusIcon = forwardRef(function ForwardedMinusIcon(
   { size = "sm", ...props }: IconProps,
   ref: Ref<SVGSVGElement>,
 ) {

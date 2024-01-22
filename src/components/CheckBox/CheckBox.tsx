@@ -1,6 +1,6 @@
 import { type Ref, forwardRef, useRef, useEffect } from "react";
 import classNames from "classnames";
-import { Check, Minus } from "@this/icons";
+import { CheckIcon, MinusIcon } from "@this/icons";
 import { type CheckBoxProps } from "./types";
 
 export const CheckBox = forwardRef(function ForwardedCheckBox(
@@ -37,7 +37,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
           "peer-disabled:border-gray-200 peer-disabled:bg-gray-100",
         )}
       >
-        <Check
+        <CheckIcon
           className={classNames(
             "hidden group-has-[:checked]:block",
             "w-3.5 aspect-square",
@@ -46,7 +46,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
           )}
         />
 
-        <Minus
+        <MinusIcon
           className={classNames(
             "hidden group-has-[:indeterminate]:block",
             "w-3.5 aspect-square",

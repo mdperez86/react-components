@@ -1,6 +1,6 @@
 import { type Ref, forwardRef, type ReactNode } from "react";
 import classNames from "classnames";
-import { User } from "@this/icons";
+import { UserIcon } from "@this/icons";
 import { type AvatarProps } from "./types";
 
 export const Avatar = forwardRef(function ForwardedAvatar(
@@ -59,6 +59,6 @@ export const Avatar = forwardRef(function ForwardedAvatar(
   }
 
   function renderPlaceholder(): ReactNode {
-    return <User size={size} />;
+    return <UserIcon size={size} />;
   }
 });

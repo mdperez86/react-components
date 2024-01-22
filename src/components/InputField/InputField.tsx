@@ -1,6 +1,6 @@
 import { type Ref, forwardRef, type FocusEvent } from "react";
 import classNames from "classnames";
-import { AlertCircle, HelpCircle } from "@this/icons";
+import { AlertCircleIcon, HelpCircleIcon } from "@this/icons";
 import { type InputFieldProps } from "./types";
 
 export const InputField = forwardRef(function ForwardedInputField(
@@ -50,8 +50,8 @@ export const InputField = forwardRef(function ForwardedInputField(
             "group-has-[:invalid]:text-error-500",
           )}
         >
-          <HelpCircle className="h-4 aspect-square group-has-[:invalid]:hidden" />
-          <AlertCircle className="h-4 aspect-square hidden group-has-[:invalid]:block" />
+          <HelpCircleIcon className="h-4 aspect-square group-has-[:invalid]:hidden" />
+          <AlertCircleIcon className="h-4 aspect-square hidden group-has-[:invalid]:block" />
         </div>
       )}
     </div>

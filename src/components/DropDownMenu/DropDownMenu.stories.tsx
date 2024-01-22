@@ -7,7 +7,7 @@ import {
   DropDownMenuGroup,
   DropDownMenuItem,
 } from "./DropDownMenu";
-import { Check } from "../../icons";
+import { CheckIcon } from "../../icons";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -60,7 +60,7 @@ export const WithGroups: Story = {
     return (
       <DropDownMenu {...args} header={<span>Header</span>}>
         <DropDownMenuGroup>
-          <DropDownMenuItem icon={<Check />}>Item 1.1</DropDownMenuItem>
+          <DropDownMenuItem icon={<CheckIcon />}>Item 1.1</DropDownMenuItem>
           <DropDownMenuItem>Item 1.2</DropDownMenuItem>
           <DropDownMenuItem>Item 1.3</DropDownMenuItem>
           <DropDownMenuItem>Item 1.4</DropDownMenuItem>
@@ -84,7 +84,7 @@ export const WithIcon: Story = {
     return (
       <DropDownMenu {...args} header={<span>Header</span>}>
         <DropDownMenuGroup>
-          <DropDownMenuItem icon={<Check />}>Item 1.1</DropDownMenuItem>
+          <DropDownMenuItem icon={<CheckIcon />}>Item 1.1</DropDownMenuItem>
           <DropDownMenuItem>Item 1.2</DropDownMenuItem>
           <DropDownMenuItem>Item 1.3</DropDownMenuItem>
         </DropDownMenuGroup>
@@ -105,7 +105,7 @@ export const WithSubMenu: Story = {
           <DropDownMenuItem>Item 1.1</DropDownMenuItem>
           <DropDownMenuItem>Item 1.2</DropDownMenuItem>
           <DropDownMenuItem
-            icon={<Check />}
+            icon={<CheckIcon />}
             subMenu={(args) => (
               <DropDownMenu {...args} header={<span>Sub Menu Header</span>}>
                 <DropDownMenuItem>Item 1.3.1</DropDownMenuItem>
