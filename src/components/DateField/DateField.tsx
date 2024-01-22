@@ -14,7 +14,14 @@ import { InputField } from "../InputField";
 import { type DateFieldProps } from "./types";
 
 export const DateField = forwardRef(function ForwardedDateField(
-  { locale = "en-US", className, value, onChange, ...props }: DateFieldProps,
+  {
+    locale = "en-US",
+    name,
+    className,
+    value,
+    onChange,
+    ...props
+  }: DateFieldProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   const inputFieldRef = useRef<HTMLInputElement>();
@@ -25,20 +32,23 @@ export const DateField = forwardRef(function ForwardedDateField(
   return (
     <Dropdown<HTMLInputElement>
       renderToggle={({ expanded, toggle, ...toggleProps }) => (
-        <InputField
-          {...props}
-          {...toggleProps}
-          ref={getInputFieldRef}
-          type="text"
-          value={inputValue}
-          className={classNames(toggleProps.className, className)}
-          aria-autocomplete="none"
-          role="combobox"
-          onChange={handleInputChange}
-          onClick={toggle}
-          onBlur={handleInputFieldBlur}
-          onKeyDown={inputFieldKeyDownHandler(expanded, toggle)}
-        />
+        <>
+          <InputField
+            {...props}
+            {...toggleProps}
+            ref={getInputFieldRef}
+            type="text"
+            value={inputValue}
+            className={classNames(toggleProps.className, className)}
+            aria-autocomplete="none"
+            role="combobox"
+            onChange={handleInputChange}
+            onClick={toggle}
+            onBlur={handleInputFieldBlur}
+            onKeyDown={inputFieldKeyDownHandler(expanded, toggle)}
+          />
+          <input type="hidden" name={name} value={getHiddenValue()} />
+        </>
       )}
       renderPopup={({ expanded, collapse, ...props }) => (
         <dialog
@@ -101,6 +111,10 @@ export const DateField = forwardRef(function ForwardedDateField(
     };
   }
 
+  function getHiddenValue(): string {
+    return value ? toDateOnly(value).toISOString() : "";
+  }
+
   function dialogKeyDownHandler(
     onClose: () => void,
   ): (event: KeyboardEvent<HTMLDialogElement>) => void {
@@ -118,6 +132,16 @@ export const DateField = forwardRef(function ForwardedDateField(
   }
 });
 
+function toDateOnly(date: Date): Date {
+  const dateOnly = new Date(date);
+
+  dateOnly.setHours(0);
+  dateOnly.setMinutes(0);
+  dateOnly.setMilliseconds(0);
+
+  return dateOnly;
+}
+
 function toDate(value: string): Date | undefined {
   const localDate = new Date(value.trim());
 
@@ -127,5 +151,5 @@ function toDate(value: string): Date | undefined {
 }
 
 function toLocalDateString(date: Date, locale?: string): string {
-  return date.toLocaleDateString(locale);
+  return toDateOnly(date).toLocaleDateString(locale);
 }
