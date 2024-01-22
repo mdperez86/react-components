@@ -18,7 +18,7 @@ import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
 import { type LayoutProps, type FormControlProps } from "./types";
 
 export const FormControl = forwardRef(function ForwardedFormControl<
-  T extends HTMLObjectElement = HTMLObjectElement,
+  T = HTMLInputElement,
 >(
   {
     label,
@@ -83,13 +83,15 @@ export const FormControl = forwardRef(function ForwardedFormControl<
 
   function setControlError(): void {
     if (errorText && controlRef.current) {
-      controlRef.current.setCustomValidity(errorText);
+      const objectElement: HTMLObjectElement = controlRef.current as never;
+      objectElement.setCustomValidity(errorText);
       setValidityMessage(errorText);
     }
   }
 
   function handleControlInvalid(event: FormEvent<T>): void {
-    setValidityMessage(event.currentTarget.validationMessage);
+    const objectElement: HTMLObjectElement = event.currentTarget as never;
+    setValidityMessage(objectElement.validationMessage);
   }
 });
 

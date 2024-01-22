@@ -31,8 +31,7 @@ const meta = {
 } satisfies Meta<FormControlProps>;
 
 export default meta;
-type Story<T extends HTMLObjectElement = HTMLInputElement & HTMLObjectElement> =
-  StoryObj<Meta<FormControlProps<T>>>;
+type Story<T = HTMLInputElement> = StoryObj<Meta<FormControlProps<T>>>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const WithInputField: Story = {
@@ -43,14 +42,13 @@ export const WithInputField: Story = {
   },
 };
 
-export const WithTextAreaField: Story<HTMLTextAreaElement & HTMLObjectElement> =
-  {
-    args: {
-      renderControl(props) {
-        return <TextAreaField {...props} />;
-      },
+export const WithTextAreaField: Story<HTMLTextAreaElement> = {
+  args: {
+    renderControl(props) {
+      return <TextAreaField {...props} />;
     },
-  };
+  },
+};
 
 export const WithDateField: Story = {
   render(args) {
