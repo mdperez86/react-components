@@ -4,6 +4,7 @@
     "./src/stories",
     "**/*.stories.ts",
     "**/*.stories.tsx",
-    "**/*.test.tsx"
+    "**/*.test.tsx",
+    "tailwind.config.ts"
   ]
 }

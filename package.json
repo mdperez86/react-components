@@ -17,9 +17,9 @@
     "url": "https://github.com/mdperez86/react-components.git"
   },
   "type": "module",
-  "main": "dist/cjs/index.js",
+  "main": "dist/esm/index.js",
   "files": [
-    "dist"
+    "dist/cjs/tailwind.config.js"
   ],
   "types": "dist/index.d.ts",
   "scripts": {
@@ -82,6 +82,7 @@
   },
   "peerDependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.0"
   }
 }

@@ -21,7 +21,7 @@ export default [
     ],
     plugins: [
       // NEW
-      typescript({ tsconfig: "./tsconfig.rollup.json" }),
+      typescript({ tsconfig: "./tsconfig.rollup-esm.json" }),
       peerDepsExternal(),
 
       resolve(),
@@ -42,7 +42,7 @@ export default [
     ],
     plugins: [
       // NEW
-      typescript({ tsconfig: "./tsconfig.rollup.json" }),
+      typescript({ tsconfig: "./tsconfig.rollup-cjs.json" }),
       peerDepsExternal(),
 
       resolve(),
@@ -53,13 +53,13 @@ export default [
     ],
   },
   {
-    input: "dist/cjs/types/src/index.d.ts",
+    input: "dist/esm/types/src/index.d.ts",
     output: [{ file: packageJson.types, format: "esm" }],
-    plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
+    plugins: [dts({ tsconfig: "./tsconfig.rollup-esm.json" })],
   },
   {
     input: "dist/cjs/types/tailwind.config.d.ts",
     output: [{ file: "dist/tailwind.config.d.ts", format: "esm" }],
-    plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
+    plugins: [dts({ tsconfig: "./tsconfig.rollup-cjs.json" })],
   },
 ];
