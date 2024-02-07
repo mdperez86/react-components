@@ -57,4 +57,9 @@ export default [
     output: [{ file: packageJson.types, format: "esm" }],
     plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
   },
+  {
+    input: "dist/cjs/types/tailwind.config.d.ts",
+    output: [{ file: "dist/tailwind.config.d.ts", format: "esm" }],
+    plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
+  },
 ];
