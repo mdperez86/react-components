@@ -32,6 +32,27 @@ export default [
     ],
   },
   {
+    input: "./tailwind.config.ts",
+    output: [
+      {
+        file: "dist/cjs/tailwind.config.js",
+        format: "esm",
+        sourcemap: true,
+      },
+    ],
+    plugins: [
+      // NEW
+      typescript({ tsconfig: "./tsconfig.rollup.json" }),
+      peerDepsExternal(),
+
+      resolve(),
+      commonjs(),
+
+      // NEW
+      terser(),
+    ],
+  },
+  {
     input: "dist/cjs/types/src/index.d.ts",
     output: [{ file: packageJson.types, format: "esm" }],
     plugins: [dts({ tsconfig: "./tsconfig.rollup.json" })],
