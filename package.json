@@ -1,6 +1,6 @@
 {
   "name": "@mdperez86/react-components",
-  "version": "0.0.9",
+  "version": "0.0.8",
   "description": "A react components library",
   "keywords": [
     "react",
@@ -18,15 +18,18 @@
   },
   "type": "module",
   "main": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/types/src/index.d.ts"
+    },
     "./tailwind": {
-      "types": "./dist/cjs/types/tailwind.config.d.ts",
       "require": "./dist/cjs/tailwind.config.js",
-      "import": "./dist/cjs/tailwind.config.js"
+      "import": "./dist/cjs/tailwind.config.js",
+      "types": "./dist/cjs/types/tailwind.config.d.ts"
     }
   },
   "scripts": {
