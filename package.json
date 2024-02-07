@@ -19,9 +19,19 @@
   "type": "module",
   "main": "dist/esm/index.js",
   "files": [
-    "dist/cjs/tailwind.config.js"
+    "dist"
   ],
-  "types": "dist/index.d.ts",
+  "exports": {
+    "*": {
+      "types": "./dist/esm/types/src/index.d.ts",
+      "import": "./dist/esm/index.js"
+    },
+    "./tailwind": {
+      "types": "./dist/cjs/types/tailwind.config.d.ts",
+      "require": "./dist/cjs/tailwind.config.js",
+      "import": "./dist/cjs/tailwind.config.js"
+    }
+  },
   "scripts": {
     "rollup": "rm -rf dist && rollup -c --bundleConfigAsCjs",
     "storybook": "storybook dev -p 6006",

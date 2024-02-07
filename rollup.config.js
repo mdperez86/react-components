@@ -52,14 +52,14 @@ export default [
       terser(),
     ],
   },
-  {
-    input: "dist/esm/types/src/index.d.ts",
-    output: [{ file: packageJson.types, format: "esm" }],
-    plugins: [dts({ tsconfig: "./tsconfig.rollup-esm.json" })],
-  },
-  {
-    input: "dist/cjs/types/tailwind.config.d.ts",
-    output: [{ file: "dist/tailwind.config.d.ts", format: "esm" }],
-    plugins: [dts({ tsconfig: "./tsconfig.rollup-cjs.json" })],
-  },
+  // {
+  //   input: "dist/esm/types/src/index.d.ts",
+  //   output: [{ file: packageJson.types, format: "esm" }],
+  //   plugins: [dts({ tsconfig: "./tsconfig.rollup-esm.json" })],
+  // },
+  // {
+  //   input: "dist/cjs/types/tailwind.config.d.ts",
+  //   output: [{ file: "dist/tailwind.config.d.ts", format: "esm" }],
+  //   plugins: [dts({ tsconfig: "./tsconfig.rollup-cjs.json" })],
+  // },
 ];
