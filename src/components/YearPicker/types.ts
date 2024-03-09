@@ -1,5 +1,11 @@
 export interface YearPickerProps {
   /**
+   * The locale used i18n format.
+   *
+   * @default "en-US"
+   */
+  locale?: string;
+  /**
    * The selected year number.
    */
   value?: number;

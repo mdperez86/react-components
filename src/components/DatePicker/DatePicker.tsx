@@ -48,6 +48,7 @@ export function DatePicker({
   if (showYearPicker) {
     return (
       <YearPicker
+        locale={locale}
         value={date.getFullYear()}
         onChange={handleYearPickerChange}
         onClose={handleYearPickerClose}

@@ -16,6 +16,7 @@ const RANGE_SIZE = 10;
 const RANGE_PAGE_SIZE = 9;
 
 export function YearPicker({
+  locale = "en-US",
   value = new Date().getFullYear(),
   onChange,
   onClose,
@@ -84,7 +85,7 @@ export function YearPicker({
                   onClick={yearClickHandler(yearRange + index)}
                   onKeyDown={yearKeyDownHandler(yearRange + index)}
                 >
-                  {yearRange + index}
+                  {renderYear(locale, yearRange + index)}
                 </Button>
               </li>
             ))}
@@ -142,8 +143,8 @@ export function YearPicker({
                   onKeyDown={yearRangeKeyDownHandler(range)}
                 >
                   <div className="flex flex-col">
-                    <div>{range}</div>
-                    <div>{range + RANGE_SIZE - 1}</div>
+                    <div>{renderYear(locale, range)}</div>
+                    <div>{renderYear(locale, range + RANGE_SIZE - 1)}</div>
                   </div>
                 </Button>
               </li>
@@ -406,4 +407,10 @@ function getYearRanges(page: number, year?: number): number[] {
     current.setFullYear(current.getFullYear() + RANGE_SIZE);
     return year.getFullYear();
   });
+}
+
+function renderYear(locale: string, year: number): string {
+  const date = new Date();
+  date.setFullYear(year);
+  return date.toLocaleDateString(locale, { year: "numeric" });
 }
