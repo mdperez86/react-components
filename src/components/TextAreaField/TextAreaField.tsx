@@ -18,7 +18,7 @@ export const TextAreaField = forwardRef(function ForwardedTextAreaField(
       className={classNames(
         className,
         "group relative overflow-hidden",
-        "shadow-sm rounded-lg",
+        "shadow-xs rounded-lg",
         "border border-gray-300",
         "focus-within:border-primary-300 focus-within:ring-4 focus-within:ring-primary-100",
         "has-[:invalid]:border-error-300",

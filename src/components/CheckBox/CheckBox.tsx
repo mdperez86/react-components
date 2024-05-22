@@ -27,7 +27,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
         role="presentation"
         className={classNames(
           "relative z-0 w-5 aspect-square",
-          "rounded-md",
+          "rounded-md shadow-xs",
           "flex items-center justify-center",
           "bg-white border border-gray-300",
           "peer-hover:border-primary-600 peer-hover:bg-primary-50",

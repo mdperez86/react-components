@@ -47,7 +47,7 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
       aria-valuetext={label}
     >
       <div
-        className="h-2 w-full rounded-lg bg-primary-50 overflow-hidden"
+        className="h-2 w-full rounded-lg bg-primary-50 overflow-hidden shadow-xs"
         role="none"
       >
         <div

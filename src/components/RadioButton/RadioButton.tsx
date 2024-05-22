@@ -22,7 +22,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
         role="presentation"
         className={classNames(
           "relative z-0 w-5 aspect-square",
-          "rounded-full",
+          "rounded-full shadow-xs",
           "flex items-center justify-center",
           "bg-white border border-gray-300",
           "peer-hover:border-primary-600 peer-hover:bg-primary-50",

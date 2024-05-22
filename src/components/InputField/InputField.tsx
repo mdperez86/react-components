@@ -22,7 +22,7 @@ export const InputField = forwardRef(function ForwardedInputField(
         className={classNames(
           "outline-none appearance-none flex min-w-48 w-full",
           "bg-white text-gray-900 border border-gray-300 placeholder:text-gray-500",
-          "shadow-sm rounded-lg py-2.5 text-base h-11",
+          "shadow-xs rounded-lg py-2.5 text-base h-11",
           "focus:border-primary-300 focus:ring-4 focus:ring-primary-100",
           "disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed",
           "invalid:border-error-300",
