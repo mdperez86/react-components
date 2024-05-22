@@ -33,6 +33,36 @@ export default {
         "3xl":
           "0 7px 14px -6px rgba(16, 24, 40, 0.05), 0 6px 13px 0 rgba(16, 24, 40, 0.05)",
       },
+      dropShadow: {
+        xs: [
+          "0 1px 2px rgba(16, 24, 40, 0.05)",
+          "0 0 1px rgba(16, 24, 40, 0.05)",
+        ],
+        sm: [
+          "0 2px 4px rgba(16, 24, 40, 0.05)",
+          "0 1px 3px rgba(16, 24, 40, 0.05)",
+        ],
+        md: [
+          "0 3px 6px rgba(16, 24, 40, 0.05)",
+          "0 2px 5px rgba(16, 24, 40, 0.05)",
+        ],
+        lg: [
+          "0 4px 8px rgba(16, 24, 40, 0.05)",
+          "0 3px 7px rgba(16, 24, 40, 0.05)",
+        ],
+        xl: [
+          "0 5px 10px rgba(16, 24, 40, 0.05)",
+          "0 4px 9px rgba(16, 24, 40, 0.05)",
+        ],
+        "2xl": [
+          "0 6px 12px rgba(16, 24, 40, 0.05)",
+          "0 5px 11px rgba(16, 24, 40, 0.05)",
+        ],
+        "3xl": [
+          "0 7px 14px rgba(16, 24, 40, 0.05)",
+          "0 6px 13px rgba(16, 24, 40, 0.05)",
+        ],
+      },
       keyframes: {
         pingpong: {
           "0%,100%": { width: "30%", transform: "translateX(-70%)" },
