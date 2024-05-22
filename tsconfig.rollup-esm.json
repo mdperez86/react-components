@@ -5,6 +5,7 @@
     "**/*.stories.ts",
     "**/*.stories.tsx",
     "**/*.test.tsx",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    "vite.config.ts"
   ]
 }
