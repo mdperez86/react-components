@@ -5,10 +5,12 @@ import {
   type ReactNode,
   forwardRef,
   useRef,
+  useId,
 } from "react";
 import classNames from "classnames";
 import { Infotip, type InfotipProps, type SliderType } from "../Infotip";
 import { type SliderProps } from "./types";
+import { type SliderLabelProps } from "../Button";
 
 export const Slider = forwardRef(function ForwardedSlider(
   {
@@ -31,8 +33,9 @@ export const Slider = forwardRef(function ForwardedSlider(
   const [lower, upper] = value ?? [min, max];
   const lowerSliderX = getPercentage(lower + offset);
   const upperSliderX = getPercentage(upper + offset);
-  const selectedRef = useRef<HTMLButtonElement>();
+  const selectedRef = useRef<HTMLDivElement>();
   const fillBarRef = useRef<HTMLDivElement>(null);
+  const handlerId = useId();
 
   return (
     <div
@@ -73,33 +76,40 @@ export const Slider = forwardRef(function ForwardedSlider(
   function renderHandler(type: SliderType): ReactNode {
     const sliderValue = type === "min" ? lower : upper;
     const sliderX = type === "min" ? lowerSliderX : upperSliderX;
+    const id = getHandlerId(type);
     return (
-      <button
+      <div
         role="slider"
         tabIndex={0}
         aria-valuemin={min}
         aria-valuenow={sliderValue}
         aria-valuemax={max}
+        aria-labelledby={id}
         data-type={type}
         className={classNames(
           "absolute w-6 aspect-square rounded-full -translate-x-3",
           "bg-white shadow-md outline-none",
-          "hover:z-20 hover:bg-primary-50",
+          "hover:z-20 hover:bg-primary-50 cursor-pointer",
           "focus:ring-4 focus:ring-primary-100 focus:z-10",
         )}
         style={{ left: `${sliderX}%` }}
         onKeyDown={silderKeyDownHandler(type)}
         onPointerDown={handlePointerDown}
       >
-        {renderLabel(sliderValue)}
-      </button>
+        {renderLabel({
+          id,
+          children: formatLabel(sliderValue),
+        })}
+      </div>
     );
   }
 
+  function getHandlerId(type: SliderType): string {
+    return `handler:${type}${handlerId}`;
+  }
+
   function silderKeyDownHandler(type: SliderType) {
-    return function handleSilderKeyDown(
-      event: KeyboardEvent<HTMLButtonElement>,
-    ) {
+    return function handleSilderKeyDown(event: KeyboardEvent<HTMLDivElement>) {
       switch (event.key) {
         case "Up":
         case "ArrowUp":
@@ -125,11 +135,47 @@ export const Slider = forwardRef(function ForwardedSlider(
             type === "max" ? Math.max(upper - step, lower) : upper,
           ]);
           break;
+        case "PageUp":
+          event.preventDefault();
+          event.stopPropagation();
+
+          onChange?.([
+            type === "min" ? Math.min(lower + 10 * step, upper) : lower,
+            type === "max" ? Math.min(upper + 10 * step, max) : upper,
+          ]);
+          break;
+        case "PageDown":
+          event.preventDefault();
+          event.stopPropagation();
+
+          onChange?.([
+            type === "min" ? Math.max(lower - 10 * step, min) : lower,
+            type === "max" ? Math.max(upper - 10 * step, lower) : upper,
+          ]);
+          break;
+        case "Home":
+          event.preventDefault();
+          event.stopPropagation();
+
+          onChange?.([
+            type === "min" ? min : lower,
+            type === "max" ? lower : upper,
+          ]);
+          break;
+        case "End":
+          event.preventDefault();
+          event.stopPropagation();
+
+          onChange?.([
+            type === "min" ? upper : lower,
+            type === "max" ? max : upper,
+          ]);
+          break;
       }
     };
   }
 
-  function handlePointerDown(event: PointerEvent<HTMLButtonElement>): void {
+  function handlePointerDown(event: PointerEvent<HTMLDivElement>): void {
     selectedRef.current = event.currentTarget;
   }
 
@@ -211,27 +257,24 @@ export const Slider = forwardRef(function ForwardedSlider(
       : Math.ceil(sliderValue / step) * step - offset;
   }
 
-  function renderLabel(sliderValue: number): ReactNode {
-    const formattedLabel = formatLabel(sliderValue);
+  function renderLabel(props: SliderLabelProps): ReactNode {
     if (labelPosition === "bottom") {
-      return (
-        <span role="tooltip" className="absolute top-7 -translate-x-1/2">
-          {formattedLabel}
-        </span>
-      );
+      return <span {...props} className="absolute top-7 -translate-x-1/2" />;
     }
-    return <Infotip {...getInfotipProps()}>{formattedLabel}</Infotip>;
+    return <Infotip {...getInfotipProps(props)} />;
   }
 
-  function getInfotipProps(): InfotipProps {
+  function getInfotipProps(props: SliderLabelProps): InfotipProps {
     if (labelPosition === "bottom floating") {
       return {
+        ...props,
         x: 12,
         y: 24,
         position: "bottom",
       };
     }
     return {
+      ...props,
       x: 12,
       y: 0,
       position: "top",
