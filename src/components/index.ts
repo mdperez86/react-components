@@ -16,6 +16,7 @@ export * from "./MonthPicker";
 export * from "./ProgressBar";
 export * from "./ProgressCircle";
 export * from "./RadioButton";
+export * from "./Slider";
 export * from "./TextAreaField";
 export * from "./Toggle";
 export * from "./Tooltip";

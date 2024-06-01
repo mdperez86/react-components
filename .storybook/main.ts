@@ -28,6 +28,6 @@ const config: StorybookConfig = {
     reactDocgen: "react-docgen-typescript",
   },
 
-  docs: {}
+  docs: {},
 };
 export default config;
