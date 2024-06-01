@@ -24,3 +24,5 @@ export type InfotipProps = Omit<
    */
   y?: CSSProperties["top"];
 };
+
+export type SliderType = "min" | "max";

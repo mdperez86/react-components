@@ -18,7 +18,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
     <div
       {...props}
       ref={ref}
-      role="tooltip"
+      role="none"
       tabIndex={-1}
       className={classNames(className, "absolute z-10 drop-shadow-lg", {
         "-translate-x-1/2 -translate-y-full": position === "top",
@@ -36,7 +36,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
         top: y,
       }}
     >
-      <div className="relative p-2">
+      <div className="relative p-2" role="none">
         <div
           role="presentation"
           className={classNames(
@@ -54,6 +54,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
         />
 
         <div
+          role="tooltip"
           className={classNames(
             "relative py-2 px-3",
             "bg-white rounded-lg",
