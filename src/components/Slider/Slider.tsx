@@ -7,7 +7,7 @@ import {
   useRef,
 } from "react";
 import classNames from "classnames";
-import { Infotip, type SliderType } from "../Infotip";
+import { Infotip, type InfotipProps, type SliderType } from "../Infotip";
 import { type SliderProps } from "./types";
 
 export const Slider = forwardRef(function ForwardedSlider(
@@ -16,7 +16,9 @@ export const Slider = forwardRef(function ForwardedSlider(
     min: defaultMin = 0,
     max: defaultMax = 100,
     value,
+    labelPosition = "top floating",
     className,
+    formatLabel = defaultFormatLabel,
     onChange,
     ...props
   }: SliderProps,
@@ -89,9 +91,7 @@ export const Slider = forwardRef(function ForwardedSlider(
         onKeyDown={silderKeyDownHandler(type)}
         onPointerDown={handlePointerDown}
       >
-        <Infotip x={12} y={0}>
-          {sliderValue.toLocaleString()}
-        </Infotip>
+        {renderLabel(sliderValue)}
       </button>
     );
   }
@@ -192,7 +192,7 @@ export const Slider = forwardRef(function ForwardedSlider(
 
     const sliderValue = getSteppedValue(percentage, type);
     if (infotip) {
-      infotip.textContent = sliderValue.toLocaleString();
+      infotip.textContent = formatLabel(sliderValue);
     }
   }
 
@@ -210,4 +210,35 @@ export const Slider = forwardRef(function ForwardedSlider(
       ? Math.trunc(sliderValue / step) * step - offset
       : Math.ceil(sliderValue / step) * step - offset;
   }
+
+  function renderLabel(sliderValue: number): ReactNode {
+    const formattedLabel = formatLabel(sliderValue);
+    if (labelPosition === "bottom") {
+      return (
+        <span role="tooltip" className="absolute top-7 -translate-x-1/2">
+          {formattedLabel}
+        </span>
+      );
+    }
+    return <Infotip {...getInfotipProps()}>{formattedLabel}</Infotip>;
+  }
+
+  function getInfotipProps(): InfotipProps {
+    if (labelPosition === "bottom floating") {
+      return {
+        x: 12,
+        y: 24,
+        position: "bottom",
+      };
+    }
+    return {
+      x: 12,
+      y: 0,
+      position: "top",
+    };
+  }
 });
+
+function defaultFormatLabel(sliderValue: number): string {
+  return sliderValue.toLocaleString();
+}

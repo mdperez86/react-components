@@ -32,9 +32,23 @@ export type SliderProps = Omit<
    */
   value?: [number, number];
   /**
+   * The position of the label.
+   *
+   * @default top floating
+   */
+  labelPosition?: "bottom" | "bottom floating" | "top floating";
+  /**
    * Triggered when the user changes the value of the slider.
    *
    * @param value The selected values.
    */
   onChange?: (value: [number, number]) => void;
+  /**
+   * Used to set a custom format to the slider value.
+   *
+   * @param sliderValue The current slider value.
+   * @return The formatted value. By default
+   * it returns the localized number format.
+   */
+  formatLabel?: (sliderValue: number) => string;
 };

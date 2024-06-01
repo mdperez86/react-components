@@ -24,3 +24,54 @@ export const Default: Story = {
     return <Slider {...args} value={value} onChange={setValue} />;
   },
 };
+
+export const CurrencySlider: Story = {
+  args: {
+    labelPosition: "bottom floating",
+    formatLabel(sliderValue: number) {
+      return sliderValue.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+    },
+  },
+  render(args) {
+    const [value, setValue] = useState<[number, number]>();
+
+    return <Slider {...args} value={value} onChange={setValue} />;
+  },
+};
+
+export const PercentageSlider: Story = {
+  args: {
+    labelPosition: "bottom",
+    formatLabel(sliderValue: number) {
+      return (sliderValue / 100).toLocaleString("en-US", {
+        style: "percent",
+      });
+    },
+  },
+  render(args) {
+    const [value, setValue] = useState<[number, number]>();
+
+    return <Slider {...args} value={value} onChange={setValue} />;
+  },
+};
+
+export const TemperatureSlider: Story = {
+  args: {
+    min: -50,
+    max: 50,
+    formatLabel(sliderValue: number) {
+      return sliderValue.toLocaleString("en-US", {
+        style: "unit",
+        unit: "celsius",
+      });
+    },
+  },
+  render(args) {
+    const [value, setValue] = useState<[number, number]>();
+
+    return <Slider {...args} value={value} onChange={setValue} />;
+  },
+};
