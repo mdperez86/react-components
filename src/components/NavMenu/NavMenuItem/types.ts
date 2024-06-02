@@ -10,4 +10,8 @@ export type NavMenuItemProps = React.DetailedHTMLProps<
    * The item badge.
    */
   badge?: string;
+  /**
+   * The supporting text to show below the item text.
+   */
+  supportingText?: string;
 };
