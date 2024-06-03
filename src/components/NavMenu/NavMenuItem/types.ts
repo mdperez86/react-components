@@ -1,8 +1,8 @@
 import type { IconProps } from "@this/icons";
 
 export type NavMenuItemProps = React.DetailedHTMLProps<
-  React.LiHTMLAttributes<HTMLLIElement>,
-  HTMLLIElement
+  React.AnchorHTMLAttributes<HTMLAnchorElement>,
+  HTMLAnchorElement
 > & {
   /**
    * The item text.
