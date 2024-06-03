@@ -13,14 +13,16 @@ export const NavMenuItem = forwardRef(function ForwardedNavMenuItem(
     renderIcon,
     ...props
   }: NavMenuItemProps,
-  ref: Ref<HTMLLIElement>,
+  ref: Ref<HTMLAnchorElement>,
 ) {
   return (
-    <li {...props} ref={ref} role="none" className={className}>
+    <li role="none">
       <a
-        href="#"
+        {...props}
+        ref={ref}
         role="menuitem"
         className={classNames(
+          className,
           "flex flex-col gap-1 p-3 rounded-lg hover:bg-gray-50",
         )}
       >

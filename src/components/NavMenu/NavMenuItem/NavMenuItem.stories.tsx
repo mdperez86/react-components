@@ -10,6 +10,9 @@ const meta: Meta<NavMenuItemProps> = {
   parameters: {
     layout: "centered",
   },
+  args: {
+    href: "#",
+  },
 };
 
 export default meta;
