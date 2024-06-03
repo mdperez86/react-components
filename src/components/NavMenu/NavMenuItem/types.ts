@@ -17,6 +17,11 @@ export type NavMenuItemProps = React.DetailedHTMLProps<
    */
   supportingText?: string;
   /**
+   * When the renderIcon function is set, this specifies
+   * the prominence of the icon.
+   */
+  featuredIcon?: boolean;
+  /**
    * The icon to render at the beginning of the item.
    *
    * @param props The icon props.

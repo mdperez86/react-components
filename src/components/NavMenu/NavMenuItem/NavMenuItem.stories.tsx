@@ -49,3 +49,24 @@ export const WithIcon: Story = {
     );
   },
 };
+
+export const WithFeaturedIcon: Story = {
+  args: {
+    text: "Product",
+    badge: "New",
+    supportingText: "Find the best solution for you.",
+    featuredIcon: true,
+    renderIcon({ ref, ...props }) {
+      return <CalendarIcon {...props} />;
+    },
+  },
+  render(args) {
+    return (
+      <nav>
+        <ul role="menubar">
+          <NavMenuItem {...args} />
+        </ul>
+      </nav>
+    );
+  },
+};
