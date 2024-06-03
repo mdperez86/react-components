@@ -8,6 +8,7 @@ export const NavMenuItem = forwardRef(function ForwardedNavMenuItem(
     text,
     badge,
     supportingText,
+    featuredIcon,
     className,
     renderIcon,
     ...props
@@ -25,12 +26,20 @@ export const NavMenuItem = forwardRef(function ForwardedNavMenuItem(
       >
         <div className="flex gap-4">
           {renderIcon && (
-            <div className="flex justify-center">
-              {renderIcon({ size: "lg", className: "text-primary-600" })}
+            <div className="flex justify-center" role="none">
+              <div
+                className={classNames({
+                  "rounded-full w-12 aspect-square bg-primary-100 flex items-center justify-center":
+                    featuredIcon,
+                })}
+                role="none"
+              >
+                {renderIcon({ size: "lg", className: "text-primary-600" })}
+              </div>
             </div>
           )}
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col justify-center gap-1">
             <div className="flex items-center gap-2">
               <span className="text-md font-medium text-gray-900">{text}</span>
 
