@@ -2,6 +2,7 @@ export * from "./AlertCircleIcon";
 export * from "./AlertOctagonIcon";
 export * from "./AlertTriangleIcon";
 export * from "./AlignCenterIcon";
+export * from "./AlignJustifyIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
