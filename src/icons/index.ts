@@ -20,6 +20,7 @@ export * from "./ArrowRightCircleIcon";
 export * from "./ArrowRightIcon";
 export * from "./ArrowUpCircleIcon";
 export * from "./ArrowUpLeftIcon";
+export * from "./ArrowUpRightIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
