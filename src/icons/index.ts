@@ -24,6 +24,7 @@ export * from "./ArrowUpLeftIcon";
 export * from "./ArrowUpRightIcon";
 export * from "./AtSignIcon";
 export * from "./AwardIcon";
+export * from "./BarChartIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
