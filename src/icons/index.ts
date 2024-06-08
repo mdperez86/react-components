@@ -33,6 +33,7 @@ export * from "./BellOffIcon";
 export * from "./BluetoothIcon";
 export * from "./BoldIcon";
 export * from "./BookIcon";
+export * from "./BookmarkIcon";
 export * from "./BookOpenIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
