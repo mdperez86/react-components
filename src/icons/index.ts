@@ -23,6 +23,7 @@ export * from "./ArrowUpIcon";
 export * from "./ArrowUpLeftIcon";
 export * from "./ArrowUpRightIcon";
 export * from "./AtSignIcon";
+export * from "./AwardIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
