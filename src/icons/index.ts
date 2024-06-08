@@ -8,6 +8,7 @@ export * from "./AlignJustifyIcon";
 export * from "./AlignLeftIcon";
 export * from "./AlignRightIcon";
 export * from "./AnchorIcon";
+export * from "./ApertureIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
