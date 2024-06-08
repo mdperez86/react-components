@@ -27,6 +27,7 @@ export * from "./AwardIcon";
 export * from "./BarChartAltIcon";
 export * from "./BarChartIcon";
 export * from "./BatteryChargingIcon";
+export * from "./BatteryIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
