@@ -36,6 +36,7 @@ export * from "./BookIcon";
 export * from "./BookmarkIcon";
 export * from "./BookOpenIcon";
 export * from "./BoxIcon";
+export * from "./BriefcaseIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
