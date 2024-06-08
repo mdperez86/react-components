@@ -1,3 +1,4 @@
+export * from "./ActivityIcon";
 export * from "./AlertCircleIcon";
 export * from "./AlertOctagonIcon";
 export * from "./AlertTriangleIcon";
