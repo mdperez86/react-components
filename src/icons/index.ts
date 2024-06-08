@@ -11,6 +11,7 @@ export * from "./AnchorIcon";
 export * from "./ApertureIcon";
 export * from "./ArchiveIcon";
 export * from "./ArrowDownCircleIcon";
+export * from "./ArrowDownIcon";
 export * from "./ArrowDownLeftIcon";
 export * from "./ArrowDownRightIcon";
 export * from "./CalendarIcon";
