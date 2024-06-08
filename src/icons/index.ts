@@ -30,6 +30,7 @@ export * from "./BatteryChargingIcon";
 export * from "./BatteryIcon";
 export * from "./BellIcon";
 export * from "./BellOffIcon";
+export * from "./BluetoothIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
