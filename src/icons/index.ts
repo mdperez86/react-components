@@ -8,6 +8,7 @@ export * from "./ChevronUpIcon";
 export * from "./HelpCircleIcon";
 export * from "./HomeIcon";
 export * from "./MinusIcon";
+export * from "./ThreeLayersIcon";
 export * from "./TwoLayersIcon";
 export * from "./UserIcon";
 
