@@ -4,6 +4,7 @@ export * from "./AlertTriangleIcon";
 export * from "./AlignCenterIcon";
 export * from "./AlignJustifyIcon";
 export * from "./AlignLeftIcon";
+export * from "./AlignRightIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
