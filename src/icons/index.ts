@@ -10,6 +10,7 @@ export * from "./AlignRightIcon";
 export * from "./AnchorIcon";
 export * from "./ApertureIcon";
 export * from "./ArchiveIcon";
+export * from "./ArrowDownCircleIcon";
 export * from "./CalendarIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
