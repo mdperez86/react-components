@@ -41,6 +41,7 @@ export * from "./CalendarIcon";
 export * from "./CameraIcon";
 export * from "./CameraOffIcon";
 export * from "./CastIcon";
+export * from "./CheckCircleIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
 export * from "./ChevronLeftIcon";
