@@ -1,13 +1,14 @@
 import { type Ref, forwardRef, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { type ColorFieldProps } from "./types";
+import { mergeRefs } from "@this/utils";
 import { Tooltip } from "../Tooltip";
 
 export const ColorField = forwardRef(function ForwardedColorField(
   { className, ...props }: ColorFieldProps,
   ref: Ref<HTMLInputElement>,
 ) {
-  const controlRef = useRef<HTMLInputElement>();
+  const controlRef = useRef<HTMLInputElement>(null);
   const [color, setColor] = useState<string | undefined>("#000000");
 
   useEffect(addEventListener, []);
@@ -22,7 +23,7 @@ export const ColorField = forwardRef(function ForwardedColorField(
           <input
             {...props}
             type="color"
-            ref={setRef}
+            ref={mergeRefs(ref, controlRef)}
             className={classNames(
               "peer cursor-pointer disabled:cursor-not-allowed",
               "outline-none appearance-none opacity-0",
@@ -42,6 +43,8 @@ export const ColorField = forwardRef(function ForwardedColorField(
               "peer-checked:border-primary-600 peer-checked:peer-focus:border-primary-600",
               "peer-indeterminate:border-primary-600 peer-focus:peer-indeterminate:border-primary-600",
               "peer-disabled:border-gray-200 peer-disabled:bg-gray-100",
+              "peer-invalid:border-error-300",
+              "peer-invalid:peer-focus:border-error-300 peer-invalid:peer-focus:ring-error-100",
             )}
           >
             <div
@@ -74,13 +77,6 @@ export const ColorField = forwardRef(function ForwardedColorField(
       } else {
         setColor(undefined);
       }
-    }
-  }
-
-  function setRef(element: HTMLInputElement): void {
-    controlRef.current = element;
-    if (typeof ref === "function") {
-      ref(element);
     }
   }
 });

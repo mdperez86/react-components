@@ -1,14 +1,15 @@
 import {
-  type Ref,
-  forwardRef,
   type FocusEvent,
+  type ForwardedRef,
+  forwardRef,
   useState,
   useRef,
   useEffect,
 } from "react";
 import classNames from "classnames";
 import { AlertCircleIcon, HelpCircleIcon } from "@this/icons";
-import { type FileFieldProps } from "./types";
+import { mergeRefs } from "@this/utils";
+import type { FileFieldProps } from "./types";
 
 export const FileField = forwardRef(function ForwardedFileField(
   {
@@ -19,9 +20,9 @@ export const FileField = forwardRef(function ForwardedFileField(
     onBlur,
     ...props
   }: FileFieldProps,
-  ref: Ref<HTMLInputElement>,
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const controlRef = useRef<HTMLInputElement>();
+  const controlRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string>();
 
   useEffect(addEventListeners, []);
@@ -57,7 +58,7 @@ export const FileField = forwardRef(function ForwardedFileField(
 
       <input
         {...props}
-        ref={setRef}
+        ref={mergeRefs(ref, controlRef)}
         type="file"
         className={classNames(
           "absolute z-0 top-0 left-0 h-full w-full opacity-0",
@@ -114,14 +115,6 @@ export const FileField = forwardRef(function ForwardedFileField(
         }
         setFileName(displayName);
       }
-    }
-  }
-
-  function setRef(element: HTMLInputElement): void {
-    controlRef.current = element;
-
-    if (typeof ref === "function") {
-      ref(element);
     }
   }
 

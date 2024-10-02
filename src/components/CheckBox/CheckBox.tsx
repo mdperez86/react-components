@@ -1,13 +1,14 @@
 import { type Ref, forwardRef, useRef, useEffect } from "react";
 import classNames from "classnames";
 import { CheckIcon, MinusIcon } from "@this/icons";
+import { mergeRefs } from "@this/utils";
 import { type CheckBoxProps } from "./types";
 
 export const CheckBox = forwardRef(function ForwardedCheckBox(
   { className, indeterminate, ...props }: CheckBoxProps,
   ref: Ref<HTMLInputElement>,
 ) {
-  const controlRef = useRef<HTMLInputElement>();
+  const controlRef = useRef<HTMLInputElement>(null);
 
   useEffect(setIndeterminate, [indeterminate]);
 
@@ -16,7 +17,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
       <input
         {...props}
         type="checkbox"
-        ref={setRef}
+        ref={mergeRefs(ref, controlRef)}
         className={classNames(
           "peer cursor-pointer disabled:cursor-not-allowed",
           "outline-none appearance-none",
@@ -57,13 +58,6 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
       </div>
     </div>
   );
-
-  function setRef(element: HTMLInputElement): void {
-    controlRef.current = element;
-    if (typeof ref === "function") {
-      ref(element);
-    }
-  }
 
   function setIndeterminate(): void {
     if (controlRef.current) {
