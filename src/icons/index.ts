@@ -38,6 +38,7 @@ export * from "./BookOpenIcon";
 export * from "./BoxIcon";
 export * from "./BriefcaseIcon";
 export * from "./CalendarIcon";
+export * from "./CameraOffIcon";
 export * from "./CheckIcon";
 export * from "./ChevronDownIcon";
 export * from "./ChevronLeftIcon";
@@ -50,4 +51,4 @@ export * from "./ThreeLayersIcon";
 export * from "./TwoLayersIcon";
 export * from "./UserIcon";
 
-export * from "./types";
+export type * from "./types";
