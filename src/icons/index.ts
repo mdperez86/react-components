@@ -50,6 +50,7 @@ export * from "./ChevronRightIcon";
 export * from "./ChevronsDownIcon";
 export * from "./ChevronsLeftIcon";
 export * from "./ChevronsRightIcon";
+export * from "./ChevronsUpIcon";
 export * from "./ChevronUpIcon";
 export * from "./HelpCircleIcon";
 export * from "./HomeIcon";
