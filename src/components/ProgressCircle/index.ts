@@ -1,2 +1,2 @@
 export * from "./ProgressCircle";
-export * from "./types";
+export type * from "./types";

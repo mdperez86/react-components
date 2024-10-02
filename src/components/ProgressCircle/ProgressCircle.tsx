@@ -20,8 +20,7 @@ export function ProgressCircle({
   const indeterminate = value === undefined;
   const formattedValue = getFormattedValue(value, locale);
   const labelId = useId();
-  const label =
-    renderLabel && renderLabel({ formattedValue, value: getValueNow(value) });
+  const label = renderLabel?.({ formattedValue, value: getValueNow(value) });
 
   return (
     <div

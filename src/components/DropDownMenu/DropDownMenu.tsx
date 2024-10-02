@@ -142,8 +142,7 @@ export const DropDownMenuItem = forwardRef(function ForwardedDropDownMenuItem(
       </div>
 
       {expanded &&
-        subMenu &&
-        subMenu({
+        subMenu?.({
           id: popupId,
           className:
             "ml-2 absolute top-0 left-full z-10 shadow-md rounded-lg bg-white border border-gray-200",

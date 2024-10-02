@@ -1,3 +1,3 @@
 export * from "./components";
 export * from "./icons";
-export * from "./types";
+export type * from "./types";
