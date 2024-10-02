@@ -8,6 +8,7 @@ export * from "./Combobox";
 export * from "./DateField";
 export * from "./DatePicker";
 export * from "./Dropdown";
+export * from "./FileField";
 export * from "./FormControl";
 export * from "./Infotip";
 export * from "./InputField";
