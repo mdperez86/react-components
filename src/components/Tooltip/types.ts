@@ -6,7 +6,10 @@ import {
 } from "react";
 import { type InfotipProps } from "../Infotip";
 
-export type TooltipProps<T = HTMLDivElement> = Omit<InfotipProps, "x" | "y"> & {
+export type TooltipProps<T extends HTMLElement = HTMLDivElement> = Omit<
+  InfotipProps,
+  "x" | "y"
+> & {
   /**
    * The toggle component.
    *
@@ -15,5 +18,5 @@ export type TooltipProps<T = HTMLDivElement> = Omit<InfotipProps, "x" | "y"> & {
   renderTrigger: (attrs: TooltipTriggerProps<T>) => ReactNode;
 };
 
-export type TooltipTriggerProps<T = HTMLDivElement> = AriaAttributes &
-  DetailedHTMLProps<HTMLAttributes<T>, T>;
+export type TooltipTriggerProps<T extends HTMLElement = HTMLDivElement> =
+  AriaAttributes & DetailedHTMLProps<HTMLAttributes<T>, T>;

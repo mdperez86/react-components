@@ -3,7 +3,9 @@ import { createPortal } from "react-dom";
 import { type InfotipProps, Infotip } from "../Infotip";
 import { type TooltipProps } from "./types";
 
-export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
+export const Tooltip = forwardRef(function ForwardedTooltip<
+  T extends HTMLElement = HTMLDivElement,
+>(
   {
     renderTrigger,
     position = "top",
@@ -65,39 +67,43 @@ export const Tooltip = forwardRef(function ForwardedTooltip<T = HTMLDivElement>(
   }
 
   function getInfotipPlacement(): Pick<InfotipProps, "x" | "y"> | undefined {
-    const triggerBounds = (
-      triggerRef.current as HTMLDivElement
-    )?.getBoundingClientRect();
+    const triggerBounds = triggerRef.current?.getBoundingClientRect();
 
     if (!triggerBounds) return undefined;
 
-    const placementCenter = {
-      x: triggerBounds.left + triggerBounds.width / 2,
-      y: triggerBounds.top + triggerBounds.height / 2,
+    const triggerPlacement = {
+      left: triggerBounds.left + window.scrollX,
+      right: triggerBounds.right + window.scrollX,
+      top: triggerBounds.top + window.scrollY,
+      bottom: triggerBounds.bottom + window.scrollY,
+      width: triggerBounds.width,
+      height: triggerBounds.height,
+    };
+
+    const center = {
+      x: triggerPlacement.left + triggerPlacement.width / 2,
+      y: triggerPlacement.top + triggerPlacement.height / 2,
     };
 
     switch (position) {
       case "right":
-        return {
-          x: triggerBounds.right,
-          y: placementCenter.y,
-        };
-      case "bottom":
-        return {
-          x: placementCenter.x,
-          y: triggerBounds.bottom,
-        };
       case "left":
         return {
-          x: triggerBounds.left,
-          y: placementCenter.y,
+          ...center,
+          x: triggerPlacement[position],
+        };
+      case "top":
+      case "bottom":
+        return {
+          ...center,
+          y: triggerPlacement[position],
         };
       case "top right":
       case "top left":
       default:
         return {
-          x: placementCenter.x,
-          y: triggerBounds.top,
+          ...center,
+          y: triggerPlacement.top,
         };
     }
   }
