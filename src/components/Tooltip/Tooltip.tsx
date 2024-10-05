@@ -1,4 +1,11 @@
-import { type Ref, forwardRef, useId, useRef, useState } from "react";
+import {
+  type ReactPortal,
+  type Ref,
+  forwardRef,
+  useId,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import { type InfotipProps, Infotip } from "../Infotip";
 import { type TooltipProps } from "./types";
@@ -31,22 +38,7 @@ export const Tooltip = forwardRef(function ForwardedTooltip<
         onTouchStart: handleFocus,
       })}
 
-      {open &&
-        createPortal(
-          <Infotip
-            {...props}
-            {...getInfotipPlacement()}
-            id={infotipId}
-            ref={ref}
-            position={position}
-            className={className}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {children}
-          </Infotip>,
-          document.body,
-        )}
+      {renderInfotip()}
     </>
   );
 
@@ -64,6 +56,25 @@ export const Tooltip = forwardRef(function ForwardedTooltip<
 
   function handleMouseLeave(): void {
     setOpen(false);
+  }
+
+  function renderInfotip(): ReactPortal | undefined {
+    if (!children || !open) return;
+    return createPortal(
+      <Infotip
+        {...props}
+        {...getInfotipPlacement()}
+        id={infotipId}
+        ref={ref}
+        position={position}
+        className={className}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {children}
+      </Infotip>,
+      document.body,
+    );
   }
 
   function getInfotipPlacement(): Pick<InfotipProps, "x" | "y"> | undefined {
