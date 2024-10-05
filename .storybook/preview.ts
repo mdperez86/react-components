@@ -1,4 +1,5 @@
 import type { Preview } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 
 import "./styles.css";
@@ -16,7 +17,13 @@ export const decorators = [
 
 const preview: Preview = {
   tags: ["autodocs"],
+  args: {
+    onClick: fn(),
+    onBlur: fn(),
+    onFocus: fn(),
+  },
   parameters: {
+    actions: { argTypesRegex: "^on.*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,

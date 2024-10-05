@@ -1,15 +1,25 @@
-import { type Ref, forwardRef, useEffect, useRef, useState } from "react";
+import {
+  type FocusEvent,
+  type ForwardedRef,
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import classNames from "classnames";
-import { type ColorFieldProps } from "./types";
 import { mergeRefs } from "@this/utils";
 import { Tooltip } from "../Tooltip";
+import { type ColorFieldProps } from "./types";
 
 export const ColorField = forwardRef(function ForwardedColorField(
-  { className, ...props }: ColorFieldProps,
-  ref: Ref<HTMLInputElement>,
+  { className, onBlur, ...props }: ColorFieldProps,
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
   const controlRef = useRef<HTMLInputElement>(null);
-  const [color, setColor] = useState<string | undefined>("#000000");
+  const [displayColor, setDisplayColor] = useState<string | undefined>(
+    props.defaultValue as string,
+  );
+  const color = (props.value ?? displayColor ?? "#000000") as string;
 
   useEffect(addEventListener, []);
 
@@ -29,6 +39,7 @@ export const ColorField = forwardRef(function ForwardedColorField(
               "outline-none appearance-none opacity-0",
               "absolute z-[1] top-0 right-0 w-full h-full",
             )}
+            onBlur={handleBlur}
           />
 
           <div
@@ -64,19 +75,20 @@ export const ColorField = forwardRef(function ForwardedColorField(
 
     if (!control) return;
 
-    control.addEventListener("change", onChange);
+    control.addEventListener("change", handleChange);
 
     return function unsubscribe() {
-      control.removeEventListener("change", onChange);
+      control.removeEventListener("change", handleChange);
     };
 
-    function onChange(event: Event): void {
+    function handleChange(event: Event): void {
       const element = event.target as HTMLInputElement;
-      if (element?.value) {
-        setColor(element.value);
-      } else {
-        setColor(undefined);
-      }
+      setDisplayColor(element?.value ?? "#000000");
     }
+  }
+
+  function handleBlur(event: FocusEvent<HTMLInputElement>): void {
+    onBlur && onBlur(event);
+    event.currentTarget.checkValidity();
   }
 });

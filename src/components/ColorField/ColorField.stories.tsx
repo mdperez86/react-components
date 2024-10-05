@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { ChangeEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { HomeIcon } from "@this/icons";
-import type { ColorFieldProps } from "./types";
+import { useArgs } from "@storybook/preview-api";
+import { fn } from "@storybook/test";
 
 import { ColorField } from "./ColorField";
+import type { ColorFieldProps } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -20,6 +21,7 @@ const meta = {
   args: {
     placeholder: "Placeholder",
     disabled: false,
+    onChange: fn(),
   },
 } satisfies Meta<ColorFieldProps>;
 
@@ -27,19 +29,22 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {};
-
-export const Invalid: Story = {
+export const Default: Story = {
   args: {},
-  render(args) {
-    const ref = useRef<HTMLInputElement>(null);
+};
 
-    useEffect(() => {
-      if (ref.current) {
-        ref.current.setCustomValidity("Invalid");
-      }
-    }, []);
+export const Controlled: Story = {
+  args: {
+    value: "#00ff00",
+  },
+  render: function Render(args) {
+    const [{ value, onChange }, updateArgs] = useArgs();
 
-    return <ColorField {...args} ref={ref} />;
+    function handleChange(e: ChangeEvent<HTMLInputElement>) {
+      updateArgs({ value: e.target.value });
+      onChange(e);
+    }
+
+    return <ColorField {...args} value={value} onChange={handleChange} />;
   },
 };
