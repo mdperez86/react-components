@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { YearPickerProps } from "./types";
 
@@ -25,7 +25,7 @@ type Story = StoryObj<Meta<YearPickerProps>>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   render(args) {
-    const [value, onChange] = useState<number>();
+    const [value, onChange] = useState<number | undefined>(undefined);
 
     return <YearPicker {...args} value={value} onChange={onChange} />;
   },

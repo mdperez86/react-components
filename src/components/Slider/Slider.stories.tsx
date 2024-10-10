@@ -1,8 +1,8 @@
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { SliderProps } from "./types";
 
 import { Slider } from "./Slider";
-import { useState } from "react";
 
 const meta = {
   title: "Components/Slider",
@@ -11,7 +11,7 @@ const meta = {
     layout: "centered",
   },
   args: {},
-} satisfies Meta<SliderProps>;
+} as Meta<SliderProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {},
   render(args) {
-    const [value, setValue] = useState<[number, number]>();
+    const [value, setValue] = useState<[number, number] | undefined>(undefined);
 
     return <Slider {...args} value={value} onChange={setValue} />;
   },
@@ -36,7 +36,7 @@ export const CurrencySlider: Story = {
     },
   },
   render(args) {
-    const [value, setValue] = useState<[number, number]>();
+    const [value, setValue] = useState<[number, number] | undefined>(undefined);
 
     return <Slider {...args} value={value} onChange={setValue} />;
   },
@@ -52,7 +52,7 @@ export const PercentageSlider: Story = {
     },
   },
   render(args) {
-    const [value, setValue] = useState<[number, number]>();
+    const [value, setValue] = useState<[number, number] | undefined>(undefined);
 
     return <Slider {...args} value={value} onChange={setValue} />;
   },
@@ -70,7 +70,7 @@ export const TemperatureSlider: Story = {
     },
   },
   render(args) {
-    const [value, setValue] = useState<[number, number]>();
+    const [value, setValue] = useState<[number, number] | undefined>(undefined);
 
     return <Slider {...args} value={value} onChange={setValue} />;
   },

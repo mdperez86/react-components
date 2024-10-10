@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { DatePickerProps } from "./types";
 
@@ -17,7 +17,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {},
-} satisfies Meta<DatePickerProps>;
+} as Meta<DatePickerProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -26,7 +26,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {},
   render(args) {
-    const [value, onChange] = useState<Date>();
+    const [value, onChange] = useState<Date | undefined>(undefined);
 
     return <DatePicker {...args} value={value} onChange={onChange} />;
   },

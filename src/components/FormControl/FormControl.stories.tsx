@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import { LoremIpsum } from "lorem-ipsum";
 import type { FormControlProps } from "./types";
@@ -11,6 +11,8 @@ import { CheckBox } from "../CheckBox";
 import { Toggle } from "../Toggle";
 import { Combobox } from "../Combobox";
 import { DateField } from "../DateField";
+import { ColorField } from "../ColorField";
+import { FileField } from "../FileField";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -28,7 +30,7 @@ const meta = {
     label: "Label",
     hintText: "This is a hint text to help user.",
   },
-} satisfies Meta<FormControlProps>;
+} as Meta<FormControlProps>;
 
 export default meta;
 type Story<T = HTMLInputElement> = StoryObj<Meta<FormControlProps<T>>>;
@@ -52,7 +54,7 @@ export const WithTextAreaField: Story<HTMLTextAreaElement> = {
 
 export const WithDateField: Story = {
   render(args) {
-    const [value, onChange] = useState<Date>();
+    const [value, onChange] = useState<Date | undefined>(undefined);
 
     function renderControl(props: {}) {
       return <DateField {...props} value={value} onChange={onChange} />;
@@ -67,7 +69,7 @@ const options = Array.from({ length: 10 }).map(() => lorem.generateWords(2));
 
 export const WithCombobox: Story = {
   render(args) {
-    const [value, onChange] = useState<string>();
+    const [value, onChange] = useState<string | undefined>(undefined);
 
     function renderControl(props: {}) {
       return (
@@ -105,6 +107,23 @@ export const WithToggle: Story = {
     labelPosition: "left",
     renderControl(props) {
       return <Toggle {...props} />;
+    },
+  },
+};
+
+export const WithColorField: Story = {
+  args: {
+    labelPosition: "right",
+    renderControl(props) {
+      return <ColorField {...props} />;
+    },
+  },
+};
+
+export const WithFileField: Story = {
+  args: {
+    renderControl(props) {
+      return <FileField {...props} />;
     },
   },
 };

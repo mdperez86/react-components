@@ -1,4 +1,5 @@
-import { ReactNode, useLayoutEffect, useRef, useState } from "react";
+import { ReactNode, useLayoutEffect } from "react";
+import { useRef, useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import { LoremIpsum } from "lorem-ipsum";
 import type { ComboboxProps } from "./types";
@@ -37,7 +38,7 @@ const meta = {
       return option.text;
     },
   },
-} satisfies Meta<ComboboxProps<Option>>;
+} as Meta<ComboboxProps<Option>>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -45,7 +46,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const SelectOnly: Story = {
   render(args) {
-    const [value, onChange] = useState<Option>();
+    const [value, onChange] = useState<Option | undefined>(undefined);
     return <Combobox {...args} value={value} onChange={onChange} />;
   },
 };
@@ -62,7 +63,7 @@ export const WithLeadingIcon: Story = {
     },
   },
   render(args) {
-    const [value, onChange] = useState<Option>();
+    const [value, onChange] = useState<Option | undefined>(undefined);
     return (
       <Combobox
         {...args}
@@ -79,8 +80,8 @@ export const Invalid: Story = {
     leadingIcon: <UserIcon />,
   },
   render(args) {
-    const ref = useRef<HTMLInputElement>(null);
-    const [value, onChange] = useState<Option>();
+    const ref = useRef<HTMLInputElement | null>(null);
+    const [value, onChange] = useState<Option | undefined>(undefined);
 
     useLayoutEffect(() => {
       if (ref.current) {
@@ -97,7 +98,7 @@ export const Autocomplete: Story = {
     type: "autocomplete",
   },
   render(args) {
-    const [value, onChange] = useState<Option>();
+    const [value, onChange] = useState<Option | undefined>(undefined);
     const [options, setOptions] = useState(args.options ?? []);
 
     return (

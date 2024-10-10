@@ -24,7 +24,7 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
   const indeterminate = value === undefined;
   const currentLabelPosition = indeterminate
     ? undefined
-    : labelPosition ?? "floating top";
+    : (labelPosition ?? "floating top");
   const currentValue = getValue();
   const formattedValue = getValueAsPercentage(
     (currentValue ?? 0) / max,

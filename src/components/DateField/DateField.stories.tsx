@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { DateFieldProps } from "./types";
 
@@ -20,7 +20,7 @@ const meta = {
   args: {
     "aria-label": "Select a date",
   },
-} satisfies Meta<DateFieldProps>;
+} as Meta<DateFieldProps>;
 
 export default meta;
 type Story = StoryObj<Meta<DateFieldProps>>;

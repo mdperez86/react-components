@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { ListBoxProps } from "./types";
 
@@ -19,7 +19,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {},
-} satisfies Meta<ListBoxProps>;
+} as Meta<ListBoxProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -56,7 +56,7 @@ export const WithHeader: Story = {
 export const WithGoups: Story = {
   args: {},
   render(args) {
-    const [value, onChange] = useState<string>();
+    const [value, onChange] = useState<string | undefined>(undefined);
     return (
       <ListBox
         {...args}

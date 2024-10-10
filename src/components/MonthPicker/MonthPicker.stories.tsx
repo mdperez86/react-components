@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from "@storybook/preview-api";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { MonthPickerProps } from "./types";
 
@@ -17,7 +17,7 @@ const meta = {
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {},
   args: {},
-} satisfies Meta<MonthPickerProps>;
+} as Meta<MonthPickerProps>;
 
 export default meta;
 type Story = StoryObj<Meta<MonthPickerProps>>;
@@ -25,7 +25,7 @@ type Story = StoryObj<Meta<MonthPickerProps>>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   render(args) {
-    const [value, onChange] = useState<number>();
+    const [value, onChange] = useState<number | undefined>(undefined);
 
     return <MonthPicker {...args} value={value} onChange={onChange} />;
   },
