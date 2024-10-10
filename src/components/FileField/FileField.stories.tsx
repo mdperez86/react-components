@@ -4,6 +4,7 @@ import { HomeIcon } from "@this/icons";
 import type { FileFieldProps } from "./types";
 
 import { FileField } from "./FileField";
+import { Button } from "../Button";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -16,7 +17,11 @@ const meta = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
+  argTypes: {
+    value: {
+      type: "string",
+    },
+  },
   args: {
     placeholder: "Placeholder",
     disabled: false,
@@ -62,5 +67,26 @@ export const Invalid: Story = {
     }, []);
 
     return <FileField {...args} ref={ref} />;
+  },
+};
+
+export const FormReset: Story = {
+  args: {
+    leadingIcon: <HomeIcon />,
+    required: true,
+  },
+  render(args) {
+    return (
+      <form className="flex flex-col gap-4">
+        <FileField {...args} />
+
+        <div className="flex gap-2 justify-center">
+          <Button hierarchy="primary" type="submit">
+            Submit
+          </Button>
+          <Button type="reset">Reset</Button>
+        </div>
+      </form>
+    );
   },
 };

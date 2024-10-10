@@ -1,4 +1,5 @@
 import {
+  type ChangeEvent,
   type FocusEvent,
   type ForwardedRef,
   forwardRef,
@@ -17,6 +18,8 @@ export const FileField = forwardRef(function ForwardedFileField(
     helpIcon = false,
     className,
     placeholder,
+    value,
+    onChange,
     onBlur,
     ...props
   }: FileFieldProps,
@@ -25,7 +28,8 @@ export const FileField = forwardRef(function ForwardedFileField(
   const controlRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState<string>();
 
-  useEffect(addEventListeners, []);
+  useEffect(addFormResetListener, []);
+  useEffect(watchValue, [value]);
 
   return (
     <div
@@ -65,6 +69,7 @@ export const FileField = forwardRef(function ForwardedFileField(
           "appearance-none",
           "focus:outline-none disabled:cursor-not-allowed",
         )}
+        onChange={handleChange}
         onBlur={handleBlur}
       />
 
@@ -96,31 +101,46 @@ export const FileField = forwardRef(function ForwardedFileField(
     </div>
   );
 
-  function addEventListeners(): undefined | (() => void) {
-    const element = controlRef.current;
-    if (!element) return;
+  function watchValue(): void {
+    if (controlRef.current && !value) {
+      controlRef.current.value = "";
+      setFileName(undefined);
+    }
+  }
 
-    element.addEventListener("change", handleChange);
+  function addFormResetListener(): undefined | (() => void) {
+    const form = controlRef.current?.form;
 
-    return function unsubscribe() {
-      element.removeEventListener("change", handleChange);
-    };
+    if (form) {
+      form.addEventListener("reset", handleFormReset);
 
-    function handleChange(event: Event): void {
-      const target = event.target as HTMLInputElement;
-      if (target?.files?.length) {
-        let displayName = target.files.item(0)?.name ?? "";
-        if (target.files.length > 1) {
-          displayName = `${displayName} +${target.files.length - 1}`;
-        }
-        setFileName(displayName);
+      return function removeFormResetListener() {
+        form.removeEventListener("reset", handleFormReset);
+      };
+
+      function handleFormReset(): void {
+        setFileName(undefined);
       }
     }
   }
 
-  function handleBlur(event: FocusEvent<HTMLInputElement>): void {
-    onBlur && onBlur(event);
+  function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    const target = event.currentTarget;
 
+    if (target.files?.length) {
+      let displayName = target.files.item(0)?.name ?? "";
+      if (target.files.length > 1) {
+        displayName = `${displayName} +${target.files.length - 1}`;
+      }
+      setFileName(displayName);
+    }
+
+    onChange?.(event);
+  }
+
+  function handleBlur(event: FocusEvent<HTMLInputElement>): void {
     event.currentTarget.checkValidity();
+
+    onBlur?.(event);
   }
 });
