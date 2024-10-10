@@ -11,6 +11,7 @@ export * from "./DatePicker";
 export * from "./Dropdown";
 export * from "./FileField";
 export * from "./FormControl";
+export * from "./FormGroup";
 export * from "./Infotip";
 export * from "./InputField";
 export * from "./ListBox";
