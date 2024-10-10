@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { useArgs } from "@storybook/preview-api";
+import { useState } from "@storybook/preview-api";
 import { fn } from "@storybook/test";
 
 import { ColorField } from "./ColorField";
@@ -17,20 +17,29 @@ const meta = {
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {},
+  argTypes: {
+    defaultValue: {
+      type: "string",
+    },
+    value: {
+      type: "string",
+    },
+  },
   args: {
     placeholder: "Placeholder",
     disabled: false,
     onChange: fn(),
   },
-} satisfies Meta<ColorFieldProps>;
+} as Meta<ColorFieldProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  args: {},
+  args: {
+    defaultValue: "#ff0000",
+  },
 };
 
 export const Controlled: Story = {
@@ -38,11 +47,11 @@ export const Controlled: Story = {
     value: "#00ff00",
   },
   render: function Render(args) {
-    const [{ value, onChange }, updateArgs] = useArgs();
+    const [value, setValue] = useState(args.value);
 
     function handleChange(e: ChangeEvent<HTMLInputElement>) {
-      updateArgs({ value: e.target.value });
-      onChange(e);
+      setValue(e.target.value);
+      args.onChange?.(e);
     }
 
     return <ColorField {...args} value={value} onChange={handleChange} />;

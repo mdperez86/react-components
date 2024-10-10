@@ -1,53 +1,47 @@
 import {
+  type ChangeEvent,
   type FocusEvent,
   type ForwardedRef,
   forwardRef,
-  useEffect,
-  useRef,
   useState,
 } from "react";
 import classNames from "classnames";
-import { mergeRefs } from "@this/utils";
 import { Tooltip } from "../Tooltip";
-import { type ColorFieldProps } from "./types";
+import type { ColorFieldProps } from "./types";
 
 export const ColorField = forwardRef(function ForwardedColorField(
-  { className, onBlur, ...props }: ColorFieldProps,
+  { className, onChange, onBlur, ...props }: ColorFieldProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const controlRef = useRef<HTMLInputElement>(null);
-  const [displayColor, setDisplayColor] = useState<string | undefined>(
+  const [internalValue, setInternalValue] = useState<string | undefined>(
     props.defaultValue as string,
   );
-  const color = (props.value ?? displayColor ?? "#000000") as string;
-
-  useEffect(addEventListener, []);
+  const isControlled = props.value !== undefined;
+  const displayColor = getDisplayColor();
 
   return (
     <Tooltip
       renderTrigger={(attrs) => (
-        <div
-          {...attrs}
-          className={classNames(className, "group w-fit h-fit relative flex")}
-        >
+        <div {...attrs} className={classNames(className, "group relative")}>
           <input
             {...props}
+            ref={ref}
             type="color"
-            ref={mergeRefs(ref, controlRef)}
             className={classNames(
               "peer cursor-pointer disabled:cursor-not-allowed",
               "outline-none appearance-none opacity-0",
               "absolute z-[1] top-0 right-0 w-full h-full",
             )}
+            onChange={handleChange}
             onBlur={handleBlur}
           />
 
           <div
             role="presentation"
             className={classNames(
-              "relative z-0 w-11 aspect-square p-2",
+              "relative z-0 min-w-11 min-h-11 w-full h-full p-2",
               "rounded-md shadow-xs",
-              "flex items-center justify-center",
+              "flex items-stretch justify-stretch",
               "bg-white border border-gray-300",
               "peer-hover:border-primary-600 peer-hover:bg-primary-50",
               "peer-focus:border-primary-300 peer-focus:peer-hover:border-primary-600 peer-focus:ring-4 peer-focus:ring-primary-100",
@@ -59,36 +53,39 @@ export const ColorField = forwardRef(function ForwardedColorField(
             )}
           >
             <div
-              className="w-full h-full rounded border border-gray-300"
-              style={{ backgroundColor: color }}
+              className="flex-grow rounded border border-gray-300"
+              style={{ backgroundColor: displayColor }}
             />
           </div>
         </div>
       )}
     >
-      {color}
+      {displayColor}
     </Tooltip>
   );
 
-  function addEventListener(): undefined | (() => void) {
-    const control = controlRef.current;
-
-    if (!control) return;
-
-    control.addEventListener("change", handleChange);
-
-    return function unsubscribe() {
-      control.removeEventListener("change", handleChange);
-    };
-
-    function handleChange(event: Event): void {
-      const element = event.target as HTMLInputElement;
-      setDisplayColor(element?.value ?? "#000000");
+  function getDisplayColor(): string {
+    if (props.value) {
+      return props.value as string;
     }
+
+    if (internalValue) {
+      return internalValue;
+    }
+
+    return "#000000";
+  }
+
+  function handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    if (!isControlled) {
+      setInternalValue(event.currentTarget.value);
+    }
+
+    onChange?.(event);
   }
 
   function handleBlur(event: FocusEvent<HTMLInputElement>): void {
-    onBlur && onBlur(event);
     event.currentTarget.checkValidity();
+    onBlur?.(event);
   }
 });
