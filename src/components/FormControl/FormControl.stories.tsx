@@ -94,6 +94,31 @@ export const WithRadioButton: Story = {
   },
 };
 
+export const WithRadioGroup: Story = {
+  args: {
+    label: "Gender",
+    renderControl({ ref, ...props }) {
+      return (
+        <div {...props} role="radiogroup" className="flex gap-4">
+          <FormControl
+            label="Male"
+            renderControl={(props) => (
+              <RadioButton {...props} name="gender" value="male" />
+            )}
+          />
+
+          <FormControl
+            label="Female"
+            renderControl={(props) => (
+              <RadioButton {...props} name="gender" value="female" />
+            )}
+          />
+        </div>
+      );
+    },
+  },
+};
+
 export const WithCheckBox: Story = {
   args: {
     renderControl(props) {

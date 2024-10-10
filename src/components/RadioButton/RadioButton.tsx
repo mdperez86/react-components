@@ -7,7 +7,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
   ref: Ref<HTMLInputElement>,
 ) {
   return (
-    <div className={classNames(className, "group w-fit h-fit relative flex")}>
+    <div className={classNames(className, "group relative flex")}>
       <input
         {...props}
         type="radio"
@@ -33,10 +33,10 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
       >
         <div
           className={classNames(
-            "hidden group-has-[:checked]:block",
+            "hidden group-has-[>:checked]:block",
             "w-2 aspect-square",
             "rounded-full bg-primary-600",
-            "group-has-[:disabled]:bg-gray-200",
+            "group-has-[>:disabled]:bg-gray-200",
           )}
         />
       </div>
