@@ -1,6 +1,6 @@
-import { type Ref, type ReactNode, type FormEvent } from "react";
+import type { Ref, ReactNode, FormEvent } from "react";
 
-export type FormControlProps<T = HTMLInputElement> = Omit<
+export type FormControlProps<T extends HTMLElement = HTMLInputElement> = Omit<
   React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
   "ref"
 > & {
@@ -40,7 +40,9 @@ export type LayoutProps = React.DetailedHTMLProps<
   hint: ReactNode;
 };
 
-export interface FormControlChildProps<T = HTMLInputElement> {
+export interface FormControlChildProps<
+  T extends HTMLElement = HTMLInputElement,
+> {
   ref: Ref<T>;
   id: string;
   "aria-describedby": string;

@@ -33,7 +33,9 @@ const meta = {
 } as Meta<FormControlProps>;
 
 export default meta;
-type Story<T = HTMLInputElement> = StoryObj<Meta<FormControlProps<T>>>;
+type Story<T extends HTMLElement = HTMLInputElement> = StoryObj<
+  Meta<FormControlProps<T>>
+>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const WithInputField: Story = {
@@ -90,31 +92,6 @@ export const WithRadioButton: Story = {
   args: {
     renderControl(props) {
       return <RadioButton {...props} />;
-    },
-  },
-};
-
-export const WithRadioGroup: Story = {
-  args: {
-    label: "Gender",
-    renderControl({ ref, ...props }) {
-      return (
-        <div {...props} role="radiogroup" className="flex gap-4">
-          <FormControl
-            label="Male"
-            renderControl={(props) => (
-              <RadioButton {...props} name="gender" value="male" />
-            )}
-          />
-
-          <FormControl
-            label="Female"
-            renderControl={(props) => (
-              <RadioButton {...props} name="gender" value="female" />
-            )}
-          />
-        </div>
-      );
     },
   },
 };

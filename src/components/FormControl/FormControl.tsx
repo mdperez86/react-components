@@ -15,10 +15,10 @@ import classNames from "classnames";
 import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
 import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
-import { type LayoutProps, type FormControlProps } from "./types";
+import type { LayoutProps, FormControlProps } from "./types";
 
 export const FormControl = forwardRef(function ForwardedFormControl<
-  T = HTMLInputElement,
+  T extends HTMLElement = HTMLInputElement,
 >(
   {
     label,
@@ -55,7 +55,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
     <Layout
       {...props}
       ref={ref}
-      className={classNames(className, "group")}
+      className={classNames(className, "group/control")}
       label={
         <label
           htmlFor={controlId}
@@ -70,7 +70,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
             id={hintTextId}
             aria-live="assertive"
             className={classNames(
-              "text-sm text-gray-500 group-has-[:invalid]:text-error-500",
+              "text-sm text-gray-500 group-has-[:invalid]/control:text-error-500",
             )}
           >
             {hint}
@@ -83,7 +83,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
   );
 
   function setControlError(): void {
-    if (controlRef.current) {
+    if (controlRef.current && "setCustomValidity" in controlRef.current) {
       const objectElement: HTMLObjectElement = controlRef.current as never;
       objectElement.setCustomValidity(errorText ?? "");
       setValidityMessage(errorText);
