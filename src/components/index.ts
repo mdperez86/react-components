@@ -15,6 +15,7 @@ export * from "./FormControl";
 export * from "./FormGroup";
 export * from "./Infotip";
 export * from "./InputField";
+export * from "./Link";
 export * from "./ListBox";
 export * from "./MonthPicker";
 export * from "./ProgressBar";
