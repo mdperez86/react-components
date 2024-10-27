@@ -7,7 +7,7 @@ import {
   useRef,
   useEffect,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { AlertCircleIcon, HelpCircleIcon } from "@this/icons";
 import { mergeRefs } from "@this/utils";
 import type { FileFieldProps } from "./types";
@@ -33,7 +33,7 @@ export const FileField = forwardRef(function ForwardedFileField(
 
   return (
     <div
-      className={classNames(
+      className={clsx(
         className,
         "group relative",
         "outline-none appearance-none flex min-w-48 w-full",
@@ -52,7 +52,7 @@ export const FileField = forwardRef(function ForwardedFileField(
       )}
     >
       <span
-        className={classNames("overflow-hidden text-ellipsis", {
+        className={clsx("overflow-hidden text-ellipsis", {
           "text-gray-500": !fileName && placeholder,
         })}
         aria-hidden="true"
@@ -64,7 +64,7 @@ export const FileField = forwardRef(function ForwardedFileField(
         {...props}
         ref={mergeRefs(ref, controlRef)}
         type="file"
-        className={classNames(
+        className={clsx(
           "absolute z-0 top-0 left-0 h-full w-full opacity-0",
           "appearance-none",
           "focus:outline-none disabled:cursor-not-allowed",
@@ -75,7 +75,7 @@ export const FileField = forwardRef(function ForwardedFileField(
 
       {leadingIcon !== undefined && (
         <div
-          className={classNames(
+          className={clsx(
             "absolute top-0 bottom-0 left-3.5",
             "flex shrink-0 items-center justify-center w-5 text-gray-500",
             "pointer-events-none",
@@ -87,7 +87,7 @@ export const FileField = forwardRef(function ForwardedFileField(
 
       {helpIcon && (
         <div
-          className={classNames(
+          className={clsx(
             "absolute top-0 bottom-0 right-3.5",
             "flex shrink-0 items-center justify-center w-5 text-gray-500",
             "pointer-events-none",

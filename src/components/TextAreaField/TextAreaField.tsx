@@ -1,5 +1,5 @@
 import { type Ref, forwardRef, type FocusEvent } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { AlertCircleIcon, HelpCircleIcon } from "@this/icons";
 import { type TextAreaFieldProps } from "./types";
 
@@ -15,7 +15,7 @@ export const TextAreaField = forwardRef(function ForwardedTextAreaField(
 ) {
   return (
     <div
-      className={classNames(
+      className={clsx(
         className,
         "group relative overflow-hidden",
         "shadow-xs rounded-lg",
@@ -29,7 +29,7 @@ export const TextAreaField = forwardRef(function ForwardedTextAreaField(
         rows={4}
         {...props}
         ref={ref}
-        className={classNames(
+        className={clsx(
           "outline-none appearance-none flex min-w-48 min-h-11 w-full",
           "bg-white text-gray-900 placeholder:text-gray-500",
           "disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed",
@@ -46,7 +46,7 @@ export const TextAreaField = forwardRef(function ForwardedTextAreaField(
 
       {leadingIcon !== undefined && (
         <div
-          className={classNames(
+          className={clsx(
             "absolute top-0 h-11 left-3.5",
             "flex shrink-0 items-center justify-center w-5 text-gray-500",
             "pointer-events-none",
@@ -58,7 +58,7 @@ export const TextAreaField = forwardRef(function ForwardedTextAreaField(
 
       {helpIcon && (
         <div
-          className={classNames(
+          className={clsx(
             "absolute top-0 bottom-0 right-3.5",
             "flex shrink-0 items-center justify-center w-5 text-gray-500",
             "pointer-events-none",

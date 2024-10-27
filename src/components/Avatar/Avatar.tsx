@@ -1,5 +1,5 @@
 import { type Ref, forwardRef, type ReactNode } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { UserIcon } from "@this/icons";
 import { type AvatarProps } from "./types";
 
@@ -12,7 +12,7 @@ export const Avatar = forwardRef(function ForwardedAvatar(
       {...props}
       ref={ref}
       aria-label={url ? alt : undefined}
-      className={classNames(
+      className={clsx(
         className,
         "bg-primary-50 text-primary-600",
         "rounded-full aspect-square",
@@ -44,7 +44,7 @@ export const Avatar = forwardRef(function ForwardedAvatar(
   function renderText(): ReactNode {
     return (
       <abbr
-        className={classNames("uppercase font-medium", {
+        className={clsx("uppercase font-medium", {
           "text-xs": size === "xs",
           "text-sm": size === "sm",
           "text-base": size === "md",

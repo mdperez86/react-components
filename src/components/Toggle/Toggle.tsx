@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type ToggleProps } from "./types";
 
 export const Toggle = forwardRef(function ForwardedToggle(
@@ -7,12 +7,12 @@ export const Toggle = forwardRef(function ForwardedToggle(
   ref: Ref<HTMLInputElement>,
 ) {
   return (
-    <div className={classNames(className, "group w-fit h-fit relative flex")}>
+    <div className={clsx(className, "group w-fit h-fit relative flex")}>
       <input
         {...props}
         type="checkbox"
         ref={ref}
-        className={classNames(
+        className={clsx(
           "peer cursor-pointer disabled:cursor-not-allowed",
           "outline-none appearance-none",
           "absolute z-[1] top-0 right-0 bottom-0 left-0",
@@ -20,7 +20,7 @@ export const Toggle = forwardRef(function ForwardedToggle(
       />
       <div
         role="presentation"
-        className={classNames(
+        className={clsx(
           "relative z-0 w-9 h-5",
           "rounded-full",
           "flex items-center p-0.5",
@@ -33,7 +33,7 @@ export const Toggle = forwardRef(function ForwardedToggle(
         )}
       >
         <div
-          className={classNames(
+          className={clsx(
             "w-4 aspect-square rounded-full",
             "bg-white shadow-sm",
             "transition-transform transform-gpu",

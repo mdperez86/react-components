@@ -1,5 +1,5 @@
 import { type ForwardedRef, forwardRef, useId } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import type { FormGroupProps } from "./types";
 
 export const FormGroup = forwardRef(function ForwardedFormGroup(
@@ -42,7 +42,7 @@ export const FormGroup = forwardRef(function ForwardedFormGroup(
         <span
           id={hintTextId}
           aria-live="assertive"
-          className={classNames("text-sm text-gray-500", {
+          className={clsx("text-sm text-gray-500", {
             "text-error-500": errorText,
           })}
         >

@@ -7,7 +7,7 @@ import {
   useState,
   useEffect,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { DatePicker } from "../DatePicker";
 import { Dropdown } from "../Dropdown";
 import { InputField } from "../InputField";
@@ -39,7 +39,7 @@ export const DateField = forwardRef(function ForwardedDateField(
             ref={getInputFieldRef}
             type="text"
             value={inputValue}
-            className={classNames(toggleProps.className, className)}
+            className={clsx(toggleProps.className, className)}
             aria-autocomplete="none"
             role="combobox"
             onChange={handleInputChange}

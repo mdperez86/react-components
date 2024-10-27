@@ -11,7 +11,7 @@ import {
   useState,
   isValidElement,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { RadioButton } from "../RadioButton";
 import { CheckBox } from "../CheckBox";
 import { BottomLayout, LeftLayout, RightLayout, TopLayout } from "./layouts";
@@ -55,7 +55,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
     <Layout
       {...props}
       ref={ref}
-      className={classNames(className, "group/control")}
+      className={clsx(className, "group/control")}
       label={
         <label
           htmlFor={controlId}
@@ -69,7 +69,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
           <span
             id={hintTextId}
             aria-live="assertive"
-            className={classNames(
+            className={clsx(
               "text-sm text-gray-500 group-has-[:invalid]/control:text-error-500",
             )}
           >

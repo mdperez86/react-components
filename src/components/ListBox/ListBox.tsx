@@ -6,7 +6,7 @@ import {
   forwardRef,
   useState,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { ListBoxGroup } from "./ListBoxGroup";
 import { type ListBoxProps } from "./types";
 
@@ -35,7 +35,7 @@ export const ListBox = forwardRef(function ForwardedListBox(
       value={value}
       ref={ref}
       role="listbox"
-      className={classNames(
+      className={clsx(
         className,
         "group min-w-40 bg-white",
         "outline-none focus:ring-4 focus:ring-gray-100",

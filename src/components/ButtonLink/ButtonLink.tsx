@@ -1,5 +1,5 @@
 import { type MouseEvent, type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type ButtonLinkProps } from "./types";
 
 export const ButtonLink = forwardRef(function ForwardedButtonLink(
@@ -28,7 +28,7 @@ export const ButtonLink = forwardRef(function ForwardedButtonLink(
       {...props}
       ref={ref}
       aria-disabled={isDisabled}
-      className={classNames(
+      className={clsx(
         className,
         "font-medium outline-none",
         "inline-flex items-center justify-center",

@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import {
   type DropDownMenuGroupProps,
   type DropDownMenuItemProps,
@@ -25,7 +25,7 @@ export const DropDownMenu = forwardRef(function ForwardedDropDownMenu(
       ref={ref}
       header={header}
       role="listbox"
-      className={classNames(
+      className={clsx(
         className,
         "group w-60 shadow-md rounded-lg bg-white border border-gray-200",
         "outline-none focus:ring-4 focus:ring-gray-100",
@@ -54,7 +54,7 @@ export const DropDownMenuGroup = forwardRef(function ForwardedDropDownMenuGroup(
       role={role}
       ref={ref}
       aria-labelledby={header ? headerId : props["aria-labelledby"]}
-      className={classNames(className, {
+      className={clsx(className, {
         "border-b border-b-gray-100 last:border-b-0": role === "group",
       })}
     >
@@ -62,7 +62,7 @@ export const DropDownMenuGroup = forwardRef(function ForwardedDropDownMenuGroup(
         <DropDownMenuItem
           id={headerId}
           role="none"
-          className={classNames("border-b border-b-gray-100 font-medium", {
+          className={clsx("border-b border-b-gray-100 font-medium", {
             "text-xs text-gray-900 bg-gray-50": role === "group",
           })}
         >
@@ -98,7 +98,7 @@ export const DropDownMenuItem = forwardRef(function ForwardedDropDownMenuItem(
       <div
         {...props}
         data-role={role}
-        className={classNames(
+        className={clsx(
           className,
           "py-2.5 px-3.5 flex gap-3",
           "text-sm text-gray-700",

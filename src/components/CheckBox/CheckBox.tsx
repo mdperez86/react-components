@@ -1,5 +1,5 @@
 import { type Ref, forwardRef, useRef, useEffect } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { CheckIcon, MinusIcon } from "@this/icons";
 import { mergeRefs } from "@this/utils";
 import { type CheckBoxProps } from "./types";
@@ -13,12 +13,12 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
   useEffect(setIndeterminate, [indeterminate]);
 
   return (
-    <div className={classNames(className, "group w-fit h-fit relative flex")}>
+    <div className={clsx(className, "group w-fit h-fit relative flex")}>
       <input
         {...props}
         type="checkbox"
         ref={mergeRefs(ref, controlRef)}
-        className={classNames(
+        className={clsx(
           "peer cursor-pointer disabled:cursor-not-allowed",
           "outline-none appearance-none",
           "absolute z-[1] top-0 right-0 bottom-0 left-0",
@@ -26,7 +26,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
       />
       <div
         role="presentation"
-        className={classNames(
+        className={clsx(
           "relative z-0 w-5 aspect-square",
           "rounded-md shadow-xs",
           "flex items-center justify-center",
@@ -39,7 +39,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
         )}
       >
         <CheckIcon
-          className={classNames(
+          className={clsx(
             "hidden group-has-[:checked]:block",
             "w-3.5 aspect-square",
             "text-primary-600",
@@ -48,7 +48,7 @@ export const CheckBox = forwardRef(function ForwardedCheckBox(
         />
 
         <MinusIcon
-          className={classNames(
+          className={clsx(
             "hidden group-has-[:indeterminate]:block",
             "w-3.5 aspect-square",
             "text-primary-600",

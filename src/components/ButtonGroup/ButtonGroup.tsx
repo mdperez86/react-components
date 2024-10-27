@@ -8,7 +8,7 @@ import {
   isValidElement,
   useMemo,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Button, type ButtonProps } from "../Button";
 import { type ButtonGroupProps } from "./types";
 
@@ -32,7 +32,7 @@ export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
       {...props}
       ref={ref}
       role="group"
-      className={classNames(className, "inline-flex")}
+      className={clsx(className, "inline-flex")}
     >
       {buttonChildren.map(setupChild)}
     </div>
@@ -57,7 +57,7 @@ export const ButtonGroup = forwardRef(function ForwardedButtonGroup(
       destructive: destructive ?? button.props.destructive,
       icon: button.props.icon ?? icon,
       disabled: disabled ?? button.props.disabled,
-      className: classNames(
+      className: clsx(
         button.props.className,
         "focus:relative focus:z-10",
         "first:rounded-r-none last:rounded-l-none",

@@ -5,7 +5,7 @@ import {
   forwardRef,
   useState,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Tooltip } from "../Tooltip";
 import type { ColorFieldProps } from "./types";
 
@@ -22,12 +22,12 @@ export const ColorField = forwardRef(function ForwardedColorField(
   return (
     <Tooltip
       renderTrigger={(attrs) => (
-        <div {...attrs} className={classNames(className, "group relative")}>
+        <div {...attrs} className={clsx(className, "group relative")}>
           <input
             {...props}
             ref={ref}
             type="color"
-            className={classNames(
+            className={clsx(
               "peer cursor-pointer disabled:cursor-not-allowed",
               "outline-none appearance-none opacity-0",
               "absolute z-[1] top-0 right-0 w-full h-full",
@@ -38,7 +38,7 @@ export const ColorField = forwardRef(function ForwardedColorField(
 
           <div
             role="presentation"
-            className={classNames(
+            className={clsx(
               "relative z-0 min-w-11 min-h-11 w-full h-full p-2",
               "rounded-md shadow-xs",
               "flex items-stretch justify-stretch",

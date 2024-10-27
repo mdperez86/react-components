@@ -8,7 +8,7 @@ import {
   isValidElement,
   useId,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type ListBoxGroupProps, type ListBoxOptionProps } from "./types";
 import { ListBoxOption } from "./ListBoxOption";
 
@@ -34,7 +34,7 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
       role={role}
       ref={ref}
       aria-labelledby={header ? headerId : props["aria-labelledby"]}
-      className={classNames(className, {
+      className={clsx(className, {
         "border-b border-b-gray-100 last:border-b-0": role === "group",
       })}
     >
@@ -42,7 +42,7 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
         <ListBoxOption
           id={headerId}
           role="none"
-          className={classNames("border-b border-b-gray-100 font-medium", {
+          className={clsx("border-b border-b-gray-100 font-medium", {
             "text-xs text-gray-900 bg-gray-50": role === "group",
           })}
         >

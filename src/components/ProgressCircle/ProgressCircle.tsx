@@ -1,5 +1,5 @@
 import { type ReactNode, useId } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type ProgressCircleProps } from "./types";
 
 const OFFSET = 32;
@@ -31,14 +31,14 @@ export function ProgressCircle({
       aria-valuenow={getValueNow(value)}
       aria-valuetext={indeterminate ? undefined : formattedValue}
       aria-labelledby={label ? labelId : undefined}
-      className={classNames(className, "flex flex-col gap-1 items-center")}
+      className={clsx(className, "flex flex-col gap-1 items-center")}
     >
       <div className="relative" aria-hidden="true">
         <svg
           viewBox="0 0 64 64"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={classNames("aspect-square", {
+          className={clsx("aspect-square", {
             "animate-spin": indeterminate,
             "w-4": size === "xs",
             "w-8": size === "sm",
@@ -66,7 +66,7 @@ export function ProgressCircle({
 
         {size !== "xs" && size !== "sm" && formattedValue && (
           <span
-            className={classNames(
+            className={clsx(
               "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2",
               "font-medium text-gray-700",
               {

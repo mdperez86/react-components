@@ -4,7 +4,7 @@ import {
   forwardRef,
   useEffect,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { CheckIcon } from "@this/icons";
 import { type ListBoxOptionProps } from "./types";
 
@@ -36,7 +36,7 @@ export const ListBoxOption = forwardRef(function ForwardedListBoxOption(
       className="relative"
     >
       <div
-        className={classNames(
+        className={clsx(
           className,
           "py-2.5 px-3.5 flex gap-3",
           "text-sm text-gray-900",

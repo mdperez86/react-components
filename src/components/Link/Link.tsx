@@ -1,5 +1,5 @@
 import { type MouseEvent, type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type LinkProps } from "./types";
 
 export const Link = forwardRef(function ForwardedLink(
@@ -13,7 +13,7 @@ export const Link = forwardRef(function ForwardedLink(
       {...props}
       ref={ref}
       aria-disabled={isDisabled}
-      className={classNames(
+      className={clsx(
         className,
         "outline-none underline underline-offset-2",
         "focus:border-b-4 focus:ring-offset-2",

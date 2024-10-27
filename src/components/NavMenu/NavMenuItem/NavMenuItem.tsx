@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Badge } from "@this/components/Badge";
 import type { NavMenuItemProps } from "./types";
 
@@ -12,9 +12,7 @@ export const NavMenuItem = forwardRef(function ForwardedNavMenuItem(
       <a
         href="#"
         role="menuitem"
-        className={classNames(
-          "flex flex-col gap-1 p-3 rounded-lg hover:bg-gray-50",
-        )}
+        className={clsx("flex flex-col gap-1 p-3 rounded-lg hover:bg-gray-50")}
       >
         <div className="flex items-center gap-2">
           <span className="text-md font-medium text-gray-900">{text}</span>

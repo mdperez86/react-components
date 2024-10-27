@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import type { BadgeProps } from "./types";
 
 export const Badge = forwardRef(function ForwardedBadge(
@@ -10,7 +10,7 @@ export const Badge = forwardRef(function ForwardedBadge(
     <div
       {...props}
       ref={ref}
-      className={classNames(
+      className={clsx(
         className,
         "inline-flex gap-1 items-center rounded-full py-0.5 min-h-[1ch]",
         "bg-gray-100 text-gray-700 font-medium",

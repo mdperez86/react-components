@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type CardProps } from "./types";
 
 export const Card = forwardRef(function ForwardedCard(
@@ -10,7 +10,7 @@ export const Card = forwardRef(function ForwardedCard(
     <div
       {...props}
       ref={ref}
-      className={classNames(className, "shadow-md rounded-lg bg-white")}
+      className={clsx(className, "shadow-md rounded-lg bg-white")}
     />
   );
 });

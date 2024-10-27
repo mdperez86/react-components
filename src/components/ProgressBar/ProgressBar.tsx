@@ -4,7 +4,7 @@ import {
   type Ref,
   forwardRef,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Infotip, type InfotipProps } from "../Infotip";
 import { type ProgressBarProps } from "./types";
 
@@ -37,7 +37,7 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
       {...props}
       ref={ref}
       role="progressbar"
-      className={classNames(className, "relative min-w-48", {
+      className={clsx(className, "relative min-w-48", {
         "flex items-center gap-3": currentLabelPosition === "right",
         "flex flex-col items-end gap-2": currentLabelPosition === "bottom",
       })}
@@ -51,7 +51,7 @@ export const ProgressBar = forwardRef(function ForwardedProgressBar(
         role="none"
       >
         <div
-          className={classNames("h-full rounded-lg bg-primary-600", {
+          className={clsx("h-full rounded-lg bg-primary-600", {
             "min-w-2": !indeterminate,
             "animate-pingpong": indeterminate,
           })}

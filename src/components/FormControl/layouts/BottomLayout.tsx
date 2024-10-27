@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { type LayoutProps } from "../types";
 import { type Ref, forwardRef } from "react";
 
@@ -10,7 +10,7 @@ export const BottomLayout = forwardRef(function ForwardedBottomLayout(
     <div
       {...props}
       ref={ref}
-      className={classNames("flex flex-col gap-1.5", className)}
+      className={clsx("flex flex-col gap-1.5", className)}
     >
       {children}
       <div className="flex flex-col gap-0.5">

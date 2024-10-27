@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type RadioButtonProps } from "./types";
 
 export const RadioButton = forwardRef(function ForwardedRadioButton(
@@ -7,12 +7,12 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
   ref: Ref<HTMLInputElement>,
 ) {
   return (
-    <div className={classNames(className, "group relative flex")}>
+    <div className={clsx(className, "group relative flex")}>
       <input
         {...props}
         type="radio"
         ref={ref}
-        className={classNames(
+        className={clsx(
           "peer cursor-pointer disabled:cursor-not-allowed",
           "outline-none appearance-none",
           "absolute z-[1] top-0 right-0 bottom-0 left-0",
@@ -20,7 +20,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
       />
       <div
         role="presentation"
-        className={classNames(
+        className={clsx(
           "relative z-0 w-5 aspect-square",
           "rounded-full shadow-xs",
           "flex items-center justify-center",
@@ -32,7 +32,7 @@ export const RadioButton = forwardRef(function ForwardedRadioButton(
         )}
       >
         <div
-          className={classNames(
+          className={clsx(
             "hidden group-has-[>:checked]:block",
             "w-2 aspect-square",
             "rounded-full bg-primary-600",

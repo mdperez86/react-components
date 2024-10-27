@@ -1,5 +1,5 @@
 import { type Ref, forwardRef } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { type InfotipProps } from "./types";
 
 export const Infotip = forwardRef(function ForwardedInfotip(
@@ -20,7 +20,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
       ref={ref}
       role="none"
       tabIndex={-1}
-      className={classNames(className, "absolute z-10 drop-shadow-lg", {
+      className={clsx(className, "absolute z-10 drop-shadow-lg", {
         "-translate-x-1/2 -translate-y-full": position === "top",
         "translate-x-0 -translate-y-1/2": position === "right",
         "-translate-x-1/2 translate-y-0": position === "bottom",
@@ -39,7 +39,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
       <div className="relative p-2" role="none">
         <div
           role="presentation"
-          className={classNames(
+          className={clsx(
             "absolute z-0 h-3 aspect-square rotate-45 rounded-[1px] bg-white dark:bg-gray-900",
             {
               "bottom-1 left-1/2 -translate-x-1/2": position === "top",
@@ -55,7 +55,7 @@ export const Infotip = forwardRef(function ForwardedInfotip(
 
         <div
           role="tooltip"
-          className={classNames(
+          className={clsx(
             "relative py-2 px-3",
             "bg-white rounded-lg",
             "text-gray-700 text-xs font-medium",

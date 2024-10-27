@@ -11,7 +11,7 @@ import {
   useReducer,
   type ChangeEvent,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { ChevronDownIcon, ChevronUpIcon } from "@this/icons";
 import {
   Dropdown,
@@ -100,7 +100,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     ...toggleProps
   }: DropdownToggleProps<HTMLInputElement>): ReactNode {
     return (
-      <div className={classNames(className, "group relative")}>
+      <div className={clsx(className, "group relative")}>
         <input
           {...props}
           {...toggleProps}
@@ -117,7 +117,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
               ? getOptionId(state.activeOption)
               : undefined
           }
-          className={classNames(
+          className={clsx(
             "outline-none appearance-none flex min-w-48 w-full",
             "bg-white text-gray-900 border border-gray-300 placeholder:text-gray-500",
             "shadow-xs rounded-lg py-2.5 pr-[2.625rem] text-base h-11",
@@ -141,7 +141,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
         {leadingIcon !== undefined && (
           <div
             aria-hidden="true"
-            className={classNames(
+            className={clsx(
               "absolute top-0 bottom-0 left-3.5",
               "flex shrink-0 items-center justify-center w-5 text-gray-500",
               "pointer-events-none",
@@ -153,7 +153,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
 
         <div
           aria-hidden="true"
-          className={classNames(
+          className={clsx(
             "absolute top-0 bottom-0 right-3.5",
             "flex shrink-0 items-center justify-center w-5 text-gray-500",
             "pointer-events-none",
@@ -466,7 +466,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   }: DropdownPopupProps<HTMLDivElement>): ReactNode {
     return (
       <div
-        className={classNames(
+        className={clsx(
           className,
           "w-full overflow-hidden rounded-lg shadow-lg",
         )}

@@ -7,7 +7,7 @@ import {
   useRef,
   useId,
 } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Infotip, type InfotipProps, type SliderType } from "../Infotip";
 import type { SliderProps, SliderLabelProps } from "./types";
 
@@ -40,7 +40,7 @@ export const Slider = forwardRef(function ForwardedSlider(
     <div
       {...props}
       ref={ref}
-      className={classNames(
+      className={clsx(
         className,
         "group flex min-w-48 w-full p-3 transition-all duration-300",
       )}
@@ -85,7 +85,7 @@ export const Slider = forwardRef(function ForwardedSlider(
         aria-valuemax={max}
         aria-labelledby={id}
         data-type={type}
-        className={classNames(
+        className={clsx(
           "absolute w-6 aspect-square rounded-full -translate-x-3",
           "bg-white shadow-md outline-none",
           "hover:z-20 hover:bg-primary-50 cursor-pointer",
