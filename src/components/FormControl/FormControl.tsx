@@ -26,7 +26,7 @@ export const FormControl = forwardRef(function ForwardedFormControl<
     hintText,
     errorText,
     className,
-    children,
+    children: _,
     renderControl,
     ...props
   }: FormControlProps<T>,

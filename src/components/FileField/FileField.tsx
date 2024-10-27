@@ -117,10 +117,10 @@ export const FileField = forwardRef(function ForwardedFileField(
       return function removeFormResetListener() {
         form.removeEventListener("reset", handleFormReset);
       };
+    }
 
-      function handleFormReset(): void {
-        setFileName(undefined);
-      }
+    function handleFormReset(): void {
+      setFileName(undefined);
     }
   }
 

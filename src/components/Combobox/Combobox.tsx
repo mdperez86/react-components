@@ -459,7 +459,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   }
 
   function renderPopup({
-    expanded: open,
+    expanded: _,
     collapse: close,
     className,
     ...props
@@ -541,7 +541,7 @@ function defaultDataTextGetter<T>(option: T): string {
 }
 
 function defaultOptionRenderer<T>({
-  option,
+  option: _,
   text,
   ...props
 }: ComboboxOptionProps<T>): ReactNode {

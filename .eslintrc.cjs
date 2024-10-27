@@ -5,32 +5,30 @@ module.exports = {
     node: true,
   },
   extends: [
-    "standard-with-typescript",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:storybook/recommended",
-    "prettier",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
   ],
-  overrides: [
-    {
-      env: {
-        node: true,
-      },
-      files: ["src/**/*.ts", "src/**/*.tsx"],
-      parserOptions: {
-        project: ["./tsconfig.json"],
-        sourceType: "script",
-      },
-    },
-  ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: "latest",
+    ecmaVersion: 12,
     sourceType: "module",
-    ecmaFeatures: {
-      jsx: true,
-    },
+    project: "./tsconfig.json",
   },
-  plugins: ["react"],
+  plugins: ["@typescript-eslint", "prettier"],
+  rules: {
+    // TypeScript-specific rules
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-explicit-any": "warn",
+
+    // Prettier integration to enforce code formatting
+    "prettier/prettier": "error",
+
+    // Other ESLint rules
+    "no-console": "warn",
+    "no-debugger": "warn",
+  },
   ignorePatterns: [
     "dist",
     "coverage",
@@ -39,12 +37,4 @@ module.exports = {
     "**/*.stories.tsx",
     "rollup.config.js",
   ],
-  rules: {
-    "@typescript-eslint/strict-boolean-expressions": "off",
-  },
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
 };
