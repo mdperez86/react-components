@@ -9,8 +9,7 @@ import {
 } from "react";
 import classNames from "classnames";
 import { Infotip, type InfotipProps, type SliderType } from "../Infotip";
-import { type SliderProps } from "./types";
-import { type SliderLabelProps } from "../Button";
+import type { SliderProps, SliderLabelProps } from "./types";
 
 export const Slider = forwardRef(function ForwardedSlider(
   {

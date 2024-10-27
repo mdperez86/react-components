@@ -52,3 +52,8 @@ export type SliderProps = Omit<
    */
   formatLabel?: (sliderValue: number) => string;
 };
+
+export type SliderLabelProps = React.DetailedHTMLProps<
+  React.ButtonHTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+>;

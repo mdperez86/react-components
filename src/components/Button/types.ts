@@ -46,8 +46,3 @@ export type ButtonProps = Omit<
    */
   rounded?: "lg" | "full";
 };
-
-export type SliderLabelProps = React.DetailedHTMLProps<
-  React.ButtonHTMLAttributes<HTMLDivElement>,
-  HTMLDivElement
->;
