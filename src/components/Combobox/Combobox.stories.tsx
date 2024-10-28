@@ -9,7 +9,7 @@ import { Combobox, ListBoxOption } from "../index";
 
 const lorem = new LoremIpsum();
 
-export type Option = { value: number; text: string; icon: ReactNode };
+export type Option = { value: string; text: string; icon: ReactNode };
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -27,7 +27,7 @@ const meta = {
     placeholder: "Placeholder",
     disabled: false,
     options: Array.from({ length: 30 }).map((_, index) => ({
-      value: index,
+      value: `id_${index}`,
       text: lorem.generateWords(3),
       icon: index % 2 === 0 ? <HomeIcon /> : <UserIcon />,
     })),

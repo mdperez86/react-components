@@ -1,4 +1,5 @@
 import {
+  type ChangeEvent,
   type FocusEvent,
   type ForwardedRef,
   type MouseEvent,
@@ -9,16 +10,15 @@ import {
   useEffect,
   useId,
   useReducer,
-  type ChangeEvent,
 } from "react";
 import clsx from "clsx";
 import { ChevronDownIcon, ChevronUpIcon } from "@this/icons";
 import {
-  Dropdown,
   type DropdownPopupProps,
   type DropdownToggleProps,
+  Dropdown,
 } from "../Dropdown";
-import { ListBox, ListBoxOption } from "../ListBox";
+import { getOptionId, ListBox, ListBoxOption } from "../ListBox";
 import { reducer } from "./reducer";
 import { type ComboboxOptionProps, type ComboboxProps } from "./types";
 
@@ -46,7 +46,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
   const listboxRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<number>();
   const searchStringRef = useRef<string>("");
-  const optionId = useId();
+  const parentId = useId();
 
   const [state, dispatch] = useReducer(reducer<T>, {
     options: [],
@@ -114,7 +114,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           aria-haspopup="listbox"
           aria-activedescendant={
             expanded && state.activeOption
-              ? getOptionId(state.activeOption)
+              ? getOptionId(parentId, getOptionValue(state.activeOption))
               : undefined
           }
           className={clsx(
@@ -433,7 +433,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
       return;
     }
 
-    const optionId = getOptionId(state.activeOption);
+    const optionId = getOptionId(parentId, getOptionValue(state.activeOption));
     const listboxOption = listboxRef.current.querySelector<HTMLElement>(
       `#${optionId.replaceAll(":", "\\:")}`,
     );
@@ -477,7 +477,8 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
           ref={listboxRef}
           aria-modal={undefined}
           aria-activedescendant={
-            state.activeOption && getOptionId(state.activeOption)
+            state.activeOption &&
+            getOptionId(parentId, getOptionValue(state.activeOption))
           }
           tabIndex={-1}
           className="w-full max-h-[12.5rem] rounded-lg overflow-x-hidden"
@@ -504,7 +505,7 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     function mapOption(option: T): ReactNode {
       return renderOption({
         option,
-        id: getOptionId(option),
+        id: getOptionId(parentId, getOptionValue(option)),
         value: getOptionValue(option),
         text: getOptionText(option),
         tabIndex: -1,
@@ -516,15 +517,6 @@ export const Combobox = forwardRef(function ForwardedCombobox<T = string>(
     onBlur && onBlur(event);
 
     event.currentTarget.checkValidity();
-  }
-
-  function getOptionId(option: T): string {
-    const optionValue = getOptionValue(option);
-    return `${optionId}${normalizeValue(optionValue)}`;
-
-    function normalizeValue(value: string): string {
-      return value.toLowerCase().replaceAll(/[^a-z0-9]/g, "");
-    }
   }
 
   function findOption(value: string): T | undefined {

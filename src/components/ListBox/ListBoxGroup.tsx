@@ -1,16 +1,17 @@
 import {
-  Children,
   type ForwardedRef,
   type ReactElement,
   type ReactNode,
+  Children,
   cloneElement,
   forwardRef,
   isValidElement,
   useId,
 } from "react";
 import clsx from "clsx";
-import { type ListBoxGroupProps, type ListBoxOptionProps } from "./types";
 import { ListBoxOption } from "./ListBoxOption";
+import { getOptionId } from "./utils";
+import type { ListBoxGroupProps, ListBoxOptionProps } from "./types";
 
 export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
   {
@@ -54,10 +55,6 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
     </div>
   );
 
-  function getOptionId(value: string): string {
-    return `${optionId}${value}`;
-  }
-
   function mapChild(child: ReactNode, index: number): ReactNode {
     if (
       isValidElement<ListBoxGroupProps>(child) &&
@@ -75,8 +72,11 @@ export const ListBoxGroup = forwardRef(function ForwardedListBoxGroup(
       isValidElement<ListBoxOptionProps>(child) &&
       child.type === ListBoxOption
     ) {
-      const id =
-        child.props.id ?? getOptionId(child.props.value ?? String(index));
+      const id = getOptionId(
+        optionId,
+        child.props.value ?? String(index),
+        child.props.id,
+      );
 
       return cloneElement<ListBoxOptionProps>(child, {
         id,
